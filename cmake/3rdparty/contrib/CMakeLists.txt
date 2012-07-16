@@ -13,7 +13,7 @@
 # limitations under the License.
 
 cmake_minimum_required (VERSION 2.8)
-project(c-ares)
+project(contrib)
 
 # Import macros
 file(GLOB PROJECT_MACROS "${PROJECT_SOURCE_DIR}/../../cmake/*.cmake")
@@ -22,32 +22,25 @@ foreach(ITEM ${PROJECT_MACROS})
 endforeach()
 
 # Config
-set(PROJECT_KEY "c-ares-1.7.5")
+set(PROJECT_KEY "contrib")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99")
 
 # Source and includes
 set(PROJECT_REAL_PATH "${PROJECT_SOURCE_DIR}/../../../3rdparty/${PROJECT_KEY}")
 get_filename_component(PROJECT_REAL_PATH ${PROJECT_REAL_PATH} ABSOLUTE)
+file(GLOB_RECURSE PROJECT_SOURCES "${PROJECT_REAL_PATH}/*.c")
+set(PROJECT_INCLUDE_DIRS "${PROJECT_REAL_PATH}/")
 if (${DEBUG_MESSAGES})
-  message("Importing ${PROJECT_KEY} from ${PROJECT_REAL_PATH}")
+  message("Importing ${PROJECT_KEY} from ${PROJECT_REAL_PATH}/src")
 endif()
 
-
-# Configure 
-execute_process(COMMAND "configure" WORKING_DIRECTORY ${PROJECT_REAL_PATH})
-
-# Create files for working with if they don't exist
-if (NOT EXISTS "${PROJECT_REAL_PATH}/inet_ntop.c")
-  configure_file("${PROJECT_REAL_PATH}/ares_inet_ntop.c" "${PROJECT_REAL_PATH}/inet_ntop.c" COPY_ONLY)
-  configure_file("${PROJECT_REAL_PATH}/ares_inet_ntop.h" "${PROJECT_REAL_PATH}/inet_ntop.h" COPY_ONLY)
-endif()
-
-# Build
-execute_process(COMMAND "make" WORKING_DIRECTORY ${PROJECT_REAL_PATH})
-
-# Lib and includes
-set(PROJECT_INCLUDE_DIRS "${PROJECT_REAL_PATH}")
-set(PROJECT_LIBRARIES "${PROJECT_REAL_PATH}/.libs/libcares.a")
-set(PROJECT_NAME "C-ARES")
+# Build library (static)
+include_directories(${PROJECT_INCLUDE_DIRS})
+add_library(contrib STATIC ${PROJECT_SOURCES})
+target_link_libraries(contrib)
 
 # Export libraries
-CONFIGURE_FILE(c-aresConfig.cmake.in "${PROJECT_BINARY_DIR}/c-aresConfig.cmake")
+set(PROJECT_LIBRARIES contrib)
+set(PROJECT_NAME "CONTRIB")
+
+CONFIGURE_FILE(contribConfig.cmake.in "${PROJECT_BINARY_DIR}/contribConfig.cmake")

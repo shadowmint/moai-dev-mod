@@ -21,10 +21,7 @@ option(DEBUG_MESSAGES "Show debug messages during build" ON)
 
 # Flags
 set(CMAKE_C_FLAGS "-Wall -pedantic -Wimplicit-function-declaration -Wreturn-type -Wstrict-prototypes -Wextra")
-if(NOT WIN32)
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Werror")
-endif()
-set (CMAKE_OSX_ARCHITECTURES "i386")
+set(CMAKE_OSX_ARCHITECTURES "i386")
 
 # Load cmake definitions
 file(GLOB_RECURSE PROJECT_INCLUDES "${PROJECT_SOURCE_DIR}/utils/*.cmake")

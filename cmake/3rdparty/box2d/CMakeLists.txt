@@ -22,30 +22,23 @@ foreach(ITEM ${PROJECT_MACROS})
 endforeach()
 
 # Config
-set(PROJECT_KEY "lua-5.1.3")
+set(PROJECT_KEY "box2d-2.2.1")
 
 # Source and includes
 set(PROJECT_REAL_PATH "${PROJECT_SOURCE_DIR}/../../../3rdparty/${PROJECT_KEY}")
 get_filename_component(PROJECT_REAL_PATH ${PROJECT_REAL_PATH} ABSOLUTE)
-file(GLOB PROJECT_SOURCES "${PROJECT_REAL_PATH}/src/*.c")
-set(PROJECT_INCLUDE_DIRS "${PROJECT_REAL_PATH}/src")
-filter_list("${PROJECT_SOURCES}" "lua.c;luac.c" PROJECT_SOURCES)
+add_subdirectory(${PROJECT_REAL_PATH} "${CMAKE_CURRENT_BINARY_DIR}/impl")
 if (${DEBUG_MESSAGES})
   message("Importing ${PROJECT_KEY} from ${PROJECT_REAL_PATH}")
 endif()
 
-# Win32 config
-if(WIN32)
-  add_definitions( "-DLUA_API=__declspec(dllexport)" )
-endif(WIN32)
-
-# Build library (static)
-include_directories(${PROJECT_INCLUDE_DIRS})
-add_library(lua STATIC ${PROJECT_SOURCES})
-target_link_libraries(lua m)
+# Disable box2d tests, etc.
+set(BOX2D_BUILD_EXAMPLES OFF CACHE BOOL "Do not build box2d tests" FORCE)
+set(BOX2D_INSTALL OFF CACHE BOOL "Do not build box2d install" FORCE)
 
 # Export libraries
-set(PROJECT_LIBRARIES lua;m)
-set(PROJECT_NAME "LUA")
+set(PROJECT_LIBRARIES "Box2D")
+set(PROJECT_INCLUDE_DIRS "${PROJECT_REAL_PATH}/Box2D")
+set(PROJECT_NAME "BOX2D")
 
-CONFIGURE_FILE(luaConfig.cmake.in "${PROJECT_BINARY_DIR}/luaConfig.cmake")
+CONFIGURE_FILE(box2dConfig.cmake.in "${PROJECT_BINARY_DIR}/box2dConfig.cmake")

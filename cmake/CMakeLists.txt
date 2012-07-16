@@ -17,6 +17,7 @@ project (MOAI)
 
 # Debug mode?
 set(CMAKE_BUILD_TYPE Debug)
+option(DEBUG_MESSAGES "Show debug messages during build" ON)
 
 # Flags
 set(CMAKE_C_FLAGS "-Wall -pedantic -Wimplicit-function-declaration -Wreturn-type -Wstrict-prototypes -Wextra")
@@ -45,9 +46,19 @@ foreach(DEP ${PROJECT_DEPS})
   set(${ITEM_PATH}_DIR "${PROJECT_BINARY_DIR}/3rdparty/${ITEM_PATH}")
   find_package(${ITEM_PATH} REQUIRED)
   list(APPEND PROJECT_EXTRA_INCLUDES ${${DEP_ID}_INCLUDE_DIRS})
-  list(APPEND PROJECT_EXTRA_LIBRARIES "${ITEM_PATH}")
-  list(APPEND PROJECT_EXTRA_SHARED_LIBRARIES "${ITEM_PATH};${${DEP_ID}_LIBRARIES}")
+  list(APPEND PROJECT_EXTRA_LIBRARIES ${${DEP_ID}_LIBRARIES})
 endforeach()
+
+# Debug
+if(DEBUG_MESSAGES)
+  message("Build debug:")
+  foreach(INC ${PROJECT_EXTRA_INCLUDES})
+    message("- Include: ${INC}")
+  endforeach()
+  foreach(LIB ${PROJECT_EXTRA_LIBRARIES})
+    message("- Library: ${LIB}")
+  endforeach()
+endif()
 
 # Include dirs
 set(PROJECT_INCLUDE_DIRS "")

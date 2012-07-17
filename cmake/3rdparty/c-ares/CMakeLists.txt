@@ -43,7 +43,7 @@ if (NOT EXISTS ${PROJECT_LIB_TARGET})
 
   # Configure 
   execute_process(COMMAND chmod 755 configure WORKING_DIRECTORY ${PROJECT_REAL_PATH})
-  execute_process(COMMAND "./configure ${BUILD_EXTRA_FLAGS}" WORKING_DIRECTORY ${PROJECT_REAL_PATH})
+  execute_process(COMMAND ./configure ${BUILD_EXTRA_FLAGS} WORKING_DIRECTORY ${PROJECT_REAL_PATH})
 
   # Create files for working with if they don't exist
   if (NOT EXISTS "${PROJECT_REAL_PATH}/inet_ntop.c")

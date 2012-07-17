@@ -35,12 +35,12 @@ endif()
 set(PROJECT_LIB_TARGET "${PROJECT_REAL_PATH}/lib/.libs/libcurl.a")
 if (NOT EXISTS ${PROJECT_LIB_TARGET})
 
-  # Configure 
-  execute_process(COMMAND chmod 755 configure WORKING_DIRECTORY ${PROJECT_REAL_PATH})
-  execute_process(COMMAND ./configure WORKING_DIRECTORY ${PROJECT_REAL_PATH})
+  # Platform config
+  import_common_build_flags(BUILD_EXTRA_FLAGS)
 
   # Build
-  execute_process(COMMAND make WORKING_DIRECTORY ${PROJECT_REAL_PATH})
+  invoke_autotools(${PROJECT_REAL_PATH} ${BUILD_EXTRA_FLAGS})
+
 endif()
 
 # Error if the build using autotools failed

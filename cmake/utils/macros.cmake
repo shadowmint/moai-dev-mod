@@ -71,3 +71,46 @@ function(filter_list ITEMS EXCLUDES RETURN)
   endforeach(ITEM ${ITEMS})
   set(${RETURN} ${ITEMS_RETURN} PARENT_SCOPE)
 endfunction(filter_list EXCLUDES)
+
+# Implode a list to a string 
+# @param ITEMS The items to implode
+# @param GLUE The item to insert between items.
+# @param RETURN The return variable
+function(implode_list ITEMS GLUE RETURN)
+  string (REGEX REPLACE "([^\\]|^);" "\\1${GLUE}" _TMP_STR "${ITEMS}")
+  string (REGEX REPLACE "[\\](.)" "\\1" _TMP_STR "${_TMP_STR}") #fixes escaping
+  set (${RETURN} "${_TMP_STR}" PARENT_SCOPE)
+endfunction()
+
+# Import common build flags used in many sub-projects
+# @param RETURN The return variable
+function(import_common_build_flags RETURN)
+  set(FLAGS "")
+  if(APPLE)
+    list(APPEND FLAGS CFLAGS="-arch i386")
+    list(APPEND FLAGS CXXFLAGS="-arch i386")
+    list(APPEND FLAGS LDFLAGS="-arch i386")
+  endif()
+  implode_list("${FLAGS}" " " FLAGS)
+  set (${RETURN} "${FLAGS}" PARENT_SCOPE)
+endfunction()
+
+# Invoke autotools in the given directory with the given extra args
+# @param REAL_PATH The path to the directory containing a 'configure' script.
+# @param EXTRA_FLAGS The extra flags to pass to autoconf when invoking it.
+function(invoke_autotools REAL_PATH EXTRA_FLAGS)
+
+  # Configure; save build command for debugging.
+  set(AUTOTOOLS_CONFIG "./configure ${EXTRA_FLAGS}")
+  file(WRITE ${REAL_PATH}/.__configure.cmake ${AUTOTOOLS_CONFIG})
+
+  # Make sure things can be run
+  execute_process(COMMAND chmod 755 configure WORKING_DIRECTORY ${REAL_PATH})
+  execute_process(COMMAND chmod 755 .__configure.cmake WORKING_DIRECTORY ${REAL_PATH})
+
+  # Invoke configure
+  execute_process(COMMAND ./configure.cmake WORKING_DIRECTORY ${REAL_PATH})
+
+  # Build
+  execute_process(COMMAND "make" WORKING_DIRECTORY ${REAL_PATH})
+endfunction()

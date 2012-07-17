@@ -109,7 +109,7 @@ function(invoke_autotools REAL_PATH EXTRA_FLAGS)
   execute_process(COMMAND chmod 755 .__configure.cmake WORKING_DIRECTORY ${REAL_PATH})
 
   # Invoke configure
-  execute_process(COMMAND ./configure.cmake WORKING_DIRECTORY ${REAL_PATH})
+  execute_process(COMMAND ./.__configure.cmake WORKING_DIRECTORY ${REAL_PATH})
 
   # Build
   execute_process(COMMAND "make" WORKING_DIRECTORY ${REAL_PATH})

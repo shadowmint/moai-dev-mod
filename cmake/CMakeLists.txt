@@ -38,12 +38,19 @@ set(PROJECT_EXTRA_SOURCES "")
 file(GLOB PROJECT_DEPS "${PROJECT_SOURCE_DIR}/3rdparty/*")
 foreach(DEP ${PROJECT_DEPS}) 
   add_subdirectory(${DEP})
+
+  # Force cmake to look locally for the library instance
   get_filename_component_last(${DEP} ITEM_PATH)
   string(TOUPPER ${ITEM_PATH} DEP_ID)
   set(${ITEM_PATH}_DIR "${PROJECT_BINARY_DIR}/3rdparty/${ITEM_PATH}")
+
+  # Auto-resolve it
   find_package(${ITEM_PATH} REQUIRED)
-  list(APPEND PROJECT_EXTRA_INCLUDES ${${DEP_ID}_INCLUDE_DIRS})
-  list(APPEND PROJECT_EXTRA_LIBRARIES ${${DEP_ID}_LIBRARIES})
+
+  # Now for cmake to load the local instance of the libraries
+  include("${${ITEM_PATH}_DIR}/${ITEM_PATH}Config.cmake")
+  list(APPEND PROJECT_EXTRA_INCLUDES "${${DEP_ID}_INCLUDE_DIRS}")
+  list(APPEND PROJECT_EXTRA_LIBRARIES "${${DEP_ID}_LIBRARIES}")
 endforeach()
 
 # Debug

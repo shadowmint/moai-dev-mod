@@ -31,13 +31,17 @@ if (${DEBUG_MESSAGES})
   message("Importing ${PROJECT_KEY} from ${PROJECT_REAL_PATH}")
 endif()
 
-# Configure 
-execute_process(COMMAND chmod 755 configure WORKING_DIRECTORY ${PROJECT_REAL_PATH})
-execute_process(COMMAND configure WORKING_DIRECTORY ${PROJECT_REAL_PATH})
-
-# Build
-execute_process(COMMAND make WORKING_DIRECTORY ${PROJECT_REAL_PATH})
+# Dependency target; skip build if it already magically exists
 set(PROJECT_LIB_TARGET "${PROJECT_REAL_PATH}/.libs/libexpat.a")
+if (NOT EXISTS ${PROJECT_LIB_TARGET})
+
+  # Configure 
+  execute_process(COMMAND chmod 755 configure WORKING_DIRECTORY ${PROJECT_REAL_PATH})
+  execute_process(COMMAND ./configure WORKING_DIRECTORY ${PROJECT_REAL_PATH})
+
+  # Build
+  execute_process(COMMAND make WORKING_DIRECTORY ${PROJECT_REAL_PATH})
+endif()
 
 # Error if the build using autotools failed
 if (NOT EXISTS ${PROJECT_LIB_TARGET})
@@ -45,7 +49,7 @@ if (NOT EXISTS ${PROJECT_LIB_TARGET})
 endif()
 
 # Lib and includes
-set(PROJECT_INCLUDE_DIRS "${PROJECT_REAL_PATH}")
+set(PROJECT_INCLUDE_DIRS "${PROJECT_REAL_PATH}/lib")
 set(PROJECT_LIBRARIES "${PROJECT_LIB_TARGET}")
 set(PROJECT_NAME "EXPAT")
 

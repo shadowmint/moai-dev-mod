@@ -15,23 +15,6 @@
 cmake_minimum_required (VERSION 2.8)
 project (MOAI)
 
-# Build target: needed by 3rd party libs, etc. to decide how to invoke autotools
-# Remember we always build 32-bit binaries, but we need to know about the build platform
-if(WIN32)
-  set(BUILD_HOST_TARGET "WIN" CACHE STRING "Select the build host configuration")
-elseif(APPLE)
-  set(BUILD_HOST_TARGET "APPLE" CACHE STRING "Select the build host configuration")
-else()
-  set(BUILD_HOST_TARGET "LINUX" CACHE STRING "Select the build host configuration")
-endif()
-if(CMAKE_SIZE_OF_VOID_P EQUAL 8)
-  set(BUILD_HOST_TYPE "64" CACHE STRING "Select the build host configuration")
-else()
-  set(BUILD_HOST_TYPE "32" CACHE STRING "Select the build host configuration")
-endif()
-set_property(CACHE BUILD_HOST_TARGET PROPERTY STRINGS "LINUX" "APPLE" "WIN" "ANDROID")
-set_property(CACHE BUILD_HOST_TYPE PROPERTY STRINGS "32" "64")
-
 # Debug mode?
 set(CMAKE_BUILD_TYPE Debug)
 option(DEBUG_MESSAGES "Show debug messages during build" ON)

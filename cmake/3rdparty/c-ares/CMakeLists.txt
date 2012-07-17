@@ -31,24 +31,33 @@ if (${DEBUG_MESSAGES})
   message("Importing ${PROJECT_KEY} from ${PROJECT_REAL_PATH}")
 endif()
 
-
-# Configure 
-execute_process(COMMAND chmod 755 configure WORKING_DIRECTORY ${PROJECT_REAL_PATH})
-execute_process(COMMAND "configure" WORKING_DIRECTORY ${PROJECT_REAL_PATH})
-
-# Create files for working with if they don't exist
-if (NOT EXISTS "${PROJECT_REAL_PATH}/inet_ntop.c")
-  configure_file("${PROJECT_REAL_PATH}/ares_inet_ntop.c" "${PROJECT_REAL_PATH}/inet_ntop.c" COPY_ONLY)
-  configure_file("${PROJECT_REAL_PATH}/ares_inet_ntop.h" "${PROJECT_REAL_PATH}/inet_ntop.h" COPY_ONLY)
-endif()
-
-# Build
-execute_process(COMMAND "make" WORKING_DIRECTORY ${PROJECT_REAL_PATH})
+# Dependency target; skip build if it already exists
 set(PROJECT_LIB_TARGET "${PROJECT_REAL_PATH}/.libs/libcares.a")
-
-# Error if the build using autotools failed
 if (NOT EXISTS ${PROJECT_LIB_TARGET})
- message(FATAL_ERROR "Autotools fail! Unable to find target: ${PROJECT_LIB_TARGET}")
+
+  # Platform config
+  set(BUILD_EXTRA_FLAGS "")
+  if(APPLE)
+    set(BUILD_EXTRA_FLAGS "CFLAGS=\"-arch i386\" CXXFLAGS=\"-arch i386\" LDFLAGS=\"-arch i386\"")
+  endif()
+
+  # Configure 
+  execute_process(COMMAND chmod 755 configure WORKING_DIRECTORY ${PROJECT_REAL_PATH})
+  execute_process(COMMAND "./configure ${BUILD_EXTRA_FLAGS}" WORKING_DIRECTORY ${PROJECT_REAL_PATH})
+
+  # Create files for working with if they don't exist
+  if (NOT EXISTS "${PROJECT_REAL_PATH}/inet_ntop.c")
+    configure_file("${PROJECT_REAL_PATH}/ares_inet_ntop.c" "${PROJECT_REAL_PATH}/inet_ntop.c" COPY_ONLY)
+    configure_file("${PROJECT_REAL_PATH}/ares_inet_ntop.h" "${PROJECT_REAL_PATH}/inet_ntop.h" COPY_ONLY)
+  endif()
+
+  # Build
+  execute_process(COMMAND "make" WORKING_DIRECTORY ${PROJECT_REAL_PATH})
+
+  # Error if the build using autotools failed
+  if (NOT EXISTS ${PROJECT_LIB_TARGET})
+   message(FATAL_ERROR "Autotools fail! Unable to find target: ${PROJECT_LIB_TARGET}")
+  endif()
 endif()
 
 # Lib and includes

@@ -22,7 +22,8 @@ foreach(ITEM ${PROJECT_MACROS})
 endforeach()
 
 # Config
-set(PROJECT_KEY "curl-7.19.7")
+# Notice we use 7.26, not 7.19 <-- .19 is broken and doesn't build. :(
+set(PROJECT_KEY "curl-7.26.0")
 
 # Source and includes
 set(PROJECT_REAL_PATH "${PROJECT_SOURCE_DIR}/../../../3rdparty/${PROJECT_KEY}")
@@ -31,17 +32,13 @@ if (${DEBUG_MESSAGES})
   message("Importing ${PROJECT_KEY} from ${PROJECT_REAL_PATH}")
 endif()
 
-# Fix stupid autotools fail. Seriously, who uses this shit anymore?
-execute_process(COMMAND tr -d '\r' INPUT_FILE "${PROJECT_REAL_PATH}/include/curl/curlver.h" OUTPUT_FILE "${PROJECT_REAL_PATH}/include/curl/curlver.h.new" WORKING_DIRECTORY ${PROJECT_REAL_PATH})
-configure_file("${PROJECT_REAL_PATH}/include/curl/curlver.h.new" "${PROJECT_REAL_PATH}/include/curl/curlver.h" COPY_ONLY)
-
 # Configure 
 execute_process(COMMAND chmod 755 configure WORKING_DIRECTORY ${PROJECT_REAL_PATH})
 execute_process(COMMAND configure WORKING_DIRECTORY ${PROJECT_REAL_PATH})
 
 # Build
 execute_process(COMMAND make WORKING_DIRECTORY ${PROJECT_REAL_PATH})
-set(PROJECT_LIB_TARGET "${PROJECT_REAL_PATH}/.libs/libcurl.a")
+set(PROJECT_LIB_TARGET "${PROJECT_REAL_PATH}/lib/.libs/libcurl.a")
 
 # Error if the build using autotools failed
 if (NOT EXISTS ${PROJECT_LIB_TARGET})

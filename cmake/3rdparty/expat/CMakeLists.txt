@@ -13,7 +13,7 @@
 # limitations under the License.
 
 cmake_minimum_required (VERSION 2.8)
-project(curl)
+project(expat)
 
 # Import macros
 file(GLOB PROJECT_MACROS "${PROJECT_SOURCE_DIR}/../../cmake/*.cmake")
@@ -22,7 +22,7 @@ foreach(ITEM ${PROJECT_MACROS})
 endforeach()
 
 # Config
-set(PROJECT_KEY "curl-7.26.0")
+set(PROJECT_KEY "expat-2.1.0")
 
 # Source and includes
 set(PROJECT_REAL_PATH "${PROJECT_SOURCE_DIR}/../../../3rdparty/${PROJECT_KEY}")
@@ -37,7 +37,7 @@ execute_process(COMMAND configure WORKING_DIRECTORY ${PROJECT_REAL_PATH})
 
 # Build
 execute_process(COMMAND make WORKING_DIRECTORY ${PROJECT_REAL_PATH})
-set(PROJECT_LIB_TARGET "${PROJECT_REAL_PATH}/lib/.libs/libcurl.a")
+set(PROJECT_LIB_TARGET "${PROJECT_REAL_PATH}/.libs/libexpat.a")
 
 # Error if the build using autotools failed
 if (NOT EXISTS ${PROJECT_LIB_TARGET})
@@ -47,7 +47,7 @@ endif()
 # Lib and includes
 set(PROJECT_INCLUDE_DIRS "${PROJECT_REAL_PATH}")
 set(PROJECT_LIBRARIES "${PROJECT_LIB_TARGET}")
-set(PROJECT_NAME "CURL")
+set(PROJECT_NAME "EXPAT")
 
 # Export libraries
-CONFIGURE_FILE(curlConfig.cmake.in "${PROJECT_BINARY_DIR}/curlConfig.cmake")
+CONFIGURE_FILE(expatConfig.cmake.in "${PROJECT_BINARY_DIR}/expatConfig.cmake")

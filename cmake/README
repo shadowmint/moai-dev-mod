@@ -1,0 +1,18 @@
+Build like this:
+===============
+
+mkdir build
+cd build
+cmake ..
+make
+
+Requires:
+========
+
+Make sure you can build the invidual automake based libraries in 3rdparty.
+Specifically, on linux make sure you have automake1.10 installed.
+
+Also these packages: build-essential cmake
+
+eg. 
+apt-get install automake1.10 build-essential cmake

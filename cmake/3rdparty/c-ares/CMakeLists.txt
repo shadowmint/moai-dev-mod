@@ -33,6 +33,7 @@ endif()
 
 
 # Configure 
+execute_process(COMMAND chmod 755 configure WORKING_DIRECTORY ${PROJECT_REAL_PATH})
 execute_process(COMMAND "configure" WORKING_DIRECTORY ${PROJECT_REAL_PATH})
 
 # Create files for working with if they don't exist

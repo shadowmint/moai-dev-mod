@@ -43,10 +43,16 @@ endif()
 
 # Build
 execute_process(COMMAND "make" WORKING_DIRECTORY ${PROJECT_REAL_PATH})
+set(PROJECT_LIB_TARGET "${PROJECT_REAL_PATH}/.libs/libcares.a")
+
+# Error if the build using autotools failed
+if (NOT EXISTS ${PROJECT_LIB_TARGET})
+ message(FATAL_ERROR "Autotools fail! Unable to find target: ${PROJECT_LIB_TARGET}")
+endif()
 
 # Lib and includes
 set(PROJECT_INCLUDE_DIRS "${PROJECT_REAL_PATH}")
-set(PROJECT_LIBRARIES "${PROJECT_REAL_PATH}/.libs/libcares.a")
+set(PROJECT_LIBRARIES "${PROJECT_LIB_TARGET}")
 set(PROJECT_NAME "C-ARES")
 
 # Export libraries

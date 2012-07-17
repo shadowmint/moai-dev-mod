@@ -101,15 +101,15 @@ endfunction()
 function(invoke_autotools REAL_PATH EXTRA_FLAGS)
 
   # Configure; save build command for debugging.
-  set(AUTOTOOLS_CONFIG "./configure ${EXTRA_FLAGS}")
-  file(WRITE ${REAL_PATH}/.__configure.cmake ${AUTOTOOLS_CONFIG})
+  set(AUTOTOOLS_CONFIG "configure ${EXTRA_FLAGS}")
+  file(WRITE ${REAL_PATH}/configure.cmake ${AUTOTOOLS_CONFIG})
 
   # Make sure things can be run
   execute_process(COMMAND chmod 755 configure WORKING_DIRECTORY ${REAL_PATH})
-  execute_process(COMMAND chmod 755 .__configure.cmake WORKING_DIRECTORY ${REAL_PATH})
+  execute_process(COMMAND chmod 755 configure.cmake WORKING_DIRECTORY ${REAL_PATH})
 
   # Invoke configure
-  execute_process(COMMAND ./.__configure.cmake WORKING_DIRECTORY ${REAL_PATH})
+  execute_process(COMMAND sh ${REAL_PATH}/configure.cmake WORKING_DIRECTORY ${REAL_PATH})
 
   # Build
   execute_process(COMMAND "make" WORKING_DIRECTORY ${REAL_PATH})

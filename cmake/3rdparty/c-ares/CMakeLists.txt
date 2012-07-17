@@ -46,7 +46,7 @@ if (NOT EXISTS ${PROJECT_LIB_TARGET})
   endif()
 
   # Build
-  invoke_autotools(${PROJECT_REAL_PATH} ${BUILD_EXTRA_FLAGS})
+  invoke_autotools("${PROJECT_REAL_PATH}" "${BUILD_EXTRA_FLAGS}")
 
   # Error if the build using autotools failed
   if (NOT EXISTS ${PROJECT_LIB_TARGET})

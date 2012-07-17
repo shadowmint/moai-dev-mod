@@ -39,7 +39,7 @@ if (NOT EXISTS ${PROJECT_LIB_TARGET})
   import_common_build_flags(BUILD_EXTRA_FLAGS)
 
   # Build
-  invoke_autotools(${PROJECT_REAL_PATH} ${BUILD_EXTRA_FLAGS})
+  invoke_autotools("${PROJECT_REAL_PATH}" "${BUILD_EXTRA_FLAGS}")
 
 endif()
 

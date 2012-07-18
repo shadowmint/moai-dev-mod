@@ -13,7 +13,7 @@
 # limitations under the License.
 
 ## Configuration options
-set(MACROS_CONFIG_DISABLE_WINDOWS_CR_CHECK 0)
+set(MACROS_CONFIG_DISABLE_CR_CHECK 0)
 
 ## Copy a single source file to a single target file. 
 function(copy_file DIR DEST TARGET COPY) 
@@ -104,7 +104,11 @@ endfunction()
 function(invoke_autotools REAL_PATH EXTRA_FLAGS)
 
   # Configure; save build command for debugging.
-  set(AUTOTOOLS_CONFIG "configure ${EXTRA_FLAGS}")
+  if(WIN32)
+    set(AUTOTOOLS_CONFIG "configure ${EXTRA_FLAGS}")
+  else()
+    set(AUTOTOOLS_CONFIG "./configure ${EXTRA_FLAGS}")
+  endif()
   file(WRITE ${REAL_PATH}/cmake.configure ${AUTOTOOLS_CONFIG})
 
   # Make sure things can be run
@@ -121,10 +125,10 @@ endfunction()
 ## Replace any file that contains '\r' with a unix file version.
 # This is specifically because autoconfig doesn't work with CR's
 # @param REAL_PATH The path to the folder with the files in it
-function(apply_window_cr_fix REAL_PATH)
-  if(NOT MACROS_CONFIG_DISABLE_WINDOWS_CR_CHECK)
+function(apply_cr_fix REAL_PATH)
+  if(NOT MACROS_CONFIG_DISABLE_CR_CHECK)
 
-    message("Windows doesn't play nicely with others. Checking for invalid files...")
+    message("Autotools does not like <CR>'s. Checking for invalid files...")
 
     # Working files; these shouldn't conflict with anything.
     set(CHECK_CPATH "${REAL_PATH}/cmake.checkfile")
@@ -140,7 +144,7 @@ function(apply_window_cr_fix REAL_PATH)
 
       # Check if that file has a carriage return
       message("Checking ${FILE}")
-      set(CHECK_CMD "od -c ${FILE} | grep '\\\\r' -m 1\nif [[ $? != 0 ]]\; then\n exit 1\nfi")
+      set(CHECK_CMD "od -a ${FILE} | grep 'cr' -m 1\nif [[ $? != 0 ]]\; then\n exit 1\nfi")
       file(WRITE "${CHECK_CPATH}" ${CHECK_CMD})
       execute_process(COMMAND sh "${CHECK_CPATH}" RESULT_VARIABLE RESULT OUTPUT_VARIABLE OUTPUT)
 

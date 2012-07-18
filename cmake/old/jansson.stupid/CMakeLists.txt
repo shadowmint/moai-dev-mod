@@ -21,27 +21,42 @@ foreach(ITEM ${PROJECT_MACROS})
   include(${ITEM})
 endforeach()
 
-# C99 for long long support
-set(CMAKE_C_FLAGS "-std=c99")
-
 # Config
-set(PROJECT_KEY "jansson-2.1")
+set(PROJECT_KEY "jansson-2.3.1")
 
 # Source and includes
 set(PROJECT_REAL_PATH "${PROJECT_SOURCE_DIR}/../../../3rdparty/${PROJECT_KEY}")
 get_filename_component(PROJECT_REAL_PATH ${PROJECT_REAL_PATH} ABSOLUTE)
-file(GLOB PROJECT_SOURCES "${PROJECT_REAL_PATH}/src/*.c")
-set(PROJECT_INCLUDE_DIRS "${PROJECT_REAL_PATH}/src")
 if (${DEBUG_MESSAGES})
   message("Importing ${PROJECT_KEY} from ${PROJECT_REAL_PATH}")
 endif()
 
-# Build library (static)
-include_directories(${PROJECT_INCLUDE_DIRS})
-add_library(jansson STATIC ${PROJECT_SOURCES})
+# Dependency target; skip building if it exists already.
+set(PROJECT_LIB_TARGET "${PROJECT_REAL_PATH}/src/.libs/libjansson.a")
+if (NOT EXISTS ${PROJECT_LIB_TARGET})
 
-# Export libraries
-set(PROJECT_LIBRARIES jansson)
+  # Window doesn't play well with others
+  if (WIN32)
+    apply_cr_fix("${PROJECT_REAL_PATH}")
+  endif()
+
+  # Platform config
+  import_common_build_flags(BUILD_EXTRA_FLAGS)
+
+  # Build
+  invoke_autotools("${PROJECT_REAL_PATH}" "${BUILD_EXTRA_FLAGS}")
+
+endif()
+
+# Error if the build using autotools failed
+if (NOT EXISTS ${PROJECT_LIB_TARGET})
+ message(FATAL_ERROR "Autotools fail! Unable to find target: ${PROJECT_LIB_TARGET}")
+endif()
+
+# Lib and includes
+set(PROJECT_INCLUDE_DIRS "${PROJECT_REAL_PATH}/src")
+set(PROJECT_LIBRARIES "${PROJECT_LIB_TARGET}")
 set(PROJECT_NAME "JANSSON")
 
+# Export libraries
 CONFIGURE_FILE(janssonConfig.cmake.in "${PROJECT_BINARY_DIR}/janssonConfig.cmake")

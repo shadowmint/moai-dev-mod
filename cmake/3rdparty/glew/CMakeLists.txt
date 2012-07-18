@@ -22,7 +22,7 @@ foreach(ITEM ${PROJECT_MACROS})
 endforeach()
 
 # Config
-set(PROJECT_KEY "glew-1.5.6"
+set(PROJECT_KEY "glew-1.5.6")
 
 # Source and includes
 set(PROJECT_REAL_PATH "${PROJECT_SOURCE_DIR}/../../../3rdparty/${PROJECT_KEY}")

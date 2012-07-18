@@ -28,6 +28,19 @@ Android, iOS, visual studio
 (see FAQ below)
 
 
+Failed Builds
+=============
+
+Make sure you have the most recent version of libtool installed:
+
+http://www.gnu.org/software/libtool/
+http://www.gnu.org/software/automake/
+
+OSX is especially bad for having old versions of these tools, 
+even using fink / ports. You probably have to install them from
+source.
+
+
 FAQ
 ===
 
@@ -71,10 +84,12 @@ to:
 However, make SURE you've checked the code out of git without 
 any carriage returns, or your build will fail.
 
-3. I dont like your code style / comment style / etc.
+3. Why configure? These toolchains suck.
 
-Get over yourself. If you have a serious contribution to make
-like a fix for something, please speak up, but otherwise...
+The third party packages moai depends on use them; there's
+no way around it other than to suggest to the maintainers of
+those packages they drop automake because it's rubbish. :/
+
 
 4. Why no iOS love?
 

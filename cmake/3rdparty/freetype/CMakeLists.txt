@@ -32,7 +32,7 @@ if (${DEBUG_MESSAGES})
 endif()
 
 # Dependency target; skip build if it already magically exists
-set(PROJECT_LIB_TARGET "${PROJECT_REAL_PATH}/.libs/libfreetype.a")
+set(PROJECT_LIB_TARGET "${PROJECT_REAL_PATH}/objs/.libs/libfreetype.a")
 if (NOT EXISTS ${PROJECT_LIB_TARGET})
 
   # Window doesn't play well with others
@@ -44,10 +44,8 @@ if (NOT EXISTS ${PROJECT_LIB_TARGET})
   import_common_build_flags(BUILD_EXTRA_FLAGS)
 
   # freetype requires configure update and extra folder in mingw
-  if (WIN32)
-    execute_process(COMMAND sh autogen.sh WORKING_DIRECTORY ${PROJECT_REAL_PATH})
-    file(MAKE_DIRECTORY "${PROJECT_REAL_PATH}/objs/.libs")
-  endif()  
+  execute_process(COMMAND sh autogen.sh WORKING_DIRECTORY ${PROJECT_REAL_PATH})
+  file(MAKE_DIRECTORY "${PROJECT_REAL_PATH}/objs/.libs")
 
   # Build
   invoke_autotools("${PROJECT_REAL_PATH}" "${BUILD_EXTRA_FLAGS}")

@@ -130,6 +130,12 @@ function(apply_cr_fix REAL_PATH)
 
     message("Autotools does not like <CR>'s. Checking for invalid files...")
 
+    # Check for dos2unix
+    find_program(DOS2UNIX dos2unix)
+    if(NOT DOS2UNIX)
+      message(FATAL "dos2unix must be installed to correct invalid file types")
+    endif()
+
     # Working files; these shouldn't conflict with anything.
     set(CHECK_CPATH "${REAL_PATH}/cmake.checkfile")
     set(CONF_CPATH "${REAL_PATH}/cmake.configure") 

@@ -35,13 +35,14 @@ endif()
 set(PROJECT_LIB_TARGET "${PROJECT_REAL_PATH}/objs/.libs/libfreetype.a")
 if (NOT EXISTS ${PROJECT_LIB_TARGET})
 
+  # Platform config
+  import_common_build_flags(BUILD_EXTRA_FLAGS)
+
   # Window doesn't play well with others
   if (WIN32)
     apply_cr_fix("${PROJECT_REAL_PATH}")
+    set(BUILD_EXTRA_FLAGS "CFLAGS="-std=gnu99" --without-zlib --enable-shared=no ${BUILD_EXTRA_FLAGS}")
   endif()
-
-  # Platform config
-  import_common_build_flags(BUILD_EXTRA_FLAGS)
 
   # freetype requires configure update and extra folder in mingw
   execute_process(COMMAND sh autogen.sh WORKING_DIRECTORY ${PROJECT_REAL_PATH})

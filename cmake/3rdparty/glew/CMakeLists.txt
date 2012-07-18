@@ -45,7 +45,14 @@ if (NOT EXISTS ${PROJECT_LIB_TARGET})
   endif()
 
   # Platform config
-  import_common_build_flags(BUILD_EXTRA_FLAGS)
+  if(APPLE)
+    set(BUILD_EXTRA_FLAGS "CFLAGS.EXTRA=\"-arch i386\" LDFLAGS.EXTRA=\"-arch i386\"")
+  endif()
+
+  # Generate build script
+  set(MAKE_CPATH "${PROJECT_REAL_PATH}/cmake.configure")
+  set(MAKE_COMMAND "make ${BUILD_EXTRA_FLAGS}")
+  file(WRITE ${MAKE_CPATH} ${MAKE_COMMAND})
 
   # glew is a strange one, it doesn't setup any of its own stuff.
   execute_process(COMMAND chmod 755 config/config.guess WORKING_DIRECTORY ${PROJECT_REAL_PATH})
@@ -54,7 +61,11 @@ if (NOT EXISTS ${PROJECT_LIB_TARGET})
   file(MAKE_DIRECTORY "${PROJECT_REAL_PATH}/lib")
 
   # Build
-  execute_process(COMMAND make WORKING_DIRECTORY ${PROJECT_REAL_PATH})
+  execute_process(COMMAND chmod 755 "${MAKE_CPATH}" WORKING_DIRECTORY ${PROJECT_REAL_PATH})
+  execute_process(COMMAND sh ${MAKE_CPATH} WORKING_DIRECTORY ${PROJECT_REAL_PATH})
+
+  # ? Magic to generate symbols
+  execute_process(COMMAND ranlib ${PROJECT_LIB_TARGET} WORKING_DIRECTORY ${PROJECT_REAL_PATH})
 
 endif()
 

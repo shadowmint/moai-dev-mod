@@ -1,18 +1,98 @@
-Build like this:
-===============
+Build
+=====
 
 mkdir build
 cd build
 cmake ..
 make
 
-Requires:
+
+Requires
 ========
 
-Make sure you can build the invidual automake based libraries in 3rdparty.
-Specifically, on linux make sure you have automake1.10 installed.
+apt-get install build-essential cmake
 
-Also these packages: build-essential cmake
+or:
 
-eg. 
-apt-get install automake1.10 build-essential cmake
+xcode + command line tools
+
+or:
+
+http://www.mingw.org/wiki/msys/
+
+
+Not supported
+=============
+
+Android, iOS, visual studio
+(see FAQ below)
+
+
+FAQ
+===
+
+1. Why does calling cmake invoke all the configure scripts?
+
+It's easier to do this than porting all those libraries to cmake.
+
+
+2. Why does building on windows with mingw take ages and dump
+   loads of messages like this?
+
+     Checking E:/projects/moai-dev/3rdparty/curl-7.26.0/tests/data/test51
+
+     Matching fragment: 0000000   <   t   e   s   t   c   a   s   e   >  \r  \n   <   i   n   f
+
+     dos2unix: converting file E:/projects/moai-dev/3rdparty/curl-7.26.0/tests/data/test508 to Unix format ...
+
+You checked your archive out of git with the whole line endings. 
+Don't worry, that's the default if you're using msys git. 
+
+However, mingw and git don't play well together. Specifically,
+any \r\n will cause the autotools suite to fail silently during
+the configure step and then fail with obscure error messages
+during build.
+
+Check every single file for invalid line endings is a bit 
+extreme, but since this is a problem that KEEPS TURNING UP
+because it's the default, its now the default to check too.
+
+If you want to disable this behaviour edit utils/macros.cmake
+and change the config option at the top:
+
+  ## Configuration options
+  set(MACROS_CONFIG_DISABLE_WINDOWS_CR_CHECK 0)
+
+to:
+
+  ## Configuration options
+  set(MACROS_CONFIG_DISABLE_WINDOWS_CR_CHECK 1)
+
+However, make SURE you've checked the code out of git without 
+any carriage returns, or your build will fail.
+
+3. I dont like your code style / comment style / etc.
+
+Get over yourself. If you have a serious contribution to make
+like a fix for something, please speak up, but otherwise...
+
+4. Why no iOS love?
+
+xcodebuild command line tools don't seem to play nicely with
+cmake; you're almost certainly better off using the xcode 
+project to build for iOS. 
+
+5. Why no VS love?
+
+VS projects exist in the vs* directories; VS build is totally
+different from a mingw build, and (specifically) vs does not 
+support C99, and doesn't have a sane build environment for
+the autotools to run in. Use the VS project files to build for
+VS.
+
+6. Why no android love?
+
+Not implemented yet. There's no reason this build approach
+wouldn't work for android, but it needs to custom -arch
+attributes set for the autotools libraries and a custom
+build toolchain for the the cmake build.

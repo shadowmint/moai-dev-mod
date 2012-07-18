@@ -35,6 +35,11 @@ endif()
 set(PROJECT_LIB_TARGET "${PROJECT_REAL_PATH}/lib/.libs/libcurl.a")
 if (NOT EXISTS ${PROJECT_LIB_TARGET})
 
+  # Window doesn't play well with others
+  if (WIN32)
+    apply_window_cr_fix("${PROJECT_REAL_PATH}")
+  endif()
+
   # Platform config
   import_common_build_flags(BUILD_EXTRA_FLAGS)
 

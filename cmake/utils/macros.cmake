@@ -12,6 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+## Configuration options
+set(MACROS_CONFIG_DISABLE_WINDOWS_CR_CHECK 0)
+
 ## Copy a single source file to a single target file. 
 function(copy_file DIR DEST TARGET COPY) 
   string(REPLACE "${DIR}/" "" FILE_RELATIVE ${TARGET})
@@ -47,7 +50,7 @@ function(copy_source_files DIR DEST)
   endforeach()
 endfunction()
 
-# Get the last item on the path blah/blah/blah/
+## Get the last item on the path blah/blah/blah/
 # @param ITEM The input path
 # @param RETURN The return argument
 function(get_filename_component_last ITEM RETURN)
@@ -57,7 +60,7 @@ function(get_filename_component_last ITEM RETURN)
   set(${RETURN} ${ITEM_CP} PARENT_SCOPE)
 endfunction()
 
-# Filter the given list of absolute paths to exclude files in the excludes list.
+## Filter the given list of absolute paths to exclude files in the excludes list.
 # @param ITEMS A set of absolute pathes to files. eg. "${SOURCES}"
 # @param EXCLUDES A list of relative excludes, eg. "lua.c;luac.c"
 # @param RETURN The return argument
@@ -72,7 +75,7 @@ function(filter_list ITEMS EXCLUDES RETURN)
   set(${RETURN} ${ITEMS_RETURN} PARENT_SCOPE)
 endfunction(filter_list EXCLUDES)
 
-# Implode a list to a string 
+## Implode a list to a string 
 # @param ITEMS The items to implode
 # @param GLUE The item to insert between items.
 # @param RETURN The return variable
@@ -82,7 +85,7 @@ function(implode_list ITEMS GLUE RETURN)
   set (${RETURN} "${_TMP_STR}" PARENT_SCOPE)
 endfunction()
 
-# Import common build flags used in many sub-projects
+## Import common build flags used in many sub-projects
 # @param RETURN The return variable
 function(import_common_build_flags RETURN)
   set(FLAGS "")
@@ -95,22 +98,57 @@ function(import_common_build_flags RETURN)
   set (${RETURN} "${FLAGS}" PARENT_SCOPE)
 endfunction()
 
-# Invoke autotools in the given directory with the given extra args
+## Invoke autotools in the given directory with the given extra args
 # @param REAL_PATH The path to the directory containing a 'configure' script.
 # @param EXTRA_FLAGS The extra flags to pass to autoconf when invoking it.
 function(invoke_autotools REAL_PATH EXTRA_FLAGS)
 
   # Configure; save build command for debugging.
   set(AUTOTOOLS_CONFIG "configure ${EXTRA_FLAGS}")
-  file(WRITE ${REAL_PATH}/configure.cmake ${AUTOTOOLS_CONFIG})
+  file(WRITE ${REAL_PATH}/cmake.configure ${AUTOTOOLS_CONFIG})
 
   # Make sure things can be run
   execute_process(COMMAND chmod 755 configure WORKING_DIRECTORY ${REAL_PATH})
-  execute_process(COMMAND chmod 755 configure.cmake WORKING_DIRECTORY ${REAL_PATH})
+  execute_process(COMMAND chmod 755 cmake.configure WORKING_DIRECTORY ${REAL_PATH})
 
   # Invoke configure
-  execute_process(COMMAND sh ${REAL_PATH}/configure.cmake WORKING_DIRECTORY ${REAL_PATH})
+  execute_process(COMMAND sh ${REAL_PATH}/cmake.configure WORKING_DIRECTORY ${REAL_PATH})
 
   # Build
-  execute_process(COMMAND "make" WORKING_DIRECTORY ${REAL_PATH})
+  execute_process(COMMAND make WORKING_DIRECTORY ${REAL_PATH})
+endfunction()
+
+## Replace any file that contains '\r' with a unix file version.
+# This is specifically because autoconfig doesn't work with CR's
+# @param REAL_PATH The path to the folder with the files in it
+function(apply_window_cr_fix REAL_PATH)
+  if(NOT MACROS_CONFIG_DISABLE_WINDOWS_CR_CHECK)
+
+    message("Windows doesn't play nicely with others. Checking for invalid files...")
+
+    # Working files; these shouldn't conflict with anything.
+    set(CHECK_CPATH "${REAL_PATH}/cmake.checkfile")
+    set(CONF_CPATH "${REAL_PATH}/cmake.configure") 
+
+    # Remove working files so they aren't checked
+    file(REMOVE "${CHECK_CPATH}")
+    file(REMOVE "${CONF_CPATH}")
+
+    # For all files
+    file(GLOB_RECURSE PROJECT_FILES "${REAL_PATH}/*")
+    foreach(FILE ${PROJECT_FILES})
+
+      # Check if that file has a carriage return
+      message("Checking ${FILE}")
+      set(CHECK_CMD "od -c ${FILE} | grep '\\\\r' -m 1\nif [[ $? != 0 ]]\; then\n exit 1\nfi")
+      file(WRITE "${CHECK_CPATH}" ${CHECK_CMD})
+      execute_process(COMMAND sh "${CHECK_CPATH}" RESULT_VARIABLE RESULT OUTPUT_VARIABLE OUTPUT)
+
+      # If there was a file with CR in it, apply fix.
+      if(NOT "${OUTPUT}" STREQUAL "")
+        message("\nMatching fragment: ${OUTPUT}")
+        execute_process(COMMAND dos2unix -f "${FILE}")
+      endif()
+    endforeach()
+  endif()    
 endfunction()

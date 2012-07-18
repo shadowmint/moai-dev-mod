@@ -44,9 +44,6 @@ foreach(DEP ${PROJECT_DEPS})
   string(TOUPPER ${ITEM_PATH} DEP_ID)
   set(${ITEM_PATH}_DIR "${PROJECT_BINARY_DIR}/3rdparty/${ITEM_PATH}")
 
-  # Auto-resolve it
-  find_package(${ITEM_PATH} REQUIRED)
-
   # Now for cmake to load the local instance of the libraries
   include("${${ITEM_PATH}_DIR}/${ITEM_PATH}Config.cmake")
   list(APPEND PROJECT_EXTRA_INCLUDES "${${DEP_ID}_INCLUDE_DIRS}")

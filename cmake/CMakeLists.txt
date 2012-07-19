@@ -37,17 +37,22 @@ set(PROJECT_EXTRA_SOURCES "")
 # Add dependencies
 file(GLOB PROJECT_DEPS "${PROJECT_SOURCE_DIR}/3rdparty/*")
 list(SORT PROJECT_DEPS)
-foreach(DEP ${PROJECT_DEPS}) 
+foreach(PATH ${PROJECT_DEPS}) 
 
-  add_subdirectory(${DEP})
+  add_subdirectory(${PATH})
 
   # Force cmake to look locally for the library instance
-  get_filename_component_last(${DEP} ITEM_PATH)
-  string(TOUPPER ${ITEM_PATH} DEP_ID)
+  get_filename_component_last(${PATH} ITEM_PATH)
+
+  # Allow _blah, __blah, etc. so the import order is correct
+  string(REGEX REPLACE "_+" "" DEP_LOWER ${ITEM_PATH})
+
+  # Convert to dep id
+  string(TOUPPER ${DEP_LOWER} DEP_ID)
   set(${ITEM_PATH}_DIR "${PROJECT_BINARY_DIR}/3rdparty/${ITEM_PATH}")
 
   # Now for cmake to load the local instance of the libraries
-  include("${${ITEM_PATH}_DIR}/${ITEM_PATH}Config.cmake")
+  include("${${ITEM_PATH}_DIR}/${DEP_LOWER}Config.cmake")
   list(APPEND PROJECT_EXTRA_INCLUDES "${${DEP_ID}_INCLUDE_DIRS}")
   list(APPEND PROJECT_EXTRA_LIBRARIES "${${DEP_ID}_LIBRARIES}")
 endforeach()

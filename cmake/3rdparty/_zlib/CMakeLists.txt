@@ -13,7 +13,7 @@
 # limitations under the License.
 
 cmake_minimum_required (VERSION 2.8)
-project(png)
+project(zlib)
 
 # Import macros
 file(GLOB PROJECT_MACROS "${PROJECT_SOURCE_DIR}/../../cmake/*.cmake")
@@ -25,7 +25,7 @@ endforeach()
 set(CMAKE_C_FLAGS "-std=c99")
 
 # Config
-set(PROJECT_KEY "lpng140")
+set(PROJECT_KEY "zlib-1.2.3")
 
 # Source and includes
 set(PROJECT_REAL_PATH "${PROJECT_SOURCE_DIR}/../../../3rdparty/${PROJECT_KEY}")
@@ -37,17 +37,12 @@ if (${DEBUG_MESSAGES})
   message("Importing ${PROJECT_KEY} from ${PROJECT_REAL_PATH}")
 endif()
 
-# Ogg dep
-include(${PROJECT_BINARY_DIR}/../_zlib/zlibConfig.cmake)
-
 # Build library (static)
 include_directories(${PROJECT_INCLUDE_DIRS})
-add_library(png STATIC ${PROJECT_SOURCES})
-include_directories(${ZLIB_INCLUDE_DIRS})
-target_link_libraries(${ZLIB_LIBRARIES})
+add_library(zlib STATIC ${PROJECT_SOURCES})
 
 # Export libraries
-set(PROJECT_LIBRARIES png)
-set(PROJECT_NAME "PNG")
+set(PROJECT_LIBRARIES zlib)
+set(PROJECT_NAME "ZLIB")
 
-CONFIGURE_FILE(pngConfig.cmake.in "${PROJECT_BINARY_DIR}/pngConfig.cmake")
+CONFIGURE_FILE(zlibConfig.cmake.in "${PROJECT_BINARY_DIR}/zlibConfig.cmake")

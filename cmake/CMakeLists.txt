@@ -32,7 +32,6 @@ endforeach(PROJECT_INCLUDE ${PROJECT_INCLUDES})
 # Deps: self
 set(PROJECT_EXTRA_LIBRARIES "")
 set(PROJECT_EXTRA_INCLUDES "")
-set(PROJECT_EXTRA_SOURCES "")
 
 # Add dependencies
 file(GLOB PROJECT_DEPS "${PROJECT_SOURCE_DIR}/3rdparty/*")
@@ -68,27 +67,21 @@ if(DEBUG_MESSAGES)
   endforeach()
 endif()
 
-# Include dirs
-set(PROJECT_INCLUDE_DIRS "")
-
-# Collect source files
-file(GLOB_RECURSE SOURCES src/*.c)
-
-# Add extra parts to build
-set(SOURCES "${SOURCES};${PROJECT_EXTRA_SOURCES}")
-set(PROJECT_INCLUDE_DIRS "${PROJECT_INCLUDE_DIRS};${PROJECT_EXTRA_INCLUDES}")
+# Deps setup
+set(SOURCES "${PROJECT_SOURCE_DIR}/src/moaideps.c")
+set(PROJECT_INCLUDE_DIRS "${PROJECT_EXTRA_INCLUDES}")
 
 # libary headers
 include_directories(${PROJECT_INCLUDE_DIRS})
 
-# Build library (static)
-add_executable(moai ${SOURCES})
-target_link_libraries(moai ${PROJECT_EXTRA_LIBRARIES})
-set(MOAI_LIBRARIES moai)
+# Add deps library
+add_library(moaideps ${SOURCES})
+target_link_libraries(moaideps ${PROJECT_EXTRA_LIBRARIES})
 
 # Export libraries
-get_property(PROJECT_LOC TARGET moai PROPERTY LOCATION)
+get_property(PROJECT_LOC TARGET moaideps PROPERTY LOCATION)
 set(PROJECT_LIBRARIES ${PROJECT_LOC})
 list(APPEND PROJECT_LIBRARIES ${PROJECT_EXTRA_LIBRARIES})
+set(MOAI_LIBRARIES moaideps)
 
-CONFIGURE_FILE(moaiConfig.cmake.in "${PROJECT_BINARY_DIR}/moaiConfig.cmake")
+CONFIGURE_FILE(moaidepsConfig.cmake.in "${PROJECT_BINARY_DIR}/moaidepsConfig.cmake")

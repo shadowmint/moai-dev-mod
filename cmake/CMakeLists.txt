@@ -84,4 +84,8 @@ set(PROJECT_LIBRARIES ${PROJECT_LOC})
 list(APPEND PROJECT_LIBRARIES ${PROJECT_EXTRA_LIBRARIES})
 set(MOAI_LIBRARIES moaideps)
 
+set(PROJECT_NAME "MOAI_DEPS")
 CONFIGURE_FILE(moaidepsConfig.cmake.in "${PROJECT_BINARY_DIR}/moaidepsConfig.cmake")
+
+# Add test 
+add_subdirectory("${PROJECT_SOURCE_DIR}/depstest")

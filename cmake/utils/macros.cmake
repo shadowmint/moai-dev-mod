@@ -157,7 +157,7 @@ function(apply_cr_fix REAL_PATH)
       # If there was a file with CR in it, apply fix.
       if(NOT "${OUTPUT}" STREQUAL "")
         message("\nMatching fragment: ${OUTPUT}")
-        execute_process(COMMAND dos2unix -f "${FILE}")
+        execute_process(COMMAND dos2unix --force "${FILE}")
       endif()
     endforeach()
   endif()    

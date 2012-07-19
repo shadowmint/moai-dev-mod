@@ -41,7 +41,7 @@ if (NOT EXISTS ${PROJECT_LIB_TARGET})
   # Window doesn't play well with others
   if (WIN32)
     apply_cr_fix("${PROJECT_REAL_PATH}")
-    set(BUILD_EXTRA_FLAGS "CFLAGS="-std=gnu99" --without-zlib --enable-shared=no ${BUILD_EXTRA_FLAGS}")
+    set(BUILD_EXTRA_FLAGS "CFLAGS=\"-std=gnu99\" --without-zlib --enable-shared=no ${BUILD_EXTRA_FLAGS}")
   endif()
 
   # freetype requires configure update and extra folder in mingw

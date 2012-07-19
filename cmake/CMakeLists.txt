@@ -88,4 +88,7 @@ set(PROJECT_NAME "MOAI_DEPS")
 CONFIGURE_FILE(moaidepsConfig.cmake.in "${PROJECT_BINARY_DIR}/moaidepsConfig.cmake")
 
 # Add test 
+enable_testing()
 add_subdirectory("${PROJECT_SOURCE_DIR}/depstest")
+message(${PROJECT_BINARY_DIR}/depstest/moaidepstest)
+add_test(NAME moaidepstest WORKING_DIRECTORY ${PROJECT_BINARY_DIR}/depstest COMMAND moaidepstest)

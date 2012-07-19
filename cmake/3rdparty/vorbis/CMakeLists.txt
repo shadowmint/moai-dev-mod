@@ -42,7 +42,6 @@ set(PROJECT_INCLUDE_DIRS "${PROJECT_REAL_PATH}/include")
 set(PROJECT_NAME "${KEY}")
 
 # Ogg dep
-target_link_libraries(vorbis_depend ogg_depend)
 include(${PROJECT_BINARY_DIR}/../ogg/oggConfig.cmake)
 
 # Dependency target; skip building if it exists already.

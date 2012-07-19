@@ -36,7 +36,11 @@ set(PROJECT_EXTRA_SOURCES "")
 
 # Add dependencies
 file(GLOB PROJECT_DEPS "${PROJECT_SOURCE_DIR}/3rdparty/*")
+list(SORT PROJECT_DEPS)
 foreach(DEP ${PROJECT_DEPS}) 
+
+  # Import dependencies in order, but the key for XX_blah is 'blah'
+  get_dep_key(${DEP} DEP)
   add_subdirectory(${DEP})
 
   # Force cmake to look locally for the library instance

@@ -1,3 +1,3 @@
-void __maoideps_dummy(void) {
+void __moaideps_dummy(void) {
 }
 

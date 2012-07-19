@@ -12,8 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Project control
+set(key "vorbis")
+string(TOUPPER ${key} KEY) 
+
 cmake_minimum_required (VERSION 2.8)
-project(jansson)
+project(${key})
 
 # Import macros
 file(GLOB PROJECT_MACROS "${PROJECT_SOURCE_DIR}/../../cmake/*.cmake")
@@ -22,7 +26,7 @@ foreach(ITEM ${PROJECT_MACROS})
 endforeach()
 
 # Config
-set(PROJECT_KEY "jansson-2.3.1")
+set(PROJECT_KEY "libvorbis-1.3.2")
 
 # Source and includes
 set(PROJECT_REAL_PATH "${PROJECT_SOURCE_DIR}/../../../3rdparty/${PROJECT_KEY}")
@@ -31,9 +35,21 @@ if (${DEBUG_MESSAGES})
   message("Importing ${PROJECT_KEY} from ${PROJECT_REAL_PATH}")
 endif()
 
+# Project specific libs and includes
+set(PROJECT_LIBRARY_DIRS "${PROJECT_REAL_PATH}/lib/.libs")
+set(PROJECT_LIBRARIES "${PROJECT_LIBRARY_DIRS}/libvorbis.a")
+set(PROJECT_INCLUDE_DIRS "${PROJECT_REAL_PATH}/include")
+set(PROJECT_NAME "${KEY}")
+
+# Add a dummy target for this
+generate_dummy_lib("vorbis_depend")
+
+# Ogg dep
+target_link_libraries(vorbis_depend ogg_depend)
+include(${PROJECT_BINARY_DIR}/../ogg/oggConfig.cmake)
+
 # Dependency target; skip building if it exists already.
-set(PROJECT_LIB_TARGET "${PROJECT_REAL_PATH}/src/.libs/libjansson.a")
-if (NOT EXISTS ${PROJECT_LIB_TARGET})
+if (NOT EXISTS ${PROJECT_LIBRARIES})
 
   # Window doesn't play well with others
   if (WIN32)
@@ -42,6 +58,7 @@ if (NOT EXISTS ${PROJECT_LIB_TARGET})
 
   # Platform config
   import_common_build_flags(BUILD_EXTRA_FLAGS)
+  set(BUILD_EXTRA_FLAGS "${BUILD_EXTRA_FLAGS} --disable-shared --with-ogg-includes=${OGG_INCLUDE_DIRS} --with-ogg-libraries=${OGG_LIBRARY_DIRS}")
 
   # Build
   invoke_autotools("${PROJECT_REAL_PATH}" "${BUILD_EXTRA_FLAGS}")
@@ -49,14 +66,9 @@ if (NOT EXISTS ${PROJECT_LIB_TARGET})
 endif()
 
 # Error if the build using autotools failed
-if (NOT EXISTS ${PROJECT_LIB_TARGET})
- message(FATAL_ERROR "Autotools fail! Unable to find target: ${PROJECT_LIB_TARGET}")
+if (NOT EXISTS ${PROJECT_LIBRARIES})
+ message(FATAL_ERROR "Autotools fail! Unable to find target: ${PROJECT_LIBRARIES}")
 endif()
 
-# Lib and includes
-set(PROJECT_INCLUDE_DIRS "${PROJECT_REAL_PATH}/src")
-set(PROJECT_LIBRARIES "${PROJECT_LIB_TARGET}")
-set(PROJECT_NAME "JANSSON")
-
 # Export libraries
-CONFIGURE_FILE(janssonConfig.cmake.in "${PROJECT_BINARY_DIR}/janssonConfig.cmake")
+CONFIGURE_FILE(${key}Config.cmake.in "${PROJECT_BINARY_DIR}/${key}Config.cmake")

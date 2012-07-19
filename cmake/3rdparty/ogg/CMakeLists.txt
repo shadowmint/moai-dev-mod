@@ -12,8 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Project control
+set(key "ogg")
+string(TOUPPER ${key} KEY) 
+
 cmake_minimum_required (VERSION 2.8)
-project(ogg)
+project(${key})
 
 # Import macros
 file(GLOB PROJECT_MACROS "${PROJECT_SOURCE_DIR}/../../cmake/*.cmake")
@@ -31,9 +35,17 @@ if (${DEBUG_MESSAGES})
   message("Importing ${PROJECT_KEY} from ${PROJECT_REAL_PATH}")
 endif()
 
+# Project specific libs and includes
+set(PROJECT_LIBRARIES "${PROJECT_REAL_PATH}/src/.libs/libogg.a")
+set(PROJECT_INCLUDE_DIRS "${PROJECT_REAL_PATH}/include")
+set(PROJECT_LIBRARY_DIRS "${PROJECT_REAL_PATH}/src/.libs")
+set(PROJECT_NAME "${KEY}")
+
+# Add a dummy target for this
+generate_dummy_lib("ogg_depend")
+
 # Dependency target; skip building if it exists already.
-set(PROJECT_LIB_TARGET "${PROJECT_REAL_PATH}/src/.libs/libogg.a")
-if (NOT EXISTS ${PROJECT_LIB_TARGET})
+if (NOT EXISTS ${PROJECT_LIBRARIES})
 
   # Window doesn't play well with others
   if (WIN32)
@@ -49,14 +61,9 @@ if (NOT EXISTS ${PROJECT_LIB_TARGET})
 endif()
 
 # Error if the build using autotools failed
-if (NOT EXISTS ${PROJECT_LIB_TARGET})
- message(FATAL_ERROR "Autotools fail! Unable to find target: ${PROJECT_LIB_TARGET}")
+if (NOT EXISTS ${PROJECT_LIBRARIES})
+ message(FATAL_ERROR "Autotools fail! Unable to find target: ${PROJECT_LIBRARIES}")
 endif()
 
-# Lib and includes
-set(PROJECT_INCLUDE_DIRS "${PROJECT_REAL_PATH}")
-set(PROJECT_LIBRARIES "${PROJECT_LIB_TARGET}")
-set(PROJECT_NAME "OGG")
-
 # Export libraries
-CONFIGURE_FILE(oggConfig.cmake.in "${PROJECT_BINARY_DIR}/oggConfig.cmake")
+CONFIGURE_FILE(${key}Config.cmake.in "${PROJECT_BINARY_DIR}/${key}Config.cmake")

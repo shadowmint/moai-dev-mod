@@ -162,3 +162,13 @@ function(apply_cr_fix REAL_PATH)
     endforeach()
   endif()    
 endfunction()
+
+## Generate a source file and add a dummy library called fake_${NAME}
+# This is primarily to support dependencies between autotools targets
+# @param NAME the name of the dummy library to build.
+function(generate_dummy_lib NAME) 
+  set(DUMMY_NAME "${NAME}")
+  set(DUMMY_SRC "${CMAKE_CURRENT_BINARY_DIR}/dummy.c")
+  configure_file("${CMAKE_CURRENT_SOURCE_DIR}/../../utils/dummy.c.in" ${DUMMY_SRC})
+  add_library(${DUMMY_NAME} ${DUMMY_SRC})
+endfunction()

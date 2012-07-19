@@ -1,0 +1,1 @@
+./configure CFLAGS="-arch i386" CXXFLAGS="-arch i386" LDFLAGS="-arch i386" --disable-shared --disable-oggtest --with-ogg-includes=/Users/douglasl/projects/moai/moai-dev/3rdparty/libogg-1.2.2/include --with-ogg-libraries=/Users/douglasl/projects/moai/moai-dev/3rdparty/libogg-1.2.2/src/.libs

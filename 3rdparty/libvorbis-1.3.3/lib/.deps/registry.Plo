@@ -1,0 +1,76 @@
+registry.lo registry.o: registry.c ../include/vorbis/codec.h \
+  /Users/douglasl/projects/moai/moai-dev/3rdparty/libogg-1.2.2/include/ogg/ogg.h \
+  /usr/lib/gcc/i686-apple-darwin10/4.2.1/include/stddef.h \
+  /Users/douglasl/projects/moai/moai-dev/3rdparty/libogg-1.2.2/include/ogg/os_types.h \
+  /usr/include/inttypes.h /usr/include/sys/cdefs.h /usr/include/_types.h \
+  /usr/include/sys/_types.h /usr/include/machine/_types.h \
+  /usr/include/i386/_types.h \
+  /usr/lib/gcc/i686-apple-darwin10/4.2.1/include/stdint.h \
+  codec_internal.h envelope.h mdct.h codebook.h psy.h smallft.h \
+  backends.h bitrate.h os.h ../config.h /usr/include/math.h \
+  /usr/include/architecture/i386/math.h misc.h /usr/include/alloca.h \
+  /usr/include/memory.h /usr/include/string.h \
+  /usr/include/secure/_string.h /usr/include/secure/_common.h highlevel.h \
+  registry.h
+
+../include/vorbis/codec.h:
+
+/Users/douglasl/projects/moai/moai-dev/3rdparty/libogg-1.2.2/include/ogg/ogg.h:
+
+/usr/lib/gcc/i686-apple-darwin10/4.2.1/include/stddef.h:
+
+/Users/douglasl/projects/moai/moai-dev/3rdparty/libogg-1.2.2/include/ogg/os_types.h:
+
+/usr/include/inttypes.h:
+
+/usr/include/sys/cdefs.h:
+
+/usr/include/_types.h:
+
+/usr/include/sys/_types.h:
+
+/usr/include/machine/_types.h:
+
+/usr/include/i386/_types.h:
+
+/usr/lib/gcc/i686-apple-darwin10/4.2.1/include/stdint.h:
+
+codec_internal.h:
+
+envelope.h:
+
+mdct.h:
+
+codebook.h:
+
+psy.h:
+
+smallft.h:
+
+backends.h:
+
+bitrate.h:
+
+os.h:
+
+../config.h:
+
+/usr/include/math.h:
+
+/usr/include/architecture/i386/math.h:
+
+misc.h:
+
+/usr/include/alloca.h:
+
+/usr/include/memory.h:
+
+/usr/include/string.h:
+
+/usr/include/secure/_string.h:
+
+/usr/include/secure/_common.h:
+
+highlevel.h:
+
+registry.h:

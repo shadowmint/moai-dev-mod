@@ -26,7 +26,7 @@ foreach(ITEM ${PROJECT_MACROS})
 endforeach()
 
 # Config
-set(PROJECT_KEY "libvorbis-1.3.2")
+set(PROJECT_KEY "libvorbis-1.3.3")
 
 # Source and includes
 set(PROJECT_REAL_PATH "${PROJECT_SOURCE_DIR}/../../../3rdparty/${PROJECT_KEY}")
@@ -54,7 +54,7 @@ if (NOT EXISTS ${PROJECT_LIBRARIES})
 
   # Platform config
   import_common_build_flags(BUILD_EXTRA_FLAGS)
-  set(BUILD_EXTRA_FLAGS "${BUILD_EXTRA_FLAGS} --disable-shared --with-ogg-includes=${OGG_INCLUDE_DIRS} --with-ogg-libraries=${OGG_LIBRARY_DIRS}")
+  set(BUILD_EXTRA_FLAGS "${BUILD_EXTRA_FLAGS} --disable-shared --disable-oggtest --with-ogg-includes=${OGG_INCLUDE_DIRS} --with-ogg-libraries=${OGG_LIBRARY_DIRS}")
 
   # Build
   invoke_autotools("${PROJECT_REAL_PATH}" "${BUILD_EXTRA_FLAGS}")

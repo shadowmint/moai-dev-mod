@@ -22,3 +22,4 @@ cmake_install.cmake
 *.o
 *.a
 src/moai/moai
+/3rdparty/*

@@ -1,3 +1,0 @@
-void @DUMMY_NAME@__build_dummy(int c) {
-  (void) c;
-}

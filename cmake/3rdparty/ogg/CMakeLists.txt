@@ -41,9 +41,6 @@ set(PROJECT_INCLUDE_DIRS "${PROJECT_REAL_PATH}/include")
 set(PROJECT_LIBRARY_DIRS "${PROJECT_REAL_PATH}/src/.libs")
 set(PROJECT_NAME "${KEY}")
 
-# Add a dummy target for this
-generate_dummy_lib("ogg_depend")
-
 # Dependency target; skip building if it exists already.
 if (NOT EXISTS ${PROJECT_LIBRARIES})
 

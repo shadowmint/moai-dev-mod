@@ -97,12 +97,6 @@ The third party packages moai depends on use them; there's
 no way around it other than to suggest to the maintainers of
 those packages they drop automake because it's rubbish. :/
 
-4. What are all these blah_depend libraries?
-
-Autotools lives in its own special magical world, and dependencies
-don't matter. These libraries set the order in which the autoconf
-tools are invoked; they are not linked to the final moai binary.
-
 4. Why no iOS love?
 
 xcodebuild command line tools don't seem to play nicely with

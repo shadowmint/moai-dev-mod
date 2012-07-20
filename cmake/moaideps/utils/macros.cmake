@@ -117,7 +117,6 @@ function(invoke_autotools REAL_PATH EXTRA_FLAGS)
 
   # Read args
   set(ARGS ${ARGV})
-  list(LENGTH "${ARGS}" ARGC)
   if(ARGC GREATER 2)
     list(REMOVE_AT ARGV 0) # REAL_PATH
     list(REMOVE_AT ARGV 0) # EXTRA_FLAGS

@@ -13,14 +13,6 @@
 # limitations under the License.
 
 cmake_minimum_required (VERSION 2.8)
-project (MOAI_ALL)
+project (MOAICORE)
 
-# Add dependencies
-add_subdirectory("${PROJECT_SOURCE_DIR}/moaideps")
-
-# Add projects
-file(GLOB PROJECT_DEPS "${PROJECT_SOURCE_DIR}/src/*")
-list(SORT PROJECT_DEPS)
-foreach(PATH ${PROJECT_DEPS}) 
-  add_subdirectory("${PATH}")
-endforeach()
+message("Moaicore")

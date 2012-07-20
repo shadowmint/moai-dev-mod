@@ -12,7 +12,33 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-cmake_minimum_required (VERSION 2.8)
-project (MOAICORE)
+# Project control
+set(key "moaicore")
+string(TOUPPER ${key} KEY) 
 
-message("Moaicore")
+cmake_minimum_required (VERSION 2.8)
+project(${key})
+
+# Source and includes
+set(PROJECT_REAL_PATH "${PROJECT_SOURCE_DIR}/../../../src/moaicore/")
+get_filename_component(PROJECT_REAL_PATH ${PROJECT_REAL_PATH} ABSOLUTE)
+if (${DEBUG_MESSAGES})
+  message("Importing ${key} from ${PROJECT_REAL_PATH}")
+endif()
+file(GLOB PROJECT_SOURCES "${PROJECT_REAL_PATH}/*.cpp")
+set(PROJECT_INCLUDE_DIRS "${PROJECT_REAL_PATH}/")
+
+# All 3rdparty libs
+include(${PROJECT_BINARY_DIR}/../../moaideps/moaidepsConfig.cmake)
+set(PROJECT_INCLUDE_DIRS "${PROJECT_INCLUDE_DIRS};${MOAIDEPS_INCLUDE_DIRS}")
+set(PROJECT_LIBRARIES "moaicore;${MOAIDEPS_LIBRARIES}")
+
+# Library
+add_library(moaicore STATIC ${PROJECT_SOURCES})
+
+# Dependencies and includes
+include_directories(${PROJECT_INCLUDE_DIRS})
+target_link_libraries(moaicore ${MOAIDEPS_LIBRARIES})
+
+# Export libraries
+configure_file(${key}Config.cmake.in "${PROJECT_BINARY_DIR}/${key}Config.cmake")

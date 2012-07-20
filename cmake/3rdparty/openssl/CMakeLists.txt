@@ -37,6 +37,9 @@ if (NOT EXISTS ${PROJECT_LIB_TARGET})
 
   # Platform config
   import_common_build_flags(BUILD_EXTRA_FLAGS)
+  if(APPLE) # Special case for openssl
+    set(BUILD_EXTRA_FLAGS "-Larch=i386 -Darch=i386")
+  endif()
 
   # Window doesn't play well with others
   if (WIN32)

@@ -121,7 +121,7 @@ function(invoke_autotools REAL_PATH EXTRA_FLAGS)
   cmake_parse_arguments(AT "FORCE_CLEAN" "CONFIG_KEY" "" ${ARGS})
 
   # Some projects like to rename their configure files. :/
-  if(${AT_CONFIG_KEY})
+  if(NOT "${AT_CONFIG_KEY}" STREQUAL "")
     set(CKEY ${AT_CONFIG_KEY})
   else()
     set(CKEY "configure")

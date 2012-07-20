@@ -12,8 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+include(CMakeParseArguments)
+
 ## Configuration options
-set(MACROS_CONFIG_DISABLE_CR_CHECK 0)
+set(MACROS_CONFIG_DISABLE_CR_CHECK 1)
 
 ## Copy a single source file to a single target file. 
 function(copy_file DIR DEST TARGET COPY) 
@@ -99,15 +101,37 @@ function(import_common_build_flags RETURN)
 endfunction()
 
 ## Invoke autotools in the given directory with the given extra args
+#
+# If dealing with some crazy (openssl <_<) project that doesn't use config
+# normally you can call: invoke_autotools(${PATH} CONFIG_KEY "config")
+#
+# Some other libraries (>_> openssl, AGAIN) can't build correctly if you've
+# tried to build them and failed. Use FORCE_CLEAN to run make clean before
+# calling make.
+#
 # @param REAL_PATH The path to the directory containing a 'configure' script.
 # @param EXTRA_FLAGS The extra flags to pass to autoconf when invoking it.
+# @param CONFIG_KEY KEY optional; allows non-std config invokation.
 function(invoke_autotools REAL_PATH EXTRA_FLAGS)
 
-  # Configure; save build command for debugging.
-  if(WIN32)
-    set(AUTOTOOLS_CONFIG "configure ${EXTRA_FLAGS}")
+  # Read args
+  set(ARGS ${ARGV})
+  list(REMOVE_AT ARGV 0) # REAL_PATH
+  list(REMOVE_AT ARGV 0) # EXTRA_FLAGS
+  cmake_parse_arguments(AT "FORCE_CLEAN" "CONFIG_KEY" "" ${ARGS})
+
+  # Some projects like to rename their configure files. :/
+  if(${AT_CONFIG_KEY})
+    set(CKEY ${AT_CONFIG_KEY})
   else()
-    set(AUTOTOOLS_CONFIG "./configure ${EXTRA_FLAGS}")
+    set(CKEY "configure")
+  endif()
+
+  # Write conf request to file for debugging
+  if(WIN32)
+    set(AUTOTOOLS_CONFIG "${CKEY} ${EXTRA_FLAGS}")
+  else()
+    set(AUTOTOOLS_CONFIG "./${CKEY} ${EXTRA_FLAGS}")
   endif()
   file(WRITE ${REAL_PATH}/cmake.configure ${AUTOTOOLS_CONFIG})
 
@@ -119,6 +143,9 @@ function(invoke_autotools REAL_PATH EXTRA_FLAGS)
   execute_process(COMMAND sh ${REAL_PATH}/cmake.configure WORKING_DIRECTORY ${REAL_PATH})
 
   # Build
+  if (AT_FORCE_CLEAN)
+    execute_process(COMMAND make clean WORKING_DIRECTORY ${REAL_PATH})
+  endif()
   execute_process(COMMAND make WORKING_DIRECTORY ${REAL_PATH})
 endfunction()
 

@@ -15,7 +15,7 @@
 include(CMakeParseArguments)
 
 ## Configuration options
-set(MACROS_CONFIG_DISABLE_CR_CHECK 1)
+set(MACROS_CONFIG_DISABLE_CR_CHECK 0)
 
 ## Copy a single source file to a single target file. 
 function(copy_file DIR DEST TARGET COPY) 
@@ -116,9 +116,12 @@ function(invoke_autotools REAL_PATH EXTRA_FLAGS)
 
   # Read args
   set(ARGS ${ARGV})
-  list(REMOVE_AT ARGV 0) # REAL_PATH
-  list(REMOVE_AT ARGV 0) # EXTRA_FLAGS
-  cmake_parse_arguments(AT "FORCE_CLEAN" "CONFIG_KEY" "" ${ARGS})
+  list(LENGTH "${ARGS}" ARGC)
+  if(ARGC GREATER 2)
+    list(REMOVE_AT ARGV 0) # REAL_PATH
+    list(REMOVE_AT ARGV 0) # EXTRA_FLAGS
+    cmake_parse_arguments(AT "FORCE_CLEAN" "CONFIG_KEY" "" ${ARGS})
+  endif()  
 
   # Some projects like to rename their configure files. :/
   if(NOT "${AT_CONFIG_KEY}" STREQUAL "")

@@ -13,39 +13,36 @@
 # limitations under the License.
 
 # Project control
-set(key "moaicore")
+set(key "uslscore")
 string(TOUPPER ${key} KEY) 
 
 cmake_minimum_required (VERSION 2.8)
 project(${key})
 
 # Source and includes
-set(PROJECT_REAL_PATH "${PROJECT_SOURCE_DIR}/../../../src/moaicore/")
+set(PROJECT_REAL_PATH "${PROJECT_SOURCE_DIR}/../../../src/uslscore/")
 get_filename_component(PROJECT_REAL_PATH ${PROJECT_REAL_PATH} ABSOLUTE)
 if (${DEBUG_MESSAGES})
   message("Importing ${key} from ${PROJECT_REAL_PATH}")
 endif()
 file(GLOB PROJECT_SOURCES "${PROJECT_REAL_PATH}/*.cpp")
 set(PROJECT_INCLUDE_DIRS "${PROJECT_REAL_PATH}/")
-set(PROJECT_LIBRARIES "")
 
 # All 3rdparty libs
 include(${PROJECT_BINARY_DIR}/../../moaideps/moaidepsConfig.cmake)
-set(PROJECT_INCLUDE_DIRS "${PROJECT_INCLUDE_DIRS};${MOAIDEPS_INCLUDE_DIRS}")
-set(PROJECT_LIBRARIES "${PROJECT_LIBRARIES};${MOAIDEPS_LIBRARIES}")
+set(PROJECT_INCLUDE_DIRS "${PROJECT_INCLUDE_DIRS};${MOAI_DEPS_INCLUDE_DIRS}")
+set(PROJECT_LIBRARIES "${MOAI_DEPS_LIBRARIES}")
 
-# uslscore
-include(${PROJECT_BINARY_DIR}/../uslscore/uslscoreConfig.cmake)
-set(PROJECT_INCLUDE_DIRS "${PROJECT_INCLUDE_DIRS};${USLSCORE_INCLUDE_DIRS}")
-set(PROJECT_LIBRARIES "${PROJECT_LIBRARIES};${USLSCORE_LIBRARIES}")
+# Import zlcore
 
 # Library
-add_library(moaicore STATIC ${PROJECT_SOURCES})
+add_library(uslscore STATIC ${PROJECT_SOURCES})
 
 # Dependencies and includes
 include_directories(${PROJECT_INCLUDE_DIRS})
-target_link_libraries(moaicore ${PROJECT_LIBRARIES})
-set(PROJECT_LIBRARIES "${PROJECT_LIBRARIES};moaicore")
+target_link_libraries(uslscore ${PROJECT_LIBRARIES})
+set(PROJECT_LIBRARIES "${PROJECT_LIBRARIES};uslscore")
 
 # Export libraries
+set(PROJECT_NAME "USLSCORE")
 configure_file(${key}Config.cmake.in "${PROJECT_BINARY_DIR}/${key}Config.cmake")

@@ -30,10 +30,7 @@ endif()
 set(PROJECT_HOST_PATH "${PROJECT_SOURCE_DIR}/../../../src/hosts")
 
 # Build host dependent files 
-# hint: this is a bad way of doing this. 
-#       Host dependent files should be called blah-OS.cpp (eg. blah-win.cpp)
-#       Mapping GlutHost.h _magically_ to AKUGlut.h is wrong.
-#       TODO: Fix this. 
+# TODO: Fix this. 
 configure_file("${PROJECT_HOST_PATH}/GlutHost.cpp" "${PROJECT_REAL_PATH}/AKUGlut.cpp")
 configure_file("${PROJECT_HOST_PATH}/GlutHost.h" "${PROJECT_REAL_PATH}/AKUGlut.h")
 if(WIN32)
@@ -55,20 +52,20 @@ if(APPLE)
 endif()
 
 # Disable untz; dont care about this, it doesnt build anyway
-filter_list("${PROJECT_SOURCES}" "AKU-untz.cpp;AKU-adcolony.mm;AKU-chartboost.mm;AKU-iphone.mm" PROJECT_SOURCES)
+filter_list("${PROJECT_SOURCES}" "AKU-audiosampler.cpp;AKU-untz.cpp;AKU-adcolony.mm;AKU-chartboost.mm;AKU-iphone.mm" PROJECT_SOURCES)
 
 # Library
 add_library(aku STATIC ${PROJECT_SOURCES})
+
+# Compatability
+include(${PROJECT_BINARY_DIR}/../___vscompat/vscompatConfig.cmake)
+include_directories(${VSCOMPAT_INCLUDE_DIRS})
+target_link_libraries(aku ${VSCOMPAT_LIBRARIES})
 
 # Import moai core
 include(${PROJECT_BINARY_DIR}/../_moaicore/moaicoreConfig.cmake)
 include_directories(${MOAICORE_INCLUDE_DIRS})
 target_link_libraries(aku ${MOAICORE_LIBRARIES})
-
-# Import audio sampler
-include(${PROJECT_BINARY_DIR}/../_moaiext-audiosampler/moaiext-audiosamplerConfig.cmake)
-include_directories(${MOAIEXT-AUDIOSAMPLER_INCLUDE_DIRS})
-target_link_libraries(aku ${MOAIEXT-AUDIOSAMPLER_LIBRARIES})
 
 # Dependencies and includes
 set(PROJECT_INCLUDE_DIRS "${PROJECT_REAL_PATH}/..")

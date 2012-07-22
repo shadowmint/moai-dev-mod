@@ -79,10 +79,8 @@ add_library(moaideps ${SOURCES})
 target_link_libraries(moaideps ${PROJECT_EXTRA_LIBRARIES})
 
 # Export libraries
-get_property(PROJECT_LOC TARGET moaideps PROPERTY LOCATION)
-set(PROJECT_LIBRARIES ${PROJECT_LOC})
+set(PROJECT_LIBRARIES moaideps)
 list(APPEND PROJECT_LIBRARIES ${PROJECT_EXTRA_LIBRARIES})
-set(MOAI_DEPS_LIBRARIES moaideps)
 
 set(PROJECT_NAME "MOAI_DEPS")
 CONFIGURE_FILE(moaidepsConfig.cmake.in "${PROJECT_BINARY_DIR}/moaidepsConfig.cmake")

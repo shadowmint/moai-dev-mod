@@ -13,7 +13,7 @@
 # limitations under the License.
 
 cmake_minimum_required (VERSION 2.8)
-project(expat)
+project(freeglut)
 
 # Import macros
 file(GLOB PROJECT_MACROS "${PROJECT_SOURCE_DIR}/../../cmake/*.cmake")
@@ -22,7 +22,7 @@ foreach(ITEM ${PROJECT_MACROS})
 endforeach()
 
 # Config
-set(PROJECT_KEY "openssl-1.0.0d")
+set(PROJECT_KEY "freeglut-2.8.0")
 
 # Source and includes
 set(PROJECT_REAL_PATH "${PROJECT_SOURCE_DIR}/../../../../3rdparty/${PROJECT_KEY}")
@@ -32,49 +32,32 @@ if (${DEBUG_MESSAGES})
 endif()
 
 # Dependency target; skip build if it already magically exists
-set(PROJECT_LIB_TARGET "${PROJECT_REAL_PATH}/libssl.a;${PROJECT_REAL_PATH}/libcrypto.a")
-set(LIB_MISSING 0)
-foreach(I ${PROJECT_LIB_TARGET})
-  if (NOT EXISTS ${I})
-    set(LIB_MISSING 1)
-  endif()
-endforeach()
-if (${LIB_MISSING})
+set(PROJECT_LIB_TARGET "${PROJECT_REAL_PATH}/src/.libs/libglut.a;")
+if (NOT EXISTS ${PROJECT_LIB_TARGET})
 
   # Platform config
   import_common_build_flags(BUILD_EXTRA_FLAGS)
-  if(APPLE) # Special case for openssl
-    set(BUILD_EXTRA_FLAGS "-Larch=i386 -Darch=i386")
-  endif()
+  set(BUILD_EXTRA_FLAGS "${BUILD_EXTRA_FLAGS} --enable-shared=no")
 
   # Window doesn't play well with others
   if (WIN32)
     apply_cr_fix("${PROJECT_REAL_PATH}")
   endif()
 
-  # Dont build a shared lib
-  set(BUILD_EXTRA_FLAGS "no-shared ${BUILD_EXTRA_FLAGS}")
-
   # Build
-  invoke_autotools("${PROJECT_REAL_PATH}" "${BUILD_EXTRA_FLAGS}" CONFIG_KEY "config" FORCE_CLEAN)
+  invoke_autotools("${PROJECT_REAL_PATH}" "${BUILD_EXTRA_FLAGS}")
 
 endif()
 
 # Error if the build using autotools failed
-set(LIB_MISSING 0)
-foreach(I ${PROJECT_LIB_TARGET})
-  if (NOT EXISTS ${I})
-    set(LIB_MISSING 1)
-  endif()
-endforeach()
-if (${LIB_MISSING})
+if (NOT EXISTS ${PROJECT_LIB_TARGET})
  message(FATAL_ERROR "Autotools fail! Unable to find target: ${PROJECT_LIB_TARGET}")
 endif()
 
 # Lib and includes
 set(PROJECT_INCLUDE_DIRS "${PROJECT_REAL_PATH}/include")
 set(PROJECT_LIBRARIES "${PROJECT_LIB_TARGET}")
-set(PROJECT_NAME "OPENSSL")
+set(PROJECT_NAME "GLUT")
 
 # Export libraries
-CONFIGURE_FILE(opensslConfig.cmake.in "${PROJECT_BINARY_DIR}/opensslConfig.cmake")
+CONFIGURE_FILE(glutConfig.cmake.in "${PROJECT_BINARY_DIR}/glutConfig.cmake")

@@ -28,9 +28,15 @@ foreach(PATH ${PROJECT_DEPS})
   add_subdirectory("${PATH}")
 endforeach()
 
-# Add moai binary
+# Path
 set(PROJECT_PATH "${PROJECT_SOURCE_DIR}/../src/moai")
-file(GLOB PROJECT_SOURCES "${PROJECT_PATH}/*.cpp")
+
+# HAX!
+configure_file("${PROJECT_PATH}/../hosts/GlutHostMain.cpp" "${PROJECT_BINARY_DIR}/main.cpp")
+include_directories("${PROJECT_PATH}/../hosts/")
+
+# Moai binary
+file(GLOB PROJECT_SOURCES "${PROJECT_BINARY_DIR}/main.cpp")
 add_executable(moai ${PROJECT_SOURCES})
 
 # Deps

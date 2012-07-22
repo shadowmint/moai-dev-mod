@@ -44,6 +44,17 @@ include("${PROJECT_BINARY_DIR}/src/moaicore/moaicoreConfig.cmake")
 target_link_libraries(moai ${MOAICORE_LIBRARIES})
 include_directories(${MOAICORE_INCLUDE_DIRS})
 
+# OpenGL
+if(APPLE)
+  include_directories(/System/Library/Frameworks)
+  find_library(COCOA_LIBRARY Cocoa)
+  find_library(GLUT_LIBRARY GLUT)
+  find_library(OpenGL_LIBRARY OpenGL)
+  mark_as_advanced(COCOA_LIBRARY GLUT_LIBRARY OpenGL_LIBRARY)
+  set(EXTRA_LIBS ${COCOA_LIBRARY} ${GLUT_LIBRARY} ${OpenGL_LIBRARY})
+endif()
+target_link_libraries(moai ${EXTRA_LIBS})
+
 # Host
 include("${PROJECT_BINARY_DIR}/src/aku/akuConfig.cmake")
 target_link_libraries(moai ${AKU_LIBRARIES})

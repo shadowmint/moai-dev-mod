@@ -32,8 +32,14 @@ if (${DEBUG_MESSAGES})
 endif()
 
 # Dependency target; skip build if it already magically exists
-set(PROJECT_LIB_TARGET "${PROJECT_REAL_PATH}/libssl.a")
-if (NOT EXISTS ${PROJECT_LIB_TARGET})
+set(PROJECT_LIB_TARGET "${PROJECT_REAL_PATH}/libssl.a;${PROJECT_REAL_PATH}/libcrypto.a")
+set(LIB_MISSING 0)
+foreach(I ${PROJECT_LIB_TARGET})
+  if (NOT EXISTS ${I})
+    set(LIB_MISSING 1)
+  endif()
+endforeach()
+if (${LIB_MISSING})
 
   # Platform config
   import_common_build_flags(BUILD_EXTRA_FLAGS)

@@ -42,6 +42,7 @@ if (NOT EXISTS ${PROJECT_LIB_TARGET})
 
   # Platform config
   import_common_build_flags(BUILD_EXTRA_FLAGS)
+  set(BUILD_EXTRA_FLAGS "${BUILD_EXTRA_FLAGS} --disable-ldap")
 
   # Build
   invoke_autotools("${PROJECT_REAL_PATH}" "${BUILD_EXTRA_FLAGS}")

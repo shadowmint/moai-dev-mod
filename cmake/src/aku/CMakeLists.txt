@@ -65,6 +65,11 @@ include(${PROJECT_BINARY_DIR}/../moaicore/moaicoreConfig.cmake)
 include_directories(${MOAICORE_INCLUDE_DIRS})
 target_link_libraries(aku ${MOAICORE_LIBRARIES})
 
+# Import audio sampler
+include(${PROJECT_BINARY_DIR}/../_moaiext-audiosampler/moaiext-audiosamplerConfig.cmake)
+include_directories(${MOAIEXT-AUDIOSAMPLER_INCLUDE_DIRS})
+target_link_libraries(aku ${MOAIEXT-AUDIOSAMPLER_LIBRARIES})
+
 # Dependencies and includes
 set(PROJECT_INCLUDE_DIRS "${PROJECT_REAL_PATH}/..")
 set(PROJECT_LIBRARIES "aku")

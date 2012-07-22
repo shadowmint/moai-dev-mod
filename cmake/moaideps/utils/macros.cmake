@@ -89,13 +89,17 @@ endfunction()
 
 ## Import common build flags used in many sub-projects
 # @param RETURN The return variable
+# @param EXTRA_C_FLAGS blah Optional extra flags to pass in.
 function(import_common_build_flags RETURN)
+
+  cmake_parse_arguments(ARGS "" "EXTRA_C_FLAGS" "" ${ARGV})
+
   set(FLAGS "")
   if(APPLE)
-    list(APPEND FLAGS CFLAGS="-arch i386")
-    list(APPEND FLAGS CXXFLAGS="-arch i386")
+    list(APPEND FLAGS CFLAGS="-arch i386 ${ARGS_EXTRA_C_FLAGS}")
+    list(APPEND FLAGS CXXFLAGS="-arch i386 ${ARGS_EXTRA_C_FLAGS}")
     list(APPEND FLAGS LDFLAGS="-arch i386")
-    list(APPEND FLAGS CPPFLAGS="-arch i386")
+    list(APPEND FLAGS CPPFLAGS="-arch i386 ${ARGS_EXTRA_C_FLAGS}")
   endif()
   implode_list("${FLAGS}" " " FLAGS)
   set (${RETURN} "${FLAGS}" PARENT_SCOPE)
@@ -116,12 +120,7 @@ endfunction()
 function(invoke_autotools REAL_PATH EXTRA_FLAGS)
 
   # Read args
-  set(ARGS ${ARGV})
-  if(ARGC GREATER 2)
-    list(REMOVE_AT ARGV 0) # REAL_PATH
-    list(REMOVE_AT ARGV 0) # EXTRA_FLAGS
-    cmake_parse_arguments(AT "FORCE_CLEAN" "CONFIG_KEY" "" ${ARGS})
-  endif()  
+  cmake_parse_arguments(AT "FORCE_CLEAN" "CONFIG_KEY" "" ${ARGS})
 
   # Some projects like to rename their configure files. :/
   if(NOT "${AT_CONFIG_KEY}" STREQUAL "")

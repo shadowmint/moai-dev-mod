@@ -50,7 +50,11 @@ if (NOT EXISTS ${PROJECT_LIBRARIES})
   endif()
 
   # Platform config
-  import_common_build_flags(BUILD_EXTRA_FLAGS)
+  if(APPLE)
+    import_common_build_flags(BUILD_EXTRA_FLAGS EXTRA_C_FLAGS "-O5") # For xcode bug
+  else()
+    import_common_build_flags(BUILD_EXTRA_FLAGS)
+  endif()
 
   # Build
   invoke_autotools("${PROJECT_REAL_PATH}" "${BUILD_EXTRA_FLAGS}")

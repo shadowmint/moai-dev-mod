@@ -13,43 +13,33 @@
 # limitations under the License.
 
 # Project control
-set(key "moaicore")
+set(key "moaiext-audiosampler")
 string(TOUPPER ${key} KEY) 
 
 cmake_minimum_required (VERSION 2.8)
 project(${key})
 
 # Source and includes
-set(PROJECT_REAL_PATH "${PROJECT_SOURCE_DIR}/../../../src/moaicore/")
+set(PROJECT_REAL_PATH "${PROJECT_SOURCE_DIR}/../../../src/moaiext-audiosampler/")
 get_filename_component(PROJECT_REAL_PATH ${PROJECT_REAL_PATH} ABSOLUTE)
 if (${DEBUG_MESSAGES})
   message("Importing ${key} from ${PROJECT_REAL_PATH}")
 endif()
 file(GLOB PROJECT_SOURCES "${PROJECT_REAL_PATH}/*.cpp")
-set(PROJECT_INCLUDE_DIRS "${PROJECT_REAL_PATH}/")
-set(PROJECT_LIBRARIES "")
-
-# All 3rdparty libs
-include(${PROJECT_BINARY_DIR}/../../moaideps/moaidepsConfig.cmake)
-set(PROJECT_INCLUDE_DIRS "${PROJECT_INCLUDE_DIRS};${MOAI_DEPS_INCLUDE_DIRS}")
-set(PROJECT_LIBRARIES "${PROJECT_LIBRARIES};${MOAI_DEPS_LIBRARIES}")
-
-# uslscore
-include(${PROJECT_BINARY_DIR}/../_uslscore/uslscoreConfig.cmake)
-set(PROJECT_INCLUDE_DIRS "${PROJECT_INCLUDE_DIRS};${USLSCORE_INCLUDE_DIRS}")
-set(PROJECT_LIBRARIES "${PROJECT_LIBRARIES};${USLSCORE_LIBRARIES}")
 
 # Library
-add_library(moaicore STATIC ${PROJECT_SOURCES})
+add_library(moaiext-audiosampler STATIC ${PROJECT_SOURCES})
 
-# Own special include dirs
-set(PROJECT_INCLUDE_DIRS "${PROJECT_INCLUDE_DIRS};${PROJECT_REAL_PATH}/../config-default")
+# Moaicore
+include(${PROJECT_BINARY_DIR}/../moaicore/moaicoreConfig.cmake)
+include_directories(${MOAICORE_INCLUDE_DIRS})
+target_link_libraries(moaiext-audiosampler ${MOAICORE_LIBRARIES})
 
 # Dependencies and includes
+set(PROJECT_INCLUDE_DIRS "${PROJECT_REAL_PATH}/..")
+set(PROJECT_LIBRARIES "moaiext-audiosampler")
 include_directories(${PROJECT_INCLUDE_DIRS})
-target_link_libraries(moaicore ${PROJECT_LIBRARIES})
-set(PROJECT_LIBRARIES "${PROJECT_LIBRARIES};moaicore")
-set(PROJECT_NAME "MOAICORE")
 
 # Export libraries
+set(PROJECT_NAME "MOAIEXT-AUDIOSAMPLER")
 configure_file(${key}Config.cmake.in "${PROJECT_BINARY_DIR}/${key}Config.cmake")

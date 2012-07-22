@@ -15,6 +15,9 @@
 cmake_minimum_required (VERSION 2.8)
 project (MOAI_ALL)
 
+# Only build 32-bit, and do that for everything
+set(CMAKE_OSX_ARCHITECTURES "i386")
+
 # Add dependencies
 add_subdirectory("${PROJECT_SOURCE_DIR}/moaideps")
 

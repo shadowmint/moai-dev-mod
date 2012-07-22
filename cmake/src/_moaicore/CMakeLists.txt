@@ -53,7 +53,7 @@ set(PROJECT_INCLUDE_DIRS "${PROJECT_INCLUDE_DIRS};${PROJECT_REAL_PATH}/../config
 # Dependencies and includes
 include_directories(${PROJECT_INCLUDE_DIRS})
 target_link_libraries(moaicore ${PROJECT_LIBRARIES})
-set(PROJECT_LIBRARIES "${PROJECT_LIBRARIES};moaicore")
+set(PROJECT_LIBRARIES "moaicore;moaideps")
 set(PROJECT_NAME "MOAICORE")
 
 # Export libraries

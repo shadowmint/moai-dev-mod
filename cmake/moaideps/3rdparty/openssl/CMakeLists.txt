@@ -74,6 +74,9 @@ endif()
 # Lib and includes
 set(PROJECT_INCLUDE_DIRS "${PROJECT_REAL_PATH}/include")
 set(PROJECT_LIBRARIES "${PROJECT_LIB_TARGET}")
+if(WIN32)
+  set(PROJECT_LIBRARIES "${PROJECT_LIB_TARGET};ws2_32")
+endif()
 set(PROJECT_NAME "OPENSSL")
 
 # Export libraries

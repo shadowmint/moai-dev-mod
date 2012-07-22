@@ -39,25 +39,25 @@ include_directories("${PROJECT_PATH}/../hosts/")
 file(GLOB PROJECT_SOURCES "${PROJECT_BINARY_DIR}/main.cpp")
 add_executable(moai ${PROJECT_SOURCES})
 
-# Deps
-include("${PROJECT_BINARY_DIR}/src/_moaicore/moaicoreConfig.cmake")
-target_link_libraries(moai ${MOAICORE_LIBRARIES})
-include_directories(${MOAICORE_INCLUDE_DIRS})
-
 # Host
 include("${PROJECT_BINARY_DIR}/src/aku/akuConfig.cmake")
-target_link_libraries(moai ${AKU_LIBRARIES})
 include_directories(${AKU_INCLUDE_DIRS})
+set(EXTRA_LIBS "${EXTRA_LIBS};${AKU_LIBRARIES}")
+
+# Deps
+include("${PROJECT_BINARY_DIR}/src/_moaicore/moaicoreConfig.cmake")
+include_directories(${MOAICORE_INCLUDE_DIRS})
+set(EXTRA_LIBS "${EXTRA_LIBS};${MOAICORE_LIBRARIES}")
 
 # Opengl
 if(APPLE)
   include_directories(/System/Library/Frameworks)
   find_library(COCOA_LIBRARY Cocoa)
-  find_library(GLUT_LIBRARY GLUT)
   find_library(OpenGL_LIBRARY OpenGL)
-  mark_as_advanced(COCOA_LIBRARY GLUT_LIBRARY OpenGL_LIBRARY)
-  set(EXTRA_LIBS ${COCOA_LIBRARY} ${GLUT_LIBRARY} ${OpenGL_LIBRARY})
+  mark_as_advanced(COCOA_LIBRARY OpenGL_LIBRARY)
+  set(EXTRA_LIBS "${EXTRA_LIBS};${COCOA_LIBRARY};${OpenGL_LIBRARY}")
 elseif(WIN32)
-  set(EXTRA_LIBS opengl32;glu32)
+  find_package(OpenGL)
+  set(EXTRA_LIBS "${EXTRA_LIBS};gdi32;opengl32;glu32")
 endif()
 target_link_libraries(moai ${EXTRA_LIBS})

@@ -27,3 +27,18 @@ list(SORT PROJECT_DEPS)
 foreach(PATH ${PROJECT_DEPS}) 
   add_subdirectory("${PATH}")
 endforeach()
+
+# Add moai binary
+set(PROJECT_PATH "${PROJECT_SOURCE_DIR}/../src/moai")
+file(GLOB PROJECT_SOURCES "${PROJECT_PATH}/*.cpp")
+add_executable(moai ${PROJECT_SOURCES})
+
+# Deps
+include("${PROJECT_BINARY_DIR}/src/moaicore/moaicoreConfig.cmake")
+target_link_libraries(moai ${MOAICORE_LIBRARIES})
+include_directories(${MOAICORE_INCLUDE_DIRS})
+
+# Host
+include("${PROJECT_BINARY_DIR}/src/aku/akuConfig.cmake")
+target_link_libraries(moai ${AKU_LIBRARIES})
+include_directories(${AKU_INCLUDE_DIRS})

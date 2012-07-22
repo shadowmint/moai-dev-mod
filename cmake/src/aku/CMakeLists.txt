@@ -19,16 +19,43 @@ string(TOUPPER ${key} KEY)
 cmake_minimum_required (VERSION 2.8)
 project(${key})
 
-# Source and includes
-set(PROJECT_REAL_PATH "${PROJECT_SOURCE_DIR}/../../../src/aku/")
+# Base path
+set(PROJECT_REAL_PATH "${PROJECT_SOURCE_DIR}/../../../src/aku")
 get_filename_component(PROJECT_REAL_PATH ${PROJECT_REAL_PATH} ABSOLUTE)
 if (${DEBUG_MESSAGES})
   message("Importing ${key} from ${PROJECT_REAL_PATH}")
 endif()
+
+# Host path
+set(PROJECT_HOST_PATH "${PROJECT_SOURCE_DIR}/../../../src/hosts")
+
+# Build host dependent files 
+# hint: this is a bad way of doing this. 
+#       Host dependent files should be called blah-OS.cpp (eg. blah-win.cpp)
+#       Mapping GlutHost.h _magically_ to AKUGlut.h is wrong.
+#       TODO: Fix this. 
+configure_file("${PROJECT_HOST_PATH}/GlutHost.cpp" "${PROJECT_REAL_PATH}/AKUGlut.cpp")
+configure_file("${PROJECT_HOST_PATH}/GlutHost.h" "${PROJECT_REAL_PATH}/AKUGlut.h")
+if(WIN32)
+  configure_file("${PROJECT_HOST_PATH}/FolderWatcher-win.cpp" "${PROJECT_REAL_PATH}/FolderWatcher.cpp")
+  configure_file("${PROJECT_HOST_PATH}/FolderWatcher-win.h" "${PROJECT_REAL_PATH}/FolderWatcher.h")
+elseif(APPLE)
+  configure_file("${PROJECT_HOST_PATH}/FolderWatcher-mac.mm" "${PROJECT_REAL_PATH}/FolderWatcher.mm")
+  configure_file("${PROJECT_HOST_PATH}/FolderWatcher-mac.h" "${PROJECT_REAL_PATH}/FolderWatcher.h")
+endif()
+
+# Host includes
+include_directories(${PROJECT_HOST_PATH})
+
+# Get sources
 file(GLOB PROJECT_SOURCES "${PROJECT_REAL_PATH}/*.cpp")
+if(APPLE)
+  file(GLOB OBJC_PROJECT_SOURCES "${PROJECT_REAL_PATH}/*.mm")
+  list(APPEND PROJECT_SOURCES ${OBJC_PROJECT_SOURCES})
+endif()
 
 # Disable untz; dont care about this, it doesnt build anyway
-filter_list("${PROJECT_SOURCES}" "AKU-untz.cpp" PROJECT_SOURCES)
+filter_list("${PROJECT_SOURCES}" "AKU-untz.cpp;AKU-adcolony.mm;AKU-chartboost.mm;AKU-iphone.mm" PROJECT_SOURCES)
 
 # Library
 add_library(aku STATIC ${PROJECT_SOURCES})

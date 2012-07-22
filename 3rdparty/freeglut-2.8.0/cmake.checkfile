@@ -1,0 +1,4 @@
+od -a d:/projects/moai-dev/3rdparty/freeglut-2.8.0/VisualStudio/2010/subwin/subwin.vcxproj.filters | grep 'cr' -m 1
+if [[ $? != 0 ]]; then
+ exit 1
+fi

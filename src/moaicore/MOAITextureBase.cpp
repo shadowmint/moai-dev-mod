@@ -583,7 +583,7 @@ void MOAITextureBase::UpdateTextureFromImage ( MOAIImage& image, USIntRect rect 
 		
 		if (( this->mWidth != ( u32 )rect.Width ()) || ( this->mHeight != ( u32 )rect.Height ())) {
 			u32 size = image.GetSubImageSize ( rect );
-			buffer = alloca ( size );
+			buffer = malloc ( size );
 			image.GetSubImage ( rect, buffer );
 		}
 
@@ -600,6 +600,7 @@ void MOAITextureBase::UpdateTextureFromImage ( MOAIImage& image, USIntRect rect 
 		);
 		
 		MOAIGfxDevice::Get ().LogErrors ();
+    free(buffer);
 	}
 	else {
 	

@@ -41,7 +41,7 @@ int MOAIBox2DBody::_addChain ( lua_State* L ) {
 	}
  
 	u32 totalVerts = totalCoords / 2;                       
-	b2Vec2 * verts = (b2Vec2 *)alloca(sizeof(b2Vec2) * totalVerts);
+	b2Vec2 * verts = (b2Vec2 *)malloc(sizeof(b2Vec2) * totalVerts);
 	int numVerts = MOAIBox2DFixture::LoadVerts( state, 2, verts, totalVerts, unitsToMeters );       
 	if ( numVerts ) {
 		bool closeChain = state.GetValue < bool >( 3, false );
@@ -60,8 +60,10 @@ int MOAIBox2DBody::_addChain ( lua_State* L ) {
 		fixture->SetWorld ( self->mWorld );
 		self->mWorld->LuaRetain ( fixture );
 		fixture->PushLuaUserdata ( state );
+    free(verts);
 		return 1;           
 	}       
+  free(verts);
 	return 0;
 }
 
@@ -123,7 +125,7 @@ int MOAIBox2DBody::_addEdges ( lua_State* L ) {
 	
 	if (totalVerts) {
 		
-		b2Vec2 * verts = (b2Vec2 *)alloca(sizeof(b2Vec2) * totalVerts);
+		b2Vec2 * verts = (b2Vec2 *)malloc(sizeof(b2Vec2) * totalVerts);
 		int numVerts = MOAIBox2DFixture::LoadVerts( state, 2, verts, totalVerts, unitsToMeters );
 		
 		if ( numVerts ) {
@@ -144,7 +146,7 @@ int MOAIBox2DBody::_addEdges ( lua_State* L ) {
 				lua_settable ( retstate, -3 );
 				idx++;
 			}
-			
+		  free(verts);	
 			return 1;
 		}
 	}	

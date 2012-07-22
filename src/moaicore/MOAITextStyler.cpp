@@ -322,7 +322,7 @@ bool MOAITextStyler::ParseStyle () {
 				int namesize = this->mIdx - startIdx - 2;
 				assert ( namesize > 0 );
 
-				char* name = ( char* )alloca ( namesize + 1 );
+				char* name = ( char* )malloc ( namesize + 1 );
 				memcpy ( name, &this->mStr [ startIdx + 1 ], namesize );
 				name [ namesize ] = 0;
 				
@@ -330,6 +330,7 @@ bool MOAITextStyler::ParseStyle () {
 				this->PushStyle ( style );
 				
 				TRANSITION ( DONE );
+        free(name);
 			}
 			
 			//================================================================//

@@ -245,7 +245,7 @@ u32 MOAIPartitionResultBuffer::SortResultsIso () {
 
 	this->mTotalResults = this->mTotalResults;
 
-	IsoSortItem* sortBuffer = ( IsoSortItem* )alloca ( this->mTotalResults * sizeof ( IsoSortItem ));
+	IsoSortItem* sortBuffer = ( IsoSortItem* )malloc ( this->mTotalResults * sizeof ( IsoSortItem ));
 	
 	IsoSortList frontList;
 	IsoSortList backList;
@@ -316,6 +316,7 @@ u32 MOAIPartitionResultBuffer::SortResultsIso () {
 	}
 	
 	this->mResults = this->mSwapBuffer;
+  free(sortBuffer);
 	return this->mTotalResults;
 }
 

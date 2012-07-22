@@ -158,8 +158,8 @@ void MOAIEaseDriver::OnUpdate ( float step ) {
 //----------------------------------------------------------------//
 u32 MOAIEaseDriver::ParseForMove ( MOAILuaState& state, int idx, MOAINode* dest, u32 total, int mode, ... ) {
 
-	float* params = ( float* )alloca ( total * sizeof ( float ));
-	u32* destAttrIDs = ( u32* )alloca ( total * sizeof ( u32 ));
+	float* params = ( float* )malloc ( total * sizeof ( float ));
+	u32* destAttrIDs = ( u32* )malloc ( total * sizeof ( u32 ));
 	
 	va_list args;
 	va_start ( args, mode );
@@ -192,14 +192,18 @@ u32 MOAIEaseDriver::ParseForMove ( MOAILuaState& state, int idx, MOAINode* dest,
 			}
 		}
 	}
+
+  free(params);
+  free(destAttrIDs);
+
 	return count;
 }
 
 //----------------------------------------------------------------//
 u32 MOAIEaseDriver::ParseForSeek ( MOAILuaState& state, int idx, MOAINode* dest, u32 total, int mode, ... ) {
 
-	float* params = ( float* )alloca ( total * sizeof ( float ));
-	u32* destAttrIDs = ( u32* )alloca ( total * sizeof ( u32 ));
+	float* params = ( float* )malloc ( total * sizeof ( float ));
+	u32* destAttrIDs = ( u32* )malloc ( total * sizeof ( u32 ));
 	
 	va_list args;
 	va_start ( args, mode );
@@ -233,6 +237,10 @@ u32 MOAIEaseDriver::ParseForSeek ( MOAILuaState& state, int idx, MOAINode* dest,
 			}
 		}
 	}
+
+  free(params);
+  free(destAttrIDs);
+
 	return count;
 }
 

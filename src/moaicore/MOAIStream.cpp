@@ -81,12 +81,7 @@ int MOAIStream::_read ( lua_State* L ) {
 	
 	char* buffer = 0;
 	
-	if ( len > MAX_STACK_BUFFER ) {
-		buffer = ( char* )malloc ( len );
-	}
-	else {
-		buffer = ( char* )alloca ( len );
-	}
+  buffer = ( char* )malloc ( len );
 	
 	len = self->mStream->ReadBytes ( buffer, len );
 	
@@ -97,9 +92,7 @@ int MOAIStream::_read ( lua_State* L ) {
 		state.Push ();
 	}
 	
-	if ( len > MAX_STACK_BUFFER ) {
-		free ( buffer );
-	}
+  free ( buffer );
 	
 	state.Push ( len );
 	return 2;

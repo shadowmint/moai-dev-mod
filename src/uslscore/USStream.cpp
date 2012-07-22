@@ -126,19 +126,11 @@ STLString USStream::ReadString ( size_t size ) {
 	if ( size ) {
 
 		char* buffer;
-		if ( size > MAX_HEAP_ALLOC ) {
-			buffer = ( char* )malloc ( size + 1 );
-		}
-		else {
-			buffer = ( char* )alloca ( size + 1 );
-		}
+    buffer = ( char* )malloc ( size + 1 );
 		this->ReadBytes ( buffer, size );
 		buffer [ size ] = 0;
 		str = buffer;
-
-		if ( size > MAX_HEAP_ALLOC ) {
-			free ( buffer );
-		}
+    free ( buffer );
 	}
 	return str;
 }

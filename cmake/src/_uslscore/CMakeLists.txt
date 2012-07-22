@@ -26,22 +26,23 @@ if (${DEBUG_MESSAGES})
   message("Importing ${key} from ${PROJECT_REAL_PATH}")
 endif()
 file(GLOB PROJECT_SOURCES "${PROJECT_REAL_PATH}/*.cpp")
-set(PROJECT_INCLUDE_DIRS "${PROJECT_REAL_PATH}/")
-
-# All 3rdparty libs
-include(${PROJECT_BINARY_DIR}/../../moaideps/moaidepsConfig.cmake)
-set(PROJECT_INCLUDE_DIRS "${PROJECT_INCLUDE_DIRS};${MOAI_DEPS_INCLUDE_DIRS}")
-set(PROJECT_LIBRARIES "${MOAI_DEPS_LIBRARIES}")
-
-# Import zlcore
 
 # Library
 add_library(uslscore STATIC ${PROJECT_SOURCES})
 
+# All 3rdparty libs
+include(${PROJECT_BINARY_DIR}/../../moaideps/moaidepsConfig.cmake)
+include_directories(${MOAI_DEPS_INCLUDE_DIRS})
+target_link_libraries(uslscore ${MOAI_DEPS_LIBRARIES})
+
+# Import zlcore
+include(${PROJECT_BINARY_DIR}/../__zlcore/zlcoreConfig.cmake)
+include_directories(${ZLCORE_INCLUDE_DIRS})
+target_link_libraries(uslscore ${ZLCORE_LIBRARIES})
+
 # Dependencies and includes
-include_directories(${PROJECT_INCLUDE_DIRS})
-target_link_libraries(uslscore ${PROJECT_LIBRARIES})
-set(PROJECT_LIBRARIES "${PROJECT_LIBRARIES};uslscore")
+set(PROJECT_INCLUDE_DIRS "${PROJECT_REAL_PATH}/..")
+set(PROJECT_LIBRARIES "uslscore")
 
 # Export libraries
 set(PROJECT_NAME "USLSCORE")

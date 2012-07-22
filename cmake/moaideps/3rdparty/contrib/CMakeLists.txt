@@ -41,6 +41,7 @@ target_link_libraries(contrib)
 
 # Export libraries
 set(PROJECT_LIBRARIES contrib)
+set(PROJECT_INCLUDE_DIRS "${PROJECT_REAL_PATH}/..") # Weird ass include styles in moaicore. :/
 set(PROJECT_NAME "CONTRIB")
 
 CONFIGURE_FILE(contribConfig.cmake.in "${PROJECT_BINARY_DIR}/contribConfig.cmake")

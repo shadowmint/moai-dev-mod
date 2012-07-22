@@ -7,14 +7,14 @@
 /* #undef CRAY_STACKSEG_END */
 
 /* Define to 1 if using `alloca.c'. */
-/* #undef C_ALLOCA */
+#define C_ALLOCA 1
 
 /* Define to 1 if you have `alloca', as a function or macro. */
-#define HAVE_ALLOCA 1
+/* #undef HAVE_ALLOCA */
 
 /* Define to 1 if you have <alloca.h> and it should be used (not on Ultrix).
    */
-#define HAVE_ALLOCA_H 1
+/* #undef HAVE_ALLOCA_H */
 
 /* Define to 1 if you have the <dlfcn.h> header file. */
 #define HAVE_DLFCN_H 1
@@ -80,7 +80,7 @@
 	STACK_DIRECTION > 0 => grows toward higher addresses
 	STACK_DIRECTION < 0 => grows toward lower addresses
 	STACK_DIRECTION = 0 => direction of growth unknown */
-/* #undef STACK_DIRECTION */
+#define STACK_DIRECTION -1
 
 /* Define to 1 if you have the ANSI C header files. */
 #define STDC_HEADERS 1

@@ -31,16 +31,19 @@ set(PROJECT_LIBRARIES "")
 
 # All 3rdparty libs
 include(${PROJECT_BINARY_DIR}/../../moaideps/moaidepsConfig.cmake)
-set(PROJECT_INCLUDE_DIRS "${PROJECT_INCLUDE_DIRS};${MOAIDEPS_INCLUDE_DIRS}")
-set(PROJECT_LIBRARIES "${PROJECT_LIBRARIES};${MOAIDEPS_LIBRARIES}")
+set(PROJECT_INCLUDE_DIRS "${PROJECT_INCLUDE_DIRS};${MOAI_DEPS_INCLUDE_DIRS}")
+set(PROJECT_LIBRARIES "${PROJECT_LIBRARIES};${MOAI_DEPS_LIBRARIES}")
 
 # uslscore
-include(${PROJECT_BINARY_DIR}/../uslscore/uslscoreConfig.cmake)
+include(${PROJECT_BINARY_DIR}/../_uslscore/uslscoreConfig.cmake)
 set(PROJECT_INCLUDE_DIRS "${PROJECT_INCLUDE_DIRS};${USLSCORE_INCLUDE_DIRS}")
 set(PROJECT_LIBRARIES "${PROJECT_LIBRARIES};${USLSCORE_LIBRARIES}")
 
 # Library
 add_library(moaicore STATIC ${PROJECT_SOURCES})
+
+# Own special include dirs
+set(PROJECT_INCLUDE_DIRS "${PROJECT_INCLUDE_DIRS};${PROJECT_REAL_PATH}/../config-default")
 
 # Dependencies and includes
 include_directories(${PROJECT_INCLUDE_DIRS})

@@ -1,15 +1,15 @@
 lookup.lo lookup.o: lookup.c /usr/include/math.h \
-  /usr/include/architecture/i386/math.h /usr/include/sys/cdefs.h lookup.h \
-  lookup_data.h os.h ../config.h \
-  /Users/douglasl/projects/moai/moai-dev/3rdparty/libogg-1.2.2/include/ogg/os_types.h \
-  /usr/include/inttypes.h /usr/include/sys/cdefs.h /usr/include/_types.h \
-  /usr/include/sys/_types.h /usr/include/machine/_types.h \
-  /usr/include/i386/_types.h \
-  /usr/lib/gcc/i686-apple-darwin10/4.2.1/include/stdint.h misc.h \
-  ../include/vorbis/codec.h \
-  /Users/douglasl/projects/moai/moai-dev/3rdparty/libogg-1.2.2/include/ogg/ogg.h \
-  /usr/lib/gcc/i686-apple-darwin10/4.2.1/include/stddef.h \
-  /usr/include/alloca.h /usr/include/memory.h /usr/include/string.h \
+  /usr/include/architecture/i386/math.h /usr/include/sys/cdefs.h \
+  /usr/include/sys/_symbol_aliasing.h \
+  /usr/include/sys/_posix_availability.h lookup.h lookup_data.h os.h \
+  ../config.h /opt/local/include/ogg/os_types.h /usr/include/inttypes.h \
+  /usr/include/_types.h /usr/include/sys/_types.h \
+  /usr/include/machine/_types.h /usr/include/i386/_types.h \
+  /usr/include/stdint.h misc.h ../include/vorbis/codec.h \
+  /opt/local/include/ogg/ogg.h \
+  /usr/llvm-gcc-4.2/bin/../lib/gcc/i686-apple-darwin11/4.2.1/include/stddef.h \
+  /usr/include/memory.h /usr/include/string.h /usr/include/Availability.h \
+  /usr/include/AvailabilityInternal.h /usr/include/strings.h \
   /usr/include/secure/_string.h /usr/include/secure/_common.h
 
 /usr/include/math.h:
@@ -17,6 +17,10 @@ lookup.lo lookup.o: lookup.c /usr/include/math.h \
 /usr/include/architecture/i386/math.h:
 
 /usr/include/sys/cdefs.h:
+
+/usr/include/sys/_symbol_aliasing.h:
+
+/usr/include/sys/_posix_availability.h:
 
 lookup.h:
 
@@ -26,11 +30,9 @@ os.h:
 
 ../config.h:
 
-/Users/douglasl/projects/moai/moai-dev/3rdparty/libogg-1.2.2/include/ogg/os_types.h:
+/opt/local/include/ogg/os_types.h:
 
 /usr/include/inttypes.h:
-
-/usr/include/sys/cdefs.h:
 
 /usr/include/_types.h:
 
@@ -40,21 +42,25 @@ os.h:
 
 /usr/include/i386/_types.h:
 
-/usr/lib/gcc/i686-apple-darwin10/4.2.1/include/stdint.h:
+/usr/include/stdint.h:
 
 misc.h:
 
 ../include/vorbis/codec.h:
 
-/Users/douglasl/projects/moai/moai-dev/3rdparty/libogg-1.2.2/include/ogg/ogg.h:
+/opt/local/include/ogg/ogg.h:
 
-/usr/lib/gcc/i686-apple-darwin10/4.2.1/include/stddef.h:
-
-/usr/include/alloca.h:
+/usr/llvm-gcc-4.2/bin/../lib/gcc/i686-apple-darwin11/4.2.1/include/stddef.h:
 
 /usr/include/memory.h:
 
 /usr/include/string.h:
+
+/usr/include/Availability.h:
+
+/usr/include/AvailabilityInternal.h:
+
+/usr/include/strings.h:
 
 /usr/include/secure/_string.h:
 

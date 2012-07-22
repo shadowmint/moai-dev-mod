@@ -6,6 +6,8 @@
 #ifdef _WIN32
 #include <uslscore/USAdapterInfo.h>
 
+#define WINVER 0x0600
+
 #include <winsock2.h>
 #include <iphlpapi.h>
 

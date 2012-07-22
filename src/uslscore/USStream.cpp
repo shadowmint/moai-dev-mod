@@ -8,6 +8,11 @@
 #include <uslscore/USMemStream.h>
 #include <uslscore/USStream.h>
 #include <stdio.h>
+#include <stdlib.h>
+
+#ifdef __MINGW32__
+ void *alloca(size_t);
+#endif
 
 //----------------------------------------------------------------//
 void USStream::Flush () {

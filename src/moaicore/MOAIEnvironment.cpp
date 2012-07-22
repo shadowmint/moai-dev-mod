@@ -6,6 +6,13 @@
 #include <moaicore/MOAILogMgr.h>
 #include <aku/AKU.h>
 
+#ifdef __MINGW32__
+  #define _WIN32_IE 0x0500
+  #include <shlobj.h>
+  #include <rpcdce.h>
+  RPC_STATUS RPC_ENTRY UuidCreateSequential(UUID*);
+#endif
+
 #ifdef _WIN32
 	#include <shlobj.h>
 	typedef void (WINAPI *PGNSI)(LPSYSTEM_INFO);

@@ -31,7 +31,7 @@ file(GLOB PROJECT_SOURCES "${PROJECT_REAL_PATH}/*.cpp")
 add_library(moaiext-audiosampler STATIC ${PROJECT_SOURCES})
 
 # Moaicore
-include(${PROJECT_BINARY_DIR}/../moaicore/moaicoreConfig.cmake)
+include(${PROJECT_BINARY_DIR}/../_moaicore/moaicoreConfig.cmake)
 include_directories(${MOAICORE_INCLUDE_DIRS})
 target_link_libraries(moaiext-audiosampler ${MOAICORE_LIBRARIES})
 

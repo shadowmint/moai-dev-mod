@@ -40,7 +40,7 @@ file(GLOB PROJECT_SOURCES "${PROJECT_BINARY_DIR}/main.cpp")
 add_executable(moai ${PROJECT_SOURCES})
 
 # Deps
-include("${PROJECT_BINARY_DIR}/src/moaicore/moaicoreConfig.cmake")
+include("${PROJECT_BINARY_DIR}/src/_moaicore/moaicoreConfig.cmake")
 target_link_libraries(moai ${MOAICORE_LIBRARIES})
 include_directories(${MOAICORE_INCLUDE_DIRS})
 
@@ -53,6 +53,8 @@ if(APPLE)
   mark_as_advanced(COCOA_LIBRARY GLUT_LIBRARY OpenGL_LIBRARY)
   set(EXTRA_LIBS ${COCOA_LIBRARY} ${GLUT_LIBRARY} ${OpenGL_LIBRARY})
 endif()
+  set(GLUT_LIBRARY "${PROJTECT_PATH}/../../3rdparty/glut-3.7.6-bin/glut32.lib")
+  set(EXTRA_LIBS ${GLUT_LIBRARY})
 target_link_libraries(moai ${EXTRA_LIBS})
 
 # Host

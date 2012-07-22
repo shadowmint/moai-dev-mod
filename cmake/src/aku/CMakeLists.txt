@@ -61,7 +61,7 @@ filter_list("${PROJECT_SOURCES}" "AKU-untz.cpp;AKU-adcolony.mm;AKU-chartboost.mm
 add_library(aku STATIC ${PROJECT_SOURCES})
 
 # Import moai core
-include(${PROJECT_BINARY_DIR}/../moaicore/moaicoreConfig.cmake)
+include(${PROJECT_BINARY_DIR}/../_moaicore/moaicoreConfig.cmake)
 include_directories(${MOAICORE_INCLUDE_DIRS})
 target_link_libraries(aku ${MOAICORE_LIBRARIES})
 

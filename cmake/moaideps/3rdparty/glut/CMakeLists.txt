@@ -40,7 +40,11 @@ set(PROJECT_LIB_TARGET "${PROJECT_REAL_PATH}/src/.libs/libglut.a;")
 if (NOT EXISTS ${PROJECT_LIB_TARGET})
 
   # Platform config
-  import_common_build_flags(BUILD_EXTRA_FLAGS)
+  if(APPLE)
+    import_common_build_flags(BUILD_EXTRA_FLAGS EXTRA_C_FLAGS "-I/usr/X11R6/include")
+  else()
+    import_common_build_flags(BUILD_EXTRA_FLAGS)
+  endif()
   set(BUILD_EXTRA_FLAGS "${BUILD_EXTRA_FLAGS} --enable-shared=no")
 
   # <CR> breaks configure

@@ -162,7 +162,17 @@ function(apply_cr_fix REAL_PATH)
     # Check for dos2unix
     find_program(DOS2UNIX dos2unix)
     if(NOT DOS2UNIX)
-      message(FATAL "dos2unix must be installed to correct invalid file types")
+      message("Missing dos2unix!")
+      if(WIN32)
+        message("!! Your mingw install seems broken")
+      elseif(APPLE)
+        message("try: sudo port install dos2unix")
+        message(" or: sudo fink install dos2unix")
+      else()
+        message("try: sudo apt-get install dos2unix")
+        message(" or: sudo yum install dos2unix")
+      endif()
+      message(FATAL_ERROR "dos2unix must be installed to correct invalid file types")
     endif()
 
     # Working files; these shouldn't conflict with anything.

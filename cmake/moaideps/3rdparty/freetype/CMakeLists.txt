@@ -42,9 +42,11 @@ if (NOT EXISTS ${PROJECT_LIB_TARGET})
   # Platform config
   import_common_build_flags(BUILD_EXTRA_FLAGS)
 
+  # <CR> must be removed
+  apply_cr_fix("${PROJECT_REAL_PATH}")
+
   # Window doesn't play well with others
   if (WIN32)
-    apply_cr_fix("${PROJECT_REAL_PATH}")
     set(BUILD_EXTRA_FLAGS "CFLAGS=\"-std=gnu99\" --without-zlib --enable-shared=no ${BUILD_EXTRA_FLAGS}")
   endif()
 

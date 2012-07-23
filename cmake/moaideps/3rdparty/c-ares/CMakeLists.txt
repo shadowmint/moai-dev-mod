@@ -42,10 +42,8 @@ if (NOT EXISTS ${PROJECT_LIB_TARGET})
   # Platform config
   import_common_build_flags(BUILD_EXTRA_FLAGS)
 
-  # Windows does not play nicely with others
-  if (WIN32)
-    apply_cr_fix("${PROJECT_REAL_PATH}")
-  endif()
+  # <CR> breaks configure
+  apply_cr_fix("${PROJECT_REAL_PATH}")
 
   # Create files for working with if they don't exist
   # Weird, not sure why we need to do this.

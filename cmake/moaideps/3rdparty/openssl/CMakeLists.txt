@@ -51,10 +51,8 @@ if (${LIB_MISSING})
     set(BUILD_EXTRA_FLAGS "-Larch=i386 -Darch=i386")
   endif()
 
-  # Window doesn't play well with others
-  if (WIN32)
-    apply_cr_fix("${PROJECT_REAL_PATH}")
-  endif()
+  # <CR> breaks configure
+  apply_cr_fix("${PROJECT_REAL_PATH}")
 
   # Dont build a shared lib
   set(BUILD_EXTRA_FLAGS "no-shared ${BUILD_EXTRA_FLAGS}")

@@ -43,10 +43,8 @@ if (NOT EXISTS ${PROJECT_LIB_TARGET})
   import_common_build_flags(BUILD_EXTRA_FLAGS)
   set(BUILD_EXTRA_FLAGS "${BUILD_EXTRA_FLAGS} --enable-shared=no")
 
-  # Window doesn't play well with others
-  if (WIN32)
-    apply_cr_fix("${PROJECT_REAL_PATH}")
-  endif()
+  # <CR> breaks configure
+  apply_cr_fix("${PROJECT_REAL_PATH}")
 
   # Build
   invoke_autotools("${PROJECT_REAL_PATH}" "${BUILD_EXTRA_FLAGS}")

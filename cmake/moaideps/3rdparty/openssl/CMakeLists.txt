@@ -36,7 +36,7 @@ if (${DEBUG_MESSAGES})
 endif()
 
 # Dependency target; skip build if it already magically exists
-set(PROJECT_LIB_TARGET "${PROJECT_REAL_PATH}/libssl.a;${PROJECT_REAL_PATH}/libcrypto.a")
+set(PROJECT_LIB_TARGET "${PROJECT_REAL_PATH}/crypto/engine/eng_all.o;${PROJECT_REAL_PATH}/libssl.a;${PROJECT_REAL_PATH}/libcrypto.a")
 set(LIB_MISSING 0)
 foreach(I ${PROJECT_LIB_TARGET})
   if (NOT EXISTS ${I})

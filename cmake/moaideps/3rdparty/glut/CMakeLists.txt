@@ -56,9 +56,24 @@ if (NOT EXISTS ${PROJECT_LIB_TARGET})
  message(FATAL_ERROR "Autotools fail! Unable to find target: ${PROJECT_LIB_TARGET}")
 endif()
 
+# Opengl
+if(APPLE)
+  include_directories(/System/Library/Frameworks)
+  find_library(COCOA_LIBRARY Cocoa)
+  find_library(OpenGL_LIBRARY OpenGL)
+  mark_as_advanced(COCOA_LIBRARY OpenGL_LIBRARY)
+  set(EXTRA_LIBS "${EXTRA_LIBS};${COCOA_LIBRARY};${OpenGL_LIBRARY}")
+elseif(WIN32)
+  find_package(OpenGL)
+  set(EXTRA_LIBS "${EXTRA_LIBS};gdi32;opengl32;glu32")
+else()
+  find_package(OpenGL)
+  set(EXTRA_LIBS "${EXTRA_LIBS};${OPENGL_LIBRARIES}")
+endif()
+
 # Lib and includes
 set(PROJECT_INCLUDE_DIRS "${PROJECT_REAL_PATH}/include/GL")
-set(PROJECT_LIBRARIES "${PROJECT_LIB_TARGET}")
+set(PROJECT_LIBRARIES "${PROJECT_LIB_TARGET};${EXTRA_LIBS}")
 set(PROJECT_NAME "GLUT")
 
 # Export libraries

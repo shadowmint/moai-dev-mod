@@ -35,11 +35,10 @@
 	#include <ParticlePresets.h>
 #endif
 
+#include <glut.h>
+
 #ifdef _WIN32
-	#include <glut.h>
 	#include <FolderWatcher-win.h>
-#else
-	#include <GLUT/glut.h>
 #endif
 
 #ifdef __APPLE__

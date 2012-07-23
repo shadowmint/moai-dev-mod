@@ -33,9 +33,9 @@ set(PROJECT_HOST_PATH "${PROJECT_SOURCE_DIR}/../../../src/hosts")
 set(EXTRA_SRCS "")
 list(APPEND EXTRA_SOURCES "${PROJECT_HOST_PATH}/GlutHost.cpp")
 if(WIN32)
-  list(APPEND "${PROJECT_HOST_PATH}/FolderWatcher-win.cpp")
+  list(APPEND EXTRA_SOURCES "${PROJECT_HOST_PATH}/FolderWatcher-win.cpp")
 elseif(APPLE)
-  list(APPEND "${PROJECT_HOST_PATH}/FolderWatcher-mac.mm")
+  list(APPEND EXTRA_SOURCES "${PROJECT_HOST_PATH}/FolderWatcher-mac.mm")
 endif()
 
 # Host includes
@@ -43,7 +43,7 @@ include_directories(${PROJECT_HOST_PATH})
 
 # Get sources
 file(GLOB PROJECT_SOURCES "${PROJECT_REAL_PATH}/*.cpp")
-list(APPEND PROJECT_SOURCES ${EXTRA_SRCS})
+list(APPEND PROJECT_SOURCES ${EXTRA_SOURCES})
 if(APPLE)
   file(GLOB OBJC_PROJECT_SOURCES "${PROJECT_REAL_PATH}/*.mm")
   list(APPEND PROJECT_SOURCES ${OBJC_PROJECT_SOURCES})

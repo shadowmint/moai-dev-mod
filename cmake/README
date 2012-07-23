@@ -13,23 +13,28 @@ cd build
 cmake .. -G "MSYS Makefiles"
 make
 
-WARNING: don't use ccmake or cmake-gui, the configure step takes a long time.
+WARNING: Invoking cmake invokes the configure / build of various 3rdparty libs.
+         You probably don't want to use ccmake.
 
 
 Requires
 ========
 
-xcode + command line tools
+xcode + command line tools (dos2unix)
 
 or:
 
 http://www.mingw.org/wiki/msys/
 
+or:
+
+apt-get install dos2unix build-essential cmake libgl1-mesa-dev
+
 
 Not supported
 =============
 
-Linux, Android, iOS, visual studio
+Android, iOS, visual studio
 (see FAQ below)
 
 
@@ -57,21 +62,13 @@ Hint:
 FAQ
 ===
 
-1. Why no linux?
-
-MOAI doesn't build on linux. Lots of things are broken. This is not a 
-patch to moai, it's a build system. Fixing the underlying issues with 
-the app (eg. #include <net/if_dl.h>) is a massive issue that can't be
-addressed by just adding a few cmake files.
-
-
-2. Why does calling cmake invoke all the configure scripts?
+Why does calling cmake invoke all the configure scripts?
+--
 
 It's easier to do this than porting all those libraries to cmake.
 
-
-3. Why does building on windows with mingw take ages and dump
-   loads of messages like this?
+Why does building on windows with mingw take ages and dump loads of messages like this?
+--
 
      Checking E:/projects/moai-dev/3rdparty/curl-7.26.0/tests/data/test51
 
@@ -105,19 +102,25 @@ to:
 However, make SURE you've checked the code out of git without 
 any carriage returns, or your build will fail.
 
-4. Why configure? These toolchains suck.
+This is actually a problem of OSX too for freetype and a few
+others, so ALL system require this now.
+
+Why configure? These toolchains suck.
+--
 
 The third party packages moai depends on use them; there's
 no way around it other than to suggest to the maintainers of
 those packages they drop automake because it's rubbish. :/
 
-5. Why no iOS love?
+Why no iOS love?
+--
 
 xcodebuild command line tools don't seem to play nicely with
 cmake; you're almost certainly better off using the xcode 
 project to build for iOS. 
 
-6. Why no VS love?
+Why no VS love?
+--
 
 VS projects exist in the vs* directories; VS build is totally
 different from a mingw build, and (specifically) vs does not 
@@ -125,7 +128,8 @@ support C99, and doesn't have a sane build environment for
 the autotools to run in. Use the VS project files to build for
 VS.
 
-7. Why no android love?
+Why no android love?
+--
 
 Not implemented yet. There's no reason this build approach
 wouldn't work for android, but it needs to custom -arch

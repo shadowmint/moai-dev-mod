@@ -63,7 +63,9 @@ set(PROJECT_NAME "CURL")
 
 # RTMP support; find package doesn't seem to work
 find_library(RTMP_LIBRARY NAMES rtmp librtmp)
-list(APPEND PROJECT_LIBRARIES ${RTMP_LIBRARY})
+if(DEFINED RTMP_LIBRARY)
+  list(APPEND PROJECT_LIBRARIES ${RTMP_LIBRARY})
+endif()
 
 # Export libraries
 CONFIGURE_FILE(curlConfig.cmake.in "${PROJECT_BINARY_DIR}/curlConfig.cmake")

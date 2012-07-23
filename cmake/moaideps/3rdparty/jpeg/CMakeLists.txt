@@ -24,8 +24,12 @@ endforeach()
 # Config
 set(PROJECT_KEY "jpeg-8c")
 
+# Copy to build directory
+set(PROJECT_SRC_PATH "${PROJECT_SOURCE_DIR}/../../../../3rdparty/${PROJECT_KEY}")
+set(PROJECT_REAL_PATH "${PROJECT_BINARY_DIR}/${PROJECT_KEY}")
+file(COPY ${PROJECT_SRC_PATH} DESTINATION ${PROJECT_BINARY_DIR})
+
 # Source and includes
-set(PROJECT_REAL_PATH "${PROJECT_SOURCE_DIR}/../../../../3rdparty/${PROJECT_KEY}")
 get_filename_component(PROJECT_REAL_PATH ${PROJECT_REAL_PATH} ABSOLUTE)
 if (${DEBUG_MESSAGES})
   message("Importing ${PROJECT_KEY} from ${PROJECT_REAL_PATH}")

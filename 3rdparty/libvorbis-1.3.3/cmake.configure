@@ -1,1 +1,0 @@
-configure  --disable-shared --disable-oggtest --with-ogg-includes=E:/projects/moai-dev/3rdparty/libogg-1.2.2/include --with-ogg-libraries=E:/projects/moai-dev/3rdparty/libogg-1.2.2/src/.libs

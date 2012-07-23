@@ -1,4 +1,3 @@
-/* jconfig.h.  Generated from jconfig.cfg by configure.  */
 /* jconfig.cfg --- source file edited by configure script */
 /* see jconfig.txt for explanations */
 
@@ -41,7 +40,7 @@ typedef unsigned char boolean;
 #define BMP_SUPPORTED		/* BMP image file format */
 #define GIF_SUPPORTED		/* GIF image file format */
 #define PPM_SUPPORTED		/* PBMPLUS PPM/PGM image file format */
-/* #undef RLE_SUPPORTED */
+#undef RLE_SUPPORTED		/* Utah RLE image file format */
 #define TARGA_SUPPORTED		/* Targa image file format */
 
 #undef TWO_FILE_COMMANDLINE

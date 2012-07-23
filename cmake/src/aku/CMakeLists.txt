@@ -55,6 +55,12 @@ filter_list("${PROJECT_SOURCES}" "AKU-audiosampler.cpp;AKU-untz.cpp;AKU-adcolony
 # Library
 add_library(aku STATIC ${PROJECT_SOURCES})
 
+# CFlags for osx glut support
+if(APPLE)
+  set(EXTRA_INCS "/usr/X11R6/include")
+  include_directories(${EXTRA_INCS})
+endif()
+
 # Compatability
 include(${PROJECT_BINARY_DIR}/../___vscompat/vscompatConfig.cmake)
 include_directories(${VSCOMPAT_INCLUDE_DIRS})
@@ -66,7 +72,7 @@ include_directories(${MOAICORE_INCLUDE_DIRS})
 target_link_libraries(aku ${MOAICORE_LIBRARIES})
 
 # Dependencies and includes
-set(PROJECT_INCLUDE_DIRS "${PROJECT_REAL_PATH}/..")
+set(PROJECT_INCLUDE_DIRS "${PROJECT_REAL_PATH}/..;${EXTRA_INCS}")
 set(PROJECT_LIBRARIES "aku")
 
 # Export libraries

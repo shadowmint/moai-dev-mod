@@ -63,7 +63,7 @@ set(PROJECT_NAME "CURL")
 
 # RTMP support; find package doesn't seem to work
 find_library(RTMP_LIBRARY NAMES rtmp librtmp)
-if(DEFINED RTMP_LIBRARY)
+if(NOT RTMP_LIBRARY STREQUAL "RTMP_LIBRARY-NOTFOUND")
   list(APPEND PROJECT_LIBRARIES ${RTMP_LIBRARY})
 endif()
 

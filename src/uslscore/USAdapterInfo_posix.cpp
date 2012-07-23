@@ -30,7 +30,7 @@
 #include <uslscore/USAdapterInfo.h>
 
 #if !( NACL || ANDROID )
-  #if __APPLE__
+  #ifdef __APPLE__
     #include <sys/socket.h>
     #include <sys/sysctl.h>
     #include <net/if.h>
@@ -38,7 +38,6 @@
   #else
     #include <sys/ioctl.h>
     #include <net/if.h> 
-    #include <net/if_dl.h> 
     #include <unistd.h>
     #include <netinet/in.h>
     #include <string.h>

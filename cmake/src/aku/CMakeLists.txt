@@ -30,15 +30,12 @@ endif()
 set(PROJECT_HOST_PATH "${PROJECT_SOURCE_DIR}/../../../src/hosts")
 
 # Build host dependent files 
-# TODO: Fix this. 
-configure_file("${PROJECT_HOST_PATH}/GlutHost.cpp" "${PROJECT_REAL_PATH}/AKUGlut.cpp")
-configure_file("${PROJECT_HOST_PATH}/GlutHost.h" "${PROJECT_REAL_PATH}/AKUGlut.h")
+set(EXTRA_SRCS "")
+list(APPEND EXTRA_SOURCES "${PROJECT_HOST_PATH}/GlutHost.cpp")
 if(WIN32)
-  configure_file("${PROJECT_HOST_PATH}/FolderWatcher-win.cpp" "${PROJECT_REAL_PATH}/FolderWatcher.cpp")
-  configure_file("${PROJECT_HOST_PATH}/FolderWatcher-win.h" "${PROJECT_REAL_PATH}/FolderWatcher.h")
+  list(APPEND "${PROJECT_HOST_PATH}/FolderWatcher-win.cpp")
 elseif(APPLE)
-  configure_file("${PROJECT_HOST_PATH}/FolderWatcher-mac.mm" "${PROJECT_REAL_PATH}/FolderWatcher.mm")
-  configure_file("${PROJECT_HOST_PATH}/FolderWatcher-mac.h" "${PROJECT_REAL_PATH}/FolderWatcher.h")
+  list(APPEND "${PROJECT_HOST_PATH}/FolderWatcher-mac.mm")
 endif()
 
 # Host includes
@@ -46,6 +43,7 @@ include_directories(${PROJECT_HOST_PATH})
 
 # Get sources
 file(GLOB PROJECT_SOURCES "${PROJECT_REAL_PATH}/*.cpp")
+list(APPEND PROJECT_SOURCES ${EXTRA_SRCS})
 if(APPLE)
   file(GLOB OBJC_PROJECT_SOURCES "${PROJECT_REAL_PATH}/*.mm")
   list(APPEND PROJECT_SOURCES ${OBJC_PROJECT_SOURCES})

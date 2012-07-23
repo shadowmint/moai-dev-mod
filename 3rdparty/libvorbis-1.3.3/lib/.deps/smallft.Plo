@@ -1,109 +1,36 @@
-smallft.lo smallft.o: smallft.c /usr/include/stdlib.h \
-  /usr/include/Availability.h /usr/include/AvailabilityInternal.h \
-  /usr/include/_types.h /usr/include/sys/_types.h \
-  /usr/include/sys/cdefs.h /usr/include/sys/_symbol_aliasing.h \
-  /usr/include/sys/_posix_availability.h /usr/include/machine/_types.h \
-  /usr/include/i386/_types.h /usr/include/sys/wait.h \
-  /usr/include/sys/signal.h /usr/include/sys/appleapiopts.h \
-  /usr/include/machine/signal.h /usr/include/i386/signal.h \
-  /usr/include/i386/_structs.h /usr/include/sys/_structs.h \
-  /usr/include/machine/_structs.h /usr/include/mach/i386/_structs.h \
-  /usr/include/sys/resource.h /usr/include/machine/endian.h \
-  /usr/include/i386/endian.h /usr/include/sys/_endian.h \
-  /usr/include/libkern/_OSByteOrder.h \
-  /usr/include/libkern/i386/_OSByteOrder.h /usr/include/alloca.h \
-  /usr/include/machine/types.h /usr/include/i386/types.h \
-  /usr/include/i386/_types.h /usr/include/string.h /usr/include/strings.h \
-  /usr/include/secure/_string.h /usr/include/secure/_common.h \
-  /usr/include/math.h /usr/include/architecture/i386/math.h smallft.h \
-  ../include/vorbis/codec.h /opt/local/include/ogg/ogg.h \
-  /usr/llvm-gcc-4.2/bin/../lib/gcc/i686-apple-darwin11/4.2.1/include/stddef.h \
-  /opt/local/include/ogg/os_types.h /usr/include/inttypes.h \
-  /usr/include/stdint.h os.h ../config.h misc.h /usr/include/memory.h
+smallft.lo: smallft.c \
+ e:\mingw\bin\../lib/gcc/mingw32/4.6.2/../../../../include/stdlib.h \
+ e:\mingw\bin\../lib/gcc/mingw32/4.6.2/../../../../include/_mingw.h \
+ e:\mingw\bin\../lib/gcc/mingw32/4.6.2/include/stddef.h \
+ e:\mingw\bin\../lib/gcc/mingw32/4.6.2/../../../../include/string.h \
+ e:\mingw\bin\../lib/gcc/mingw32/4.6.2/../../../../include/math.h \
+ smallft.h ../include/vorbis/codec.h \
+ E:/projects/moai-dev/3rdparty/libogg-1.2.2/include/ogg/ogg.h \
+ E:/projects/moai-dev/3rdparty/libogg-1.2.2/include/ogg/os_types.h \
+ e:\mingw\bin\../lib/gcc/mingw32/4.6.2/../../../../include/sys/types.h \
+ os.h ../config.h misc.h \
+ e:\mingw\bin\../lib/gcc/mingw32/4.6.2/../../../../include/malloc.h \
+ e:\mingw\bin\../lib/gcc/mingw32/4.6.2/../../../../include/memory.h
 
-/usr/include/stdlib.h:
+e:\mingw\bin\../lib/gcc/mingw32/4.6.2/../../../../include/stdlib.h:
 
-/usr/include/Availability.h:
+e:\mingw\bin\../lib/gcc/mingw32/4.6.2/../../../../include/_mingw.h:
 
-/usr/include/AvailabilityInternal.h:
+e:\mingw\bin\../lib/gcc/mingw32/4.6.2/include/stddef.h:
 
-/usr/include/_types.h:
+e:\mingw\bin\../lib/gcc/mingw32/4.6.2/../../../../include/string.h:
 
-/usr/include/sys/_types.h:
-
-/usr/include/sys/cdefs.h:
-
-/usr/include/sys/_symbol_aliasing.h:
-
-/usr/include/sys/_posix_availability.h:
-
-/usr/include/machine/_types.h:
-
-/usr/include/i386/_types.h:
-
-/usr/include/sys/wait.h:
-
-/usr/include/sys/signal.h:
-
-/usr/include/sys/appleapiopts.h:
-
-/usr/include/machine/signal.h:
-
-/usr/include/i386/signal.h:
-
-/usr/include/i386/_structs.h:
-
-/usr/include/sys/_structs.h:
-
-/usr/include/machine/_structs.h:
-
-/usr/include/mach/i386/_structs.h:
-
-/usr/include/sys/resource.h:
-
-/usr/include/machine/endian.h:
-
-/usr/include/i386/endian.h:
-
-/usr/include/sys/_endian.h:
-
-/usr/include/libkern/_OSByteOrder.h:
-
-/usr/include/libkern/i386/_OSByteOrder.h:
-
-/usr/include/alloca.h:
-
-/usr/include/machine/types.h:
-
-/usr/include/i386/types.h:
-
-/usr/include/i386/_types.h:
-
-/usr/include/string.h:
-
-/usr/include/strings.h:
-
-/usr/include/secure/_string.h:
-
-/usr/include/secure/_common.h:
-
-/usr/include/math.h:
-
-/usr/include/architecture/i386/math.h:
+e:\mingw\bin\../lib/gcc/mingw32/4.6.2/../../../../include/math.h:
 
 smallft.h:
 
 ../include/vorbis/codec.h:
 
-/opt/local/include/ogg/ogg.h:
+E:/projects/moai-dev/3rdparty/libogg-1.2.2/include/ogg/ogg.h:
 
-/usr/llvm-gcc-4.2/bin/../lib/gcc/i686-apple-darwin11/4.2.1/include/stddef.h:
+E:/projects/moai-dev/3rdparty/libogg-1.2.2/include/ogg/os_types.h:
 
-/opt/local/include/ogg/os_types.h:
-
-/usr/include/inttypes.h:
-
-/usr/include/stdint.h:
+e:\mingw\bin\../lib/gcc/mingw32/4.6.2/../../../../include/sys/types.h:
 
 os.h:
 
@@ -111,4 +38,6 @@ os.h:
 
 misc.h:
 
-/usr/include/memory.h:
+e:\mingw\bin\../lib/gcc/mingw32/4.6.2/../../../../include/malloc.h:
+
+e:\mingw\bin\../lib/gcc/mingw32/4.6.2/../../../../include/memory.h:

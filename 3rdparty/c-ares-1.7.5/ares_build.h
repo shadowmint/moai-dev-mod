@@ -72,7 +72,7 @@
 
 /* Configure process defines this to 1 when it finds out that system  */
 /* header file ws2tcpip.h must be included by the external interface. */
-/* #undef CARES_PULL_WS2TCPIP_H */
+#undef CARES_PULL_WS2TCPIP_H
 #ifdef CARES_PULL_WS2TCPIP_H
 #  ifndef WIN32_LEAN_AND_MEAN
 #    define WIN32_LEAN_AND_MEAN
@@ -84,26 +84,26 @@
 
 /* Configure process defines this to 1 when it finds out that system   */
 /* header file sys/types.h must be included by the external interface. */
-#define CARES_PULL_SYS_TYPES_H 1
+#undef CARES_PULL_SYS_TYPES_H
 #ifdef CARES_PULL_SYS_TYPES_H
 #  include <sys/types.h>
 #endif
 
 /* Configure process defines this to 1 when it finds out that system    */
 /* header file sys/socket.h must be included by the external interface. */
-#define CARES_PULL_SYS_SOCKET_H 1
+#undef CARES_PULL_SYS_SOCKET_H
 #ifdef CARES_PULL_SYS_SOCKET_H
 #  include <sys/socket.h>
 #endif
 
 /* The size of `long', as computed by sizeof. */
-#define CARES_SIZEOF_LONG 4
+#undef CARES_SIZEOF_LONG
 
 /* Integral data type used for ares_socklen_t. */
-#define CARES_TYPEOF_ARES_SOCKLEN_T socklen_t
+#undef CARES_TYPEOF_ARES_SOCKLEN_T
 
 /* The size of `ares_socklen_t', as computed by sizeof. */
-#define CARES_SIZEOF_ARES_SOCKLEN_T 4
+#undef CARES_SIZEOF_ARES_SOCKLEN_T
 
 /* Data type definition of ares_socklen_t. */
 typedef CARES_TYPEOF_ARES_SOCKLEN_T ares_socklen_t;

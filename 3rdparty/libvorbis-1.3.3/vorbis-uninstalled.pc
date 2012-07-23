@@ -10,5 +10,5 @@ Description: vorbis is the primary Ogg Vorbis library (uninstalled)
 Version: 1.3.3
 Requires: ogg
 Conflicts:
-Libs:  ${libdir}/libvorbis.la
+Libs: -lm ${libdir}/libvorbis.la
 Cflags: -I${includedir}

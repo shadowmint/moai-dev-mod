@@ -33,7 +33,6 @@ set(PROJECT_PATH "${PROJECT_SOURCE_DIR}/../src/moai")
 
 # HAX!
 configure_file("${PROJECT_PATH}/../hosts/GlutHostMain.cpp" "${PROJECT_BINARY_DIR}/main.cpp")
-include_directories("${PROJECT_PATH}/../hosts/")
 
 # Moai binary
 file(GLOB PROJECT_SOURCES "${PROJECT_BINARY_DIR}/main.cpp")

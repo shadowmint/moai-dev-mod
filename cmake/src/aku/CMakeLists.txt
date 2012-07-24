@@ -72,7 +72,7 @@ include_directories(${MOAICORE_INCLUDE_DIRS})
 target_link_libraries(aku ${MOAICORE_LIBRARIES})
 
 # Dependencies and includes
-set(PROJECT_INCLUDE_DIRS "${PROJECT_REAL_PATH}/..;${EXTRA_INCS}")
+set(PROJECT_INCLUDE_DIRS "${PROJECT_REAL_PATH}/..;${PROJECT_REAL_PATH}/../hosts;${EXTRA_INCS}")
 set(PROJECT_LIBRARIES "aku")
 
 # Export libraries

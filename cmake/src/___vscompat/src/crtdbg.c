@@ -4,4 +4,7 @@
 #include <malloc.h>
 #include <stdio.h>
 
+void __vscompat_dummy(void) {
+}
+
 #endif

@@ -56,6 +56,9 @@ if (${LIB_MISSING})
 
   # Dont build a shared lib
   set(BUILD_EXTRA_FLAGS "no-shared ${BUILD_EXTRA_FLAGS}")
+  if(APPLE)
+    set(BUILD_EXTRA_FLAGS "no-asm ${BUILD_EXTRA_FLAGS}")
+  endif()
 
   # Build
   invoke_autotools("${PROJECT_REAL_PATH}" "${BUILD_EXTRA_FLAGS}" CONFIG_KEY "config" FORCE_CLEAN)

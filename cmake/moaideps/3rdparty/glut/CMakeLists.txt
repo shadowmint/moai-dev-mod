@@ -68,6 +68,9 @@ else()
     # <CR> breaks configure
     apply_cr_fix("${PROJECT_REAL_PATH}")
 
+    # Reconf? For mingw
+    # autoreconf --force --install
+
     # Build
     invoke_autotools("${PROJECT_REAL_PATH}" "${BUILD_EXTRA_FLAGS}")
 

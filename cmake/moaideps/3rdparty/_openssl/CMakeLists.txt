@@ -45,19 +45,13 @@ foreach(I ${PROJECT_LIB_TARGET})
 endforeach()
 if (${LIB_MISSING})
 
-  # Platform config
-  import_common_build_flags(BUILD_EXTRA_FLAGS)
-  if(APPLE) # Special case for openssl
-    set(BUILD_EXTRA_FLAGS "-Larch=i386 -Darch=i386")
-  endif()
-
   # <CR> breaks configure
   apply_cr_fix("${PROJECT_REAL_PATH}")
 
   # Dont build a shared lib
-  set(BUILD_EXTRA_FLAGS "no-shared ${BUILD_EXTRA_FLAGS}")
+  set(BUILD_EXTRA_FLAGS "no-shared")
   if(APPLE)
-    set(BUILD_EXTRA_FLAGS "no-asm ${BUILD_EXTRA_FLAGS}")
+    set(BUILD_EXTRA_FLAGS "no-asm no-krb5 ${BUILD_EXTRA_FLAGS}")
   endif()
 
   # Build
@@ -82,6 +76,8 @@ set(PROJECT_LIBRARIES "${PROJECT_LIB_TARGET}")
 set(PROJECT_PATH ${PROJECT_SRC_PATH})
 if(WIN32)
   set(PROJECT_LIBRARIES "${PROJECT_LIB_TARGET};ws2_32")
+else()
+  set(PROJECT_LIBRARIES "${PROJECT_LIB_TARGET};dl")
 endif()
 set(PROJECT_NAME "OPENSSL")
 

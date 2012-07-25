@@ -85,9 +85,12 @@ else()
   if(WIN32)
     find_package(OpenGL)
     set(EXTRA_LIBS "${EXTRA_LIBS};gdi32;opengl32;glu32")
-  else()
+  elseif(APPLE)
     find_package(OpenGL)
     set(EXTRA_LIBS "${EXTRA_LIBS};${OPENGL_LIBRARIES}")
+  else()
+    find_package(OpenGL)
+    set(EXTRA_LIBS "${EXTRA_LIBS};${OPENGL_LIBRARIES};Xi")
   endif()
 
   # Lib and includes

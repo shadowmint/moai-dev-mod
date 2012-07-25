@@ -22,7 +22,7 @@ foreach(ITEM ${PROJECT_MACROS})
 endforeach()
 
 # Config
-set(PROJECT_KEY "openssl-1.0.0d")
+set(PROJECT_KEY "openssl-1.0.1c")
 
 # Copy to build directory
 set(PROJECT_SRC_PATH "${PROJECT_SOURCE_DIR}/../../../../3rdparty/${PROJECT_KEY}")
@@ -34,11 +34,6 @@ get_filename_component(PROJECT_REAL_PATH ${PROJECT_REAL_PATH} ABSOLUTE)
 if (${DEBUG_MESSAGES})
   message("Importing ${PROJECT_KEY} from ${PROJECT_REAL_PATH}")
 endif()
-
-# Pick up symbols from openssl that aren't being bound correctly
-file(GLOB_RECURSE OPENSSL_ENGINE_LIBS_CRYPTO "${PROJECT_REAL_PATH}/crypto/*.o")
-file(GLOB_RECURSE OPENSSL_ENGINE_LIBS_SSL "${PROJECT_REAL_PATH}/ssl/*.o")
-set(OPENSSL_ENGINE_LIBS "${OPENSSL_ENGINE_LIBS_CRYPTO};${OPENSSL_ENGINE_LIBS_SSL}")
 
 # Dependency target; skip build if it already magically exists
 set(PROJECT_LIB_TARGET "${PROJECT_REAL_PATH}/libssl.a;${PROJECT_REAL_PATH}/libcrypto.a")
@@ -75,10 +70,15 @@ if (${LIB_MISSING})
  message(FATAL_ERROR "Autotools fail! Unable to find target: ${PROJECT_LIB_TARGET}")
 endif()
 
+# Pick up symbols from openssl that aren't being bound correctly
+file(GLOB_RECURSE OPENSSL_ENGINE_LIBS_CRYPTO "${PROJECT_REAL_PATH}/crypto/*.o")
+file(GLOB_RECURSE OPENSSL_ENGINE_LIBS_SSL "${PROJECT_REAL_PATH}/ssl/*.o")
+set(OPENSSL_ENGINE_LIBS "${OPENSSL_ENGINE_LIBS_CRYPTO};${OPENSSL_ENGINE_LIBS_SSL}")
+
 # Lib and includes
 set(PROJECT_INCLUDE_DIRS "${PROJECT_REAL_PATH}/include")
 set(PROJECT_LIBRARIES "${PROJECT_LIB_TARGET}")
-set(PROJECT_PATH ${PROJECT_SRC_PATH})
+set(PROJECT_PATH ${PROJECT_REAL_PATH})
 if(WIN32)
   set(PROJECT_LIBRARIES "${PROJECT_LIB_TARGET};ws2_32")
 else()

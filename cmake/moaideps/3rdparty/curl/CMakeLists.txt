@@ -35,6 +35,9 @@ if (${DEBUG_MESSAGES})
   message("Importing ${PROJECT_KEY} from ${PROJECT_REAL_PATH}")
 endif()
 
+# SSL dep
+include(${PROJECT_REAL_PATH}/_openssl/opensslConfig.cmake)
+
 # Dependency target; skip building if it exists already.
 set(PROJECT_LIB_TARGET "${PROJECT_REAL_PATH}/lib/.libs/libcurl.a")
 if (NOT EXISTS ${PROJECT_LIB_TARGET})
@@ -44,7 +47,7 @@ if (NOT EXISTS ${PROJECT_LIB_TARGET})
 
   # Platform config
   import_common_build_flags(BUILD_EXTRA_FLAGS)
-  set(BUILD_EXTRA_FLAGS "${BUILD_EXTRA_FLAGS} --disable-ldap")
+  set(BUILD_EXTRA_FLAGS "${BUILD_EXTRA_FLAGS} --disable-ldap --with-ssl=${OPENSSL_PATH}")
 
   # Build
   invoke_autotools("${PROJECT_REAL_PATH}" "${BUILD_EXTRA_FLAGS}")
@@ -61,7 +64,13 @@ set(PROJECT_INCLUDE_DIRS "${PROJECT_REAL_PATH}/include")
 set(PROJECT_LIBRARIES "${PROJECT_LIB_TARGET}")
 set(PROJECT_NAME "CURL")
 
-# RTMP support; find package doesn't seem to work
+# RTMP support
+find_library(IDN_LIBRARY NAMES idn libidn)
+if(NOT IDN_LIBRARY STREQUAL "IDN_LIBRARY-NOTFOUND")
+  list(APPEND PROJECT_LIBRARIES ${IDN_LIBRARY})
+endif()
+
+# RTMP support
 find_library(RTMP_LIBRARY NAMES rtmp librtmp)
 if(NOT RTMP_LIBRARY STREQUAL "RTMP_LIBRARY-NOTFOUND")
   list(APPEND PROJECT_LIBRARIES ${RTMP_LIBRARY})

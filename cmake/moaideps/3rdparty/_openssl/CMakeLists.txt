@@ -35,11 +35,13 @@ if (${DEBUG_MESSAGES})
   message("Importing ${PROJECT_KEY} from ${PROJECT_REAL_PATH}")
 endif()
 
-# Pick up the GOST library 
-file(GLOB_RECURSE OPENSSL_ENGINE_LIBS "${PROJECT_REAL_PATH}/crypto/engine/*.o")
+# Pick up symbols from openssl that aren't being bound correctly
+file(GLOB_RECURSE OPENSSL_ENGINE_LIBS_CRYPTO "${PROJECT_REAL_PATH}/crypto/*.o")
+file(GLOB_RECURSE OPENSSL_ENGINE_LIBS_SSL "${PROJECT_REAL_PATH}/ssl/*.o")
+set(OPENSSL_ENGINE_LIBS "${OPENSSL_ENGINE_LIBS_CRYPTO};${OPENSSL_ENGINE_LIBS_SSL}")
 
 # Dependency target; skip build if it already magically exists
-set(PROJECT_LIB_TARGET "${OPENSSEL_ENGINE_LIBS};${PROJECT_REAL_PATH}/libssl.a;${PROJECT_REAL_PATH}/libcrypto.a")
+set(PROJECT_LIB_TARGET "${PROJECT_REAL_PATH}/libssl.a;${PROJECT_REAL_PATH}/libcrypto.a")
 set(LIB_MISSING 0)
 foreach(I ${PROJECT_LIB_TARGET})
   if (NOT EXISTS ${I})
@@ -80,7 +82,7 @@ set(PROJECT_PATH ${PROJECT_SRC_PATH})
 if(WIN32)
   set(PROJECT_LIBRARIES "${PROJECT_LIB_TARGET};ws2_32")
 else()
-  set(PROJECT_LIBRARIES "${PROJECT_LIB_TARGET};dl")
+  set(PROJECT_LIBRARIES "${OPENSSL_ENGINE_LIBS};${PROJECT_LIB_TARGET};dl")
 endif()
 set(PROJECT_NAME "OPENSSL")
 

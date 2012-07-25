@@ -62,9 +62,9 @@ if(DEBUG_MESSAGES)
   foreach(INC ${PROJECT_EXTRA_INCLUDES})
     message("- Include: ${INC}")
   endforeach()
-  foreach(LIB ${PROJECT_EXTRA_LIBRARIES})
-    message("- Library: ${LIB}")
-  endforeach()
+  #foreach(LIB ${PROJECT_EXTRA_LIBRARIES})
+  #  message("- Library: ${LIB}")
+  #endforeach()
 endif()
 
 # Deps setup

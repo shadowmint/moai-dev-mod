@@ -28,7 +28,7 @@ http://www.mingw.org/wiki/msys/
 
 or:
 
-apt-get install dos2unix build-essential cmake libgl1-mesa-dev
+apt-get install dos2unix build-essential cmake
 
 
 Not supported
@@ -67,7 +67,13 @@ Why does calling cmake invoke all the configure scripts?
 
 It's easier to do this than porting all those libraries to cmake.
 
-Why does building on windows with mingw take ages and dump loads of messages like this?
+Why not make cmake depend on system libraries?
+--
+
+It makes it easier to tweek the build later to support ARM targets.
+This is a pain if you're dependning on system libraries. 
+
+Why does building take ages and dump loads of messages like this?
 --
 
      Checking E:/projects/moai-dev/3rdparty/curl-7.26.0/tests/data/test51
@@ -78,11 +84,11 @@ Why does building on windows with mingw take ages and dump loads of messages lik
 
 You checked your archive out of git with the whole line endings. 
 Don't worry, that's the default if you're using msys git. 
+If you're not using msys git something weird happened. 
 
-However, mingw and git don't play well together. Specifically,
-any \r\n will cause the autotools suite to fail silently during
-the configure step and then fail with obscure error messages
-during build.
+Anyway, \r\n will cause the autotools suite to fail silently during
+the configure step and then fail with obscure error messages during 
+build.
 
 Check every single file for invalid line endings is a bit 
 extreme, but since this is a problem that KEEPS TURNING UP
@@ -102,8 +108,13 @@ to:
 However, make SURE you've checked the code out of git without 
 any carriage returns, or your build will fail.
 
+Why is the configure variable called MACROS_CONFIG_DISABLE_WINDOWS_CR_CHECK?
+--
+
+Good point. Should fix that.
+
 This is actually a problem of OSX too for freetype and a few
-others, so ALL system require this now.
+others, so ALL system require this now, not just windows.
 
 Why configure? These toolchains suck.
 --

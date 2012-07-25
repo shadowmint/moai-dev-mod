@@ -98,23 +98,15 @@ If you want to disable this behaviour edit moaideps/utils/macros.cmake
 and change the config option at the top:
 
   ## Configuration options
-  set(MACROS_CONFIG_DISABLE_WINDOWS_CR_CHECK 0)
+  set(MACROS_CONFIG_DISABLE_CR_CHECK 0)
 
 to:
 
   ## Configuration options
-  set(MACROS_CONFIG_DISABLE_WINDOWS_CR_CHECK 1)
+  set(MACROS_CONFIG_DISABLE_CR_CHECK 1)
 
 However, make SURE you've checked the code out of git without 
 any carriage returns, or your build will fail.
-
-Why is the configure variable called MACROS_CONFIG_DISABLE_WINDOWS_CR_CHECK?
---
-
-Good point. Should fix that.
-
-This is actually a problem of OSX too for freetype and a few
-others, so ALL system require this now, not just windows.
 
 Why configure? These toolchains suck.
 --

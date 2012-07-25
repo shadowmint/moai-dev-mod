@@ -35,8 +35,11 @@ if (${DEBUG_MESSAGES})
   message("Importing ${PROJECT_KEY} from ${PROJECT_REAL_PATH}")
 endif()
 
+# Pick up the GOST library 
+file(GLOB_RECURSE OPENSSL_ENGINE_LIBS "${PROJECT_REAL_PATH}/crypto/engine/*.o")
+
 # Dependency target; skip build if it already magically exists
-set(PROJECT_LIB_TARGET "${PROJECT_REAL_PATH}/crypto/engine/eng_all.o;${PROJECT_REAL_PATH}/libssl.a;${PROJECT_REAL_PATH}/libcrypto.a")
+set(PROJECT_LIB_TARGET "${OPENSSEL_ENGINE_LIBS};${PROJECT_REAL_PATH}/libssl.a;${PROJECT_REAL_PATH}/libcrypto.a")
 set(LIB_MISSING 0)
 foreach(I ${PROJECT_LIB_TARGET})
   if (NOT EXISTS ${I})

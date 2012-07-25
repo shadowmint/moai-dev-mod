@@ -189,7 +189,7 @@ function(apply_cr_fix REAL_PATH)
 
       # Check if that file has a carriage return
       message("Checking ${FILE}")
-      set(CHECK_CMD "od -a ${FILE} | grep 'cr' -m 1\nif [[ $? != 0 ]]\; then\n exit 1\nfi")
+      set(CHECK_CMD "od -a ${FILE} | grep 'cr' -m 1\nif [ $? != 0 ]\; then\n exit 1\nfi")
       file(WRITE "${CHECK_CPATH}" ${CHECK_CMD})
       execute_process(COMMAND sh "${CHECK_CPATH}" RESULT_VARIABLE RESULT OUTPUT_VARIABLE OUTPUT)
 

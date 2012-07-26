@@ -152,9 +152,9 @@ function(invoke_autotools REAL_PATH EXTRA_FLAGS)
 endfunction()
 
 ## Manually create a lib archive 
-# @param FILES The list of files to add
 # @param OUTPUT The output target
-function(create_lib_archive FILES OUTPUT)
+# @param FILES The list of files to add
+function(create_lib_archive OUTPUT FILES)
 
   find_program(AR ar)
   if(NOT AR) 

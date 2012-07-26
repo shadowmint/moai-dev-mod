@@ -53,7 +53,7 @@ foreach(PATH ${PROJECT_DEPS})
   # Now for cmake to load the local instance of the libraries
   include("${${ITEM_PATH}_DIR}/${DEP_LOWER}Config.cmake")
   list(APPEND PROJECT_EXTRA_INCLUDES "${${DEP_ID}_INCLUDE_DIRS}")
-  list(APPEND PROJECT_EXTRA_LIBRARIES "${${DEP_ID}_LIBRARIES}")
+  set(PROJECT_EXTRA_LIBRARIES "${${DEP_ID}_LIBRARIES};${PROJECT_EXTRA_LIBRARIES}")
 endforeach()
 
 # Debug

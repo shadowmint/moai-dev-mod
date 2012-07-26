@@ -35,10 +35,15 @@ if (${DEBUG_MESSAGES})
   message("Importing ${PROJECT_KEY} from ${PROJECT_REAL_PATH}")
 endif()
 
+# Libraries
+set(OPENSSL_CRYPTO "${PROJECT_BINARY_DIR}/libcrypto.a")
+set(OPENSSL_SSL "${PROJECT_BINARY_DIR}/libssl.a")
+set(OPENSSL_ENGINES "${PROJECT_BINARY_DIR}/libengines.a")
+set(OPENSSL_ENGINE_LIBS "${OPENSSL_SSL};${OPENSSL_CRYPTO};${OPENSSL_ENGINES}")
+
 # Dependency target; skip build if it already magically exists
-set(PROJECT_LIB_TARGET "${PROJECT_REAL_PATH}/libssl.a;${PROJECT_REAL_PATH}/libcrypto.a")
 set(LIB_MISSING 0)
-foreach(I ${PROJECT_LIB_TARGET})
+foreach(I ${OPENSSL_ENGINE_LIBS})
   if (NOT EXISTS ${I})
     set(LIB_MISSING 1)
   endif()
@@ -57,37 +62,31 @@ if (${LIB_MISSING})
   # Build
   invoke_autotools("${PROJECT_REAL_PATH}" "${BUILD_EXTRA_FLAGS}" CONFIG_KEY "config" FORCE_CLEAN)
 
+  # Pick up symbols from openssl that aren't being bound correctly
+  file(GLOB_RECURSE FILES "${PROJECT_REAL_PATH}/crypto/*.o")
+  create_lib_archive(${OPENSSL_CRYPTO} "${FILES}")
+
+  file(GLOB_RECURSE FILES "${PROJECT_REAL_PATH}/ssl/*.o")
+  create_lib_archive(${OPENSSL_SSL} "${FILES}")
+
+  file(GLOB_RECURSE FILES "${PROJECT_REAL_PATH}/engines/*.o")
+  create_lib_archive(${OPENSSL_ENGINES} "${FILES}")
+
 endif()
 
 # Error if the build using autotools failed
 set(LIB_MISSING 0)
-foreach(I ${PROJECT_LIB_TARGET})
+foreach(I ${OPENSSL_ENGINE_LIBS})
   if (NOT EXISTS ${I})
     set(LIB_MISSING 1)
   endif()
 endforeach()
 if (${LIB_MISSING})
- message(FATAL_ERROR "Autotools fail! Unable to find target: ${PROJECT_LIB_TARGET}")
+ message(FATAL_ERROR "Autotools fail! Unable to find target: ${OPENSSL_ENGINE_LIBS}")
 endif()
-
-# Pick up symbols from openssl that aren't being bound correctly
-set(OPENSSL_CRYPTO "${PROJECT_BINARY_DIR}/libcrypto.a")
-file(GLOB_RECURSE FILES "${PROJECT_REAL_PATH}/crypto/*.o")
-create_lib_archive(${OPENSSL_CRYPTO} "${FILES}")
-
-set(OPENSSL_SSL "${PROJECT_BINARY_DIR}/libssl.a")
-file(GLOB_RECURSE FILES "${PROJECT_REAL_PATH}/ssl/*.o")
-create_lib_archive(${OPENSSL_SSL} "${FILES}")
-
-set(OPENSSL_ENGINES "${PROJECT_BINARY_DIR}/libengines.a")
-file(GLOB_RECURSE FILES "${PROJECT_REAL_PATH}/engines/*.o")
-create_lib_archive(${OPENSSL_ENGINES} "${FILES}")
-
-set(OPENSSL_ENGINE_LIBS "${OPENSSL_CRYPTO};${OPENSSL_SSL};${OPENSSL_ENGINES}")
 
 # Lib and includes
 set(PROJECT_INCLUDE_DIRS "${PROJECT_REAL_PATH}/include")
-set(PROJECT_LIBRARIES "${PROJECT_LIB_TARGET}")
 set(PROJECT_PATH ${PROJECT_REAL_PATH})
 if(WIN32)
   set(PROJECT_LIBRARIES "${OPENSSL_ENGINE_LIBS};ws2_32")

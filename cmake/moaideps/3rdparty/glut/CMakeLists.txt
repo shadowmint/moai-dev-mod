@@ -68,8 +68,12 @@ else()
     # <CR> breaks configure
     apply_cr_fix("${PROJECT_REAL_PATH}")
 
-    # Reconf? For mingw
-    # autoreconf --force --install
+    # Reconf for mingw
+    if(WIN32)
+      set(RECONF_CMD "autoreconf --force --install -i")
+      file(WRITE ${PROJECT_REAL_PATH}/cmake.reconf ${RECONF_CMD})
+      execute_process(COMMAND sh cmake.reconf WORKING_DIRECTORY ${PROJECT_REAL_PATH})
+    endif()
 
     # Build
     invoke_autotools("${PROJECT_REAL_PATH}" "${BUILD_EXTRA_FLAGS}")

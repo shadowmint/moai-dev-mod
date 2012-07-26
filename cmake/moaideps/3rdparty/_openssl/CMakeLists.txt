@@ -71,9 +71,18 @@ if (${LIB_MISSING})
 endif()
 
 # Pick up symbols from openssl that aren't being bound correctly
-file(GLOB_RECURSE OPENSSL_CRYPTO "${PROJECT_REAL_PATH}/crypto/*.o")
-file(GLOB_RECURSE OPENSSL_SSL "${PROJECT_REAL_PATH}/ssl/*.o")
-file(GLOB_RECURSE OPENSSL_ENGINES "${PROJECT_REAL_PATH}/engines/*.o")
+set(OPENSSL_CRYPTO "${PROJECT_BINARY_DIR}/libcrypto.a")
+file(GLOB_RECURSE FILES "${PROJECT_REAL_PATH}/crypto/*.o")
+create_lib_archive(${OPENSSL_CRYPTO} "${FILES}")
+
+set(OPENSSL_SSL "${PROJECT_BINARY_DIR}/libssl.a")
+file(GLOB_RECURSE FILES "${PROJECT_REAL_PATH}/ssl/*.o")
+create_lib_archive(${OPENSSL_SSL} "${FILES}")
+
+set(OPENSSL_ENGINES "${PROJECT_BINARY_DIR}/libengines.a")
+file(GLOB_RECURSE FILES "${PROJECT_REAL_PATH}/engines/*.o")
+create_lib_archive(${OPENSSL_ENGINES} "${FILES}")
+
 set(OPENSSL_ENGINE_LIBS "${OPENSSL_CRYPTO};${OPENSSL_SSL};${OPENSSL_ENGINES}")
 
 # Lib and includes

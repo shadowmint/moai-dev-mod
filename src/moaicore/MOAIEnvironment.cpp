@@ -6,14 +6,12 @@
 #include <moaicore/MOAILogMgr.h>
 #include <aku/AKU.h>
 
-#ifdef __MINGW32__
-  #define _WIN32_IE 0x0500
-  #include <shlobj.h>
-  #include <rpcdce.h>
-  RPC_STATUS RPC_ENTRY UuidCreateSequential(UUID*);
-#endif
-
 #ifdef _WIN32
+  #ifdef __MINGW32__
+    #include <winsock2.h>
+    #include <iphlpapi.h>
+    #define _WIN32_IE 0x0500
+  #endif
 	#include <shlobj.h>
 	typedef void (WINAPI *PGNSI)(LPSYSTEM_INFO);
 #endif
@@ -80,16 +78,31 @@ void MOAIEnvironment::DetectEnvironment () {
 	RTTI_SINGLE ( MOAIGlobalEventSource )
 	
 	#if defined( MOAI_OS_WINDOWS )
-	
+
 		this->SetValue ( MOAI_ENV_osBrand, "Windows" );
-		
-		UUID uuid;
-		UuidCreateSequential ( &uuid );
-		
-		// For now, we'll just use the MAC address which is the last 6 bytes of the uuid.
-		char buf[13];
-		sprintf ( buf, "%02X%02X%02X%02X%02X%02X", uuid.Data4[2], uuid.Data4[3], uuid.Data4[4], uuid.Data4[5], uuid.Data4[6], uuid.Data4[7]);
-		this->SetValue ( MOAI_ENV_udid, buf );
+    char buf[13];
+
+    /* MinGW doesn't like UuidCreateSequential on non-winnt */
+    #ifdef __MINGW32__
+      IP_ADAPTER_INFO AdapterInfo[2];
+      DWORD dwBufLen = sizeof(AdapterInfo);
+      DWORD dwStatus = GetAdaptersInfo(AdapterInfo, &dwBufLen);
+      assert(dwStatus == ERROR_SUCCESS);
+      PIP_ADAPTER_INFO pAdapterInfo = AdapterInfo;
+      for (int i = 0; i < pAdapterInfo->AddressLength; i++) {
+        if (i == (pAdapterInfo->AddressLength - 1))
+          printf("%.2X\n", (int) pAdapterInfo->Address[i]);
+        else
+          printf("%.2X-", (int) pAdapterInfo->Address[i]);
+      }
+      this->SetValue ( MOAI_ENV_udid, buf );
+    #else  
+      // For now, we'll just use the MAC address which is the last 6 bytes of the uuid.
+      UUID uuid;
+      UuidCreateSequential ( &uuid );
+      sprintf ( buf, "%02X%02X%02X%02X%02X%02X", uuid.Data4[2], uuid.Data4[3], uuid.Data4[4], uuid.Data4[5], uuid.Data4[6], uuid.Data4[7]);
+      this->SetValue ( MOAI_ENV_udid, buf );
+    #endif  
 		
 		char path[MAX_PATH];
 		//HRESULT hr = SHGetFolderPath(NULL, CSIDL_PERSONAL, NULL, SHGFP_TYPE_CURRENT, path);

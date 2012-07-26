@@ -15,7 +15,7 @@
 include(CMakeParseArguments)
 
 ## Configuration options
-set(MACROS_CONFIG_DISABLE_CR_CHECK 1)
+set(MACROS_CONFIG_DISABLE_CR_CHECK 0)
 
 ## Copy a single source file to a single target file. 
 function(copy_file DIR DEST TARGET COPY) 

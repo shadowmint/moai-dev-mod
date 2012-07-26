@@ -27,7 +27,6 @@ set(PROJECT_KEY "c-ares-1.7.5")
 # Copy to build directory
 set(PROJECT_SRC_PATH "${PROJECT_SOURCE_DIR}/../../../../3rdparty/${PROJECT_KEY}")
 set(PROJECT_REAL_PATH "${PROJECT_BINARY_DIR}/${PROJECT_KEY}")
-file(COPY ${PROJECT_SRC_PATH} DESTINATION ${PROJECT_BINARY_DIR})
 
 # Source and includes
 get_filename_component(PROJECT_REAL_PATH ${PROJECT_REAL_PATH} ABSOLUTE)
@@ -38,6 +37,9 @@ endif()
 # Dependency target; skip build if it already exists
 set(PROJECT_LIB_TARGET "${PROJECT_REAL_PATH}/.libs/libcares.a")
 if (NOT EXISTS ${PROJECT_LIB_TARGET})
+
+  # Take a copy to build with
+  file(COPY ${PROJECT_SRC_PATH} DESTINATION ${PROJECT_BINARY_DIR})
 
   # Platform config
   import_common_build_flags(BUILD_EXTRA_FLAGS)

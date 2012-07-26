@@ -27,7 +27,6 @@ set(PROJECT_KEY "openssl-1.0.1c")
 # Copy to build directory
 set(PROJECT_SRC_PATH "${PROJECT_SOURCE_DIR}/../../../../3rdparty/${PROJECT_KEY}")
 set(PROJECT_REAL_PATH "${PROJECT_BINARY_DIR}/${PROJECT_KEY}")
-file(COPY ${PROJECT_SRC_PATH} DESTINATION ${PROJECT_BINARY_DIR})
 
 # Source and includes
 get_filename_component(PROJECT_REAL_PATH ${PROJECT_REAL_PATH} ABSOLUTE)
@@ -49,6 +48,9 @@ foreach(I ${OPENSSL_ENGINE_LIBS})
   endif()
 endforeach()
 if (${LIB_MISSING})
+
+  # Take a copy to build with
+  file(COPY ${PROJECT_SRC_PATH} DESTINATION ${PROJECT_BINARY_DIR})
 
   # <CR> breaks configure
   apply_cr_fix("${PROJECT_REAL_PATH}")

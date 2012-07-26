@@ -170,7 +170,6 @@ function(create_lib_archive OUTPUT FILES)
   foreach(ITEM ${AR_ALL})
     set(AR_ITEM_CMD "${AR_CMD} ${ITEM}\n")
     file(APPEND ${AR_CMD_FILE} ${AR_ITEM_CMD})
-    message(${AR_ITEM_CMD})
   endforeach()
 
   execute_process(COMMAND sh ${AR_CMD_FILE})

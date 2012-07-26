@@ -31,7 +31,6 @@ set(PROJECT_KEY "libvorbis-1.3.3")
 # Copy to build directory
 set(PROJECT_SRC_PATH "${PROJECT_SOURCE_DIR}/../../../../3rdparty/${PROJECT_KEY}")
 set(PROJECT_REAL_PATH "${PROJECT_BINARY_DIR}/${PROJECT_KEY}")
-file(COPY ${PROJECT_SRC_PATH} DESTINATION ${PROJECT_BINARY_DIR})
 
 # Source and includes
 get_filename_component(PROJECT_REAL_PATH ${PROJECT_REAL_PATH} ABSOLUTE)
@@ -50,6 +49,9 @@ include(${PROJECT_BINARY_DIR}/../ogg/oggConfig.cmake)
 
 # Dependency target; skip building if it exists already.
 if (NOT EXISTS ${PROJECT_LIBRARIES})
+
+  # Take a copy to work with
+  file(COPY ${PROJECT_SRC_PATH} DESTINATION ${PROJECT_BINARY_DIR})
 
   # <CR> breaks configure
   apply_cr_fix("${PROJECT_REAL_PATH}")

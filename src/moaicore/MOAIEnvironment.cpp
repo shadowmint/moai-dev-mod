@@ -84,17 +84,6 @@ void MOAIEnvironment::DetectEnvironment () {
 
     /* MinGW doesn't like UuidCreateSequential on non-winnt */
     #ifdef __MINGW32__
-      IP_ADAPTER_INFO AdapterInfo[2];
-      DWORD dwBufLen = sizeof(AdapterInfo);
-      DWORD dwStatus = GetAdaptersInfo(AdapterInfo, &dwBufLen);
-      assert(dwStatus == ERROR_SUCCESS);
-      PIP_ADAPTER_INFO pAdapterInfo = AdapterInfo;
-      for (int i = 0; i < pAdapterInfo->AddressLength; i++) {
-        if (i == (pAdapterInfo->AddressLength - 1))
-          printf("%.2X\n", (int) pAdapterInfo->Address[i]);
-        else
-          printf("%.2X-", (int) pAdapterInfo->Address[i]);
-      }
       this->SetValue ( MOAI_ENV_udid, buf );
     #else  
       // For now, we'll just use the MAC address which is the last 6 bytes of the uuid.

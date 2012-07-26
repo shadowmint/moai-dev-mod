@@ -65,7 +65,7 @@ else()
     else()
       import_common_build_flags(BUILD_EXTRA_FLAGS)
     endif()
-    set(BUILD_EXTRA_FLAGS "${BUILD_EXTRA_FLAGS} --enable-shared=no")
+    set(BUILD_EXTRA_FLAGS "${BUILD_EXTRA_FLAGS} --enable-shared=no CFLAGS=-DFREEGLUT_STATIC")
 
     # <CR> breaks configure
     apply_cr_fix("${PROJECT_REAL_PATH}")
@@ -90,7 +90,7 @@ else()
   # Opengl
   if(WIN32)
     find_package(OpenGL)
-    set(EXTRA_LIBS "${EXTRA_LIBS};gdi32;opengl32;glu32")
+    set(EXTRA_LIBS "${EXTRA_LIBS};gdi32;opengl32;glu32;winmm")
   elseif(APPLE)
     find_package(OpenGL)
     set(EXTRA_LIBS "${EXTRA_LIBS};${OPENGL_LIBRARIES}")

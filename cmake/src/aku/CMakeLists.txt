@@ -41,6 +41,12 @@ endif()
 # Host includes
 include_directories(${PROJECT_HOST_PATH})
 
+# Flags for mingw
+if(WIN32) 
+  set(CMAKE_C_FLAGS "-DFREEGLUT_STATIC")
+  set(CMAKE_CXX_FLAGS "-DFREEGLUT_STATIC")
+endif()
+
 # Get sources
 file(GLOB PROJECT_SOURCES "${PROJECT_REAL_PATH}/*.cpp")
 list(APPEND PROJECT_SOURCES ${EXTRA_SOURCES})
@@ -55,7 +61,7 @@ filter_list("${PROJECT_SOURCES}" "AKU-audiosampler.cpp;AKU-untz.cpp;AKU-adcolony
 # Library
 add_library(aku STATIC ${PROJECT_SOURCES})
 
-# CFlags for osx glut support
+# Flags for osx glut support
 if(APPLE)
   set(EXTRA_INCS "/usr/X11R6/include")
   include_directories(${EXTRA_INCS})

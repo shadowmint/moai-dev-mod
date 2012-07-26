@@ -50,13 +50,15 @@ add_library(moaicore STATIC ${PROJECT_SOURCES})
 # Own special include dirs
 set(PROJECT_INCLUDE_DIRS "${PROJECT_INCLUDE_DIRS};${PROJECT_REAL_PATH}/../config-default")
 
+# Mingw deps
+if(WIN32)
+  target_link_libraries(moaicore rpcrt4)
+endif()
+
 # Dependencies and includes
 include_directories(${PROJECT_INCLUDE_DIRS})
 target_link_libraries(moaicore ${PROJECT_LIBRARIES})
 set(PROJECT_LIBRARIES "moaicore;moaideps")
-if(WIN32) # Mingw special hacks
-  set(PROJECT_LIBRARIES "${PROJECT_LIBRARIES};psapi")
-endif()
 set(PROJECT_NAME "MOAICORE")
 
 # Export libraries

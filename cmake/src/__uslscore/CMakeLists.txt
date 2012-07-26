@@ -45,9 +45,14 @@ include(${PROJECT_BINARY_DIR}/../___zlcore/zlcoreConfig.cmake)
 include_directories(${ZLCORE_INCLUDE_DIRS})
 target_link_libraries(uslscore ${ZLCORE_LIBRARIES})
 
+# Mingw deps
+if(WIN32)
+  target_link_libraries(uslscore psapi iphlpapi)
+endif()
+
 # Dependencies and includes
 set(PROJECT_INCLUDE_DIRS "${PROJECT_REAL_PATH}/..")
-set(PROJECT_LIBRARIES "uslscore")
+set(PROJECT_LIBRARIES uslscore)
 
 # Export libraries
 set(PROJECT_NAME "USLSCORE")

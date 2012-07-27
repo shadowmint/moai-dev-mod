@@ -332,7 +332,7 @@ static void _cleanup () {
 }
 
 //----------------------------------------------------------------//
-int GlutHost ( int argc, char** argv ) {
+int GlutHost ( int argc, char** argv, initfunc_t init) {
 
 	// TODO: integrate this nicely with host
 	//AKUInitMemPool ( 100 * 1024 * 1024 );
@@ -367,7 +367,11 @@ int GlutHost ( int argc, char** argv ) {
 			FWWatchFolder( lastScript );
 		#endif
 	}
-	
+
+  // If there is an init call, invoke that.
+  if ( init != NULL ) 
+    init();
+
 	if ( sHasWindow ) {
 		glutTimerFunc ( 0, _onTimer, 0 );
 		glutMainLoop ();

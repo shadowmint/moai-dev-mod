@@ -61,5 +61,10 @@ target_link_libraries(moaicore ${PROJECT_LIBRARIES})
 set(PROJECT_LIBRARIES "moaicore;moaideps")
 set(PROJECT_NAME "MOAICORE")
 
+# Pthread support
+if (NOT WIN32)
+  set(PROJECT_LIBRARIES "${PROJECT_LIBRARIES};pthread")
+endif()
+
 # Export libraries
 configure_file(${key}Config.cmake.in "${PROJECT_BINARY_DIR}/${key}Config.cmake")

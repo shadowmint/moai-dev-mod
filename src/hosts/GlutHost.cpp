@@ -365,8 +365,6 @@ int GlutHost ( int argc, char** argv, initfunc init ) {
 			winhostext_WatchFolder ( lastScript );
 		#elif __APPLE__
 			FWWatchFolder( lastScript );
-		#else
-			FWWatchFolder( lastScript );
 		#endif
 	}
 

@@ -332,7 +332,11 @@ static void _cleanup () {
 }
 
 //----------------------------------------------------------------//
+<<<<<<< HEAD
 int GlutHost ( int argc, char** argv, initfunc_t init) {
+=======
+int GlutHost ( int argc, char** argv, initfunc init ) {
+>>>>>>> origin/master
 
 	// TODO: integrate this nicely with host
 	//AKUInitMemPool ( 100 * 1024 * 1024 );
@@ -371,7 +375,7 @@ int GlutHost ( int argc, char** argv, initfunc_t init) {
   // If there is an init call, invoke that.
   if ( init != NULL ) 
     init();
-
+	
 	if ( sHasWindow ) {
 		glutTimerFunc ( 0, _onTimer, 0 );
 		glutMainLoop ();

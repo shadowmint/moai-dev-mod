@@ -5,10 +5,10 @@
 #define	GLUTHOST
 
 //----------------------------------------------------------------//
-typedef void (*initfunc) (void);
+typedef void (*initfunc_t) (void);
 
 //----------------------------------------------------------------//
-int		GlutHost				( int argc, char** arg, initfunc );
+int		GlutHost				( int argc, char** arg, initfunc_t init );
 void	GlutRefreshContext		();
 
 #endif

@@ -332,11 +332,7 @@ static void _cleanup () {
 }
 
 //----------------------------------------------------------------//
-<<<<<<< HEAD
 int GlutHost ( int argc, char** argv, initfunc_t init) {
-=======
-int GlutHost ( int argc, char** argv, initfunc init ) {
->>>>>>> origin/master
 
 	// TODO: integrate this nicely with host
 	//AKUInitMemPool ( 100 * 1024 * 1024 );

@@ -1,3 +1,6 @@
+moai-dev-mod
+==
+
 This is a fork for messing around with the moai base code in a way that probably doesn't
 merge cleanly back into the mainline, and experimental cmake build methods, considerably
 expanded 3rd party library baseline.
@@ -7,9 +10,8 @@ They are not supported. Only the cmake build is supported.
 
 The targets for this fork are: osx, windows, linux, android. 
 
---
-
 Welcome to Moai!
+--
 
 Thanks for checking out the Moai source code. Here's the scoop.
 

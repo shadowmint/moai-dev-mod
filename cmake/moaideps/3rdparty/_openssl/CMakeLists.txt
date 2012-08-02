@@ -13,9 +13,10 @@
 # limitations under the License.
 
 cmake_minimum_required (VERSION 2.8)
-project(expat)
+project(openssl)
 
-# Import macros
+# Import macros & setup
+string(TOUPPER ${PROJECT_NAME} _PROJECT_NAME)
 file(GLOB PROJECT_MACROS "${PROJECT_SOURCE_DIR}/../../cmake/*.cmake")
 foreach(ITEM ${PROJECT_MACROS})
   include(${ITEM})
@@ -24,78 +25,42 @@ endforeach()
 # Config
 set(PROJECT_KEY "openssl-1.0.1c")
 
-# Copy to build directory
-set(PROJECT_SRC_PATH "${PROJECT_SOURCE_DIR}/../../../../3rdparty/${PROJECT_KEY}")
-set(PROJECT_REAL_PATH "${PROJECT_BINARY_DIR}/${PROJECT_KEY}")
-
-# Source and includes
+# Setup
+set(PROJECT_REAL_PATH "${PROJECT_SOURCE_DIR}/../../../../3rdparty/${PROJECT_KEY}")
 get_filename_component(PROJECT_REAL_PATH ${PROJECT_REAL_PATH} ABSOLUTE)
 if (${DEBUG_MESSAGES})
   message("Importing ${PROJECT_KEY} from ${PROJECT_REAL_PATH}")
 endif()
 
-# Libraries
-set(OPENSSL_CRYPTO "${PROJECT_BINARY_DIR}/libcrypto.a")
-set(OPENSSL_SSL "${PROJECT_BINARY_DIR}/libssl.a")
-set(OPENSSL_ENGINES "${PROJECT_BINARY_DIR}/libengines.a")
-set(OPENSSL_ENGINE_LIBS "${OPENSSL_SSL};${OPENSSL_CRYPTO};${OPENSSL_ENGINES}")
-
-# Dependency target; skip build if it already magically exists
-set(LIB_MISSING 0)
-foreach(I ${OPENSSL_ENGINE_LIBS})
-  if (NOT EXISTS ${I})
-    set(LIB_MISSING 1)
-  endif()
+# Openssl config uses symlinks that dont work on windwos
+set(PROJECT_CUSTOM_INCLUDES "${CMAKE_CURRENT_BINARY_DIR}/include")
+file(COPY ${PROJECT_REAL_PATH}/include DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(GLOB_RECURSE PROJECT_CUSTOM_INC "${PROJECT_REAL_PATH}/*.h")
+foreach(ITEM ${PROJECT_CUSTOM_INC}) 
+  get_filename_component(ITEM_PATH ${ITEM} PATH)
+  get_filename_component_last(${ITEM_PATH} ITEM_LAST_PATH)
+  if(NOT ITEM_LAST_PATH STREQUAL "openssl")
+    message(" ${ITEM} ${ITEM_LAST_PATH} ")
+    string(REPLACE "${ITEM_PATH}" "" ITEM_PATH ${ITEM})
+    configure_file(${ITEM} ${PROJECT_CUSTOM_INCLUDES}/openssl/${ITEM_PATH} COPY_ONLY)
+  endif()  
 endforeach()
-if (${LIB_MISSING})
 
-  # Take a copy to build with
-  file(COPY ${PROJECT_SRC_PATH} DESTINATION ${PROJECT_BINARY_DIR})
+# Includes
+include_directories("${PROJECT_CUSTOM_INCLUDES}")
+set(PROJECT_INCLUDE_DIRS "${PROJECT_CUSTOM_INCLUDES}")
 
-  # <CR> breaks configure
-  apply_cr_fix("${PROJECT_REAL_PATH}")
+# libcrypto
+file(GLOB_RECURSE PROJECT_SOURCES "${PROJECT_REAL_PATH}/crypto/*.c")
+#filter_list("${PROJECT_SOURCES}" "lua.c;luac.c" PROJECT_SOURCES)
+add_library(${PROJECT_NAME}_libcrypto STATIC ${PROJECT_SOURCES})
 
-  # Dont build a shared lib
-  set(BUILD_EXTRA_FLAGS "no-shared")
-  if(APPLE)
-    set(BUILD_EXTRA_FLAGS "no-asm no-krb5 ${BUILD_EXTRA_FLAGS}")
-  endif()
-
-  # Build
-  invoke_autotools("${PROJECT_REAL_PATH}" "${BUILD_EXTRA_FLAGS}" CONFIG_KEY "config" FORCE_CLEAN)
-
-  # Pick up symbols from openssl that aren't being bound correctly
-  file(GLOB_RECURSE FILES "${PROJECT_REAL_PATH}/crypto/*.o")
-  create_lib_archive(${OPENSSL_CRYPTO} "${FILES}")
-
-  file(GLOB_RECURSE FILES "${PROJECT_REAL_PATH}/ssl/*.o")
-  create_lib_archive(${OPENSSL_SSL} "${FILES}")
-
-  file(GLOB_RECURSE FILES "${PROJECT_REAL_PATH}/engines/*.o")
-  create_lib_archive(${OPENSSL_ENGINES} "${FILES}")
-
-endif()
-
-# Error if the build using autotools failed
-set(LIB_MISSING 0)
-foreach(I ${OPENSSL_ENGINE_LIBS})
-  if (NOT EXISTS ${I})
-    set(LIB_MISSING 1)
-  endif()
-endforeach()
-if (${LIB_MISSING})
- message(FATAL_ERROR "Autotools fail! Unable to find target: ${OPENSSL_ENGINE_LIBS}")
-endif()
-
-# Lib and includes
-set(PROJECT_INCLUDE_DIRS "${PROJECT_REAL_PATH}/include")
-set(PROJECT_PATH ${PROJECT_REAL_PATH})
-if(WIN32)
-  set(PROJECT_LIBRARIES "${OPENSSL_ENGINE_LIBS};ws2_32")
-else()
-  set(PROJECT_LIBRARIES "${OPENSSL_ENGINE_LIBS};dl")
-endif()
-set(PROJECT_NAME "OPENSSL")
+# libssl
+file(GLOB_RECURSE PROJECT_SOURCES "${PROJECT_REAL_PATH}/ssl/*.c")
+#filter_list("${PROJECT_SOURCES}" "lua.c;luac.c" PROJECT_SOURCES)
+add_library(${PROJECT_NAME}_libssl STATIC ${PROJECT_SOURCES})
 
 # Export libraries
-CONFIGURE_FILE(opensslConfig.cmake.in "${PROJECT_BINARY_DIR}/opensslConfig.cmake")
+set(PROJECT_LIBRARIES ${PROJECT_NAME}_libssl ${PROJECT_NAME}_libcrypto)
+
+CONFIGURE_FILE(${PROJECT_NAME}Config.cmake.in "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake")

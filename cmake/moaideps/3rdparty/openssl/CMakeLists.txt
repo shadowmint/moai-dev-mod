@@ -31,10 +31,11 @@ get_filename_component(PROJECT_REAL_PATH ${PROJECT_REAL_PATH} ABSOLUTE)
 if (${DEBUG_MESSAGES})
   message("Importing ${PROJECT_KEY} from ${PROJECT_REAL_PATH}")
 endif()
-set(CMAKE_C_FLAGS "-std=c99")
+set(CMAKE_C_FLAGS "-std=gnu99")
 
 # Config
 add_definitions(-DOPENSSL_NO_KRB5)
+add_definitions(-DOPENSSL_NO_SCTP)
 add_definitions(-DOPENSSL_NO_DEPRECATED)
 
 # Openssl config uses symlinks that dont work on windwos
@@ -63,7 +64,8 @@ configure_file(${PROJECT_REAL_PATH}/crypto/ec/ec_lcl.h ${CMAKE_CURRENT_BINARY_DI
 
 # libcrypto
 set(LIB_EX 
-  aes_x86core.c armcap.c
+  aes_x86core.c armcap.c bf_opts.c bftest.c bio_ber.c
+  bss_rtcp.c
 )
 set(LIB_BUILD_DIR ${CMAKE_CURRENT_BINARY_DIR}/crypto)
 file(GLOB_RECURSE PROJECT_SOURCES "${PROJECT_REAL_PATH}/crypto/*.c")

@@ -13,14 +13,14 @@
 # limitations under the License.
 
 # Project control
-set(key "zlcore")
+set(key "uslscore")
 string(TOUPPER ${key} KEY) 
 
 cmake_minimum_required (VERSION 2.8)
 project(${key})
 
 # Source and includes
-set(PROJECT_REAL_PATH "${PROJECT_SOURCE_DIR}/../../../src/zlcore/")
+set(PROJECT_REAL_PATH "${PROJECT_SOURCE_DIR}/../../../src/uslscore/")
 get_filename_component(PROJECT_REAL_PATH ${PROJECT_REAL_PATH} ABSOLUTE)
 if (${DEBUG_MESSAGES})
   message("Importing ${key} from ${PROJECT_REAL_PATH}")
@@ -28,23 +28,32 @@ endif()
 file(GLOB PROJECT_SOURCES "${PROJECT_REAL_PATH}/*.cpp")
 
 # Library
-add_library(zlcore STATIC ${PROJECT_SOURCES})
+add_library(uslscore STATIC ${PROJECT_SOURCES})
 
 # Compatability
-include(${PROJECT_BINARY_DIR}/../___vscompat/vscompatConfig.cmake)
+include(${PROJECT_BINARY_DIR}/../vscompat/vscompatConfig.cmake)
 include_directories(${VSCOMPAT_INCLUDE_DIRS})
-target_link_libraries(zlcore ${VSCOMPAT_LIBRARIES})
+target_link_libraries(uslscore ${VSCOMPAT_LIBRARIES})
 
 # All 3rdparty libs
 include(${PROJECT_BINARY_DIR}/../../moaideps/moaidepsConfig.cmake)
 include_directories(${MOAI_DEPS_INCLUDE_DIRS})
-target_link_libraries(zlcore ${MOAI_DEPS_LIBRARIES})
+target_link_libraries(uslscore ${MOAI_DEPS_LIBRARIES})
+
+# Import zlcore
+include(${PROJECT_BINARY_DIR}/../zlcore/zlcoreConfig.cmake)
+include_directories(${ZLCORE_INCLUDE_DIRS})
+target_link_libraries(uslscore ${ZLCORE_LIBRARIES})
+
+# Mingw deps
+if(WIN32)
+  target_link_libraries(uslscore psapi iphlpapi)
+endif()
 
 # Dependencies and includes
-set(PROJECT_LIBRARIES "zlcore")
-set(PROJECT_INCLUDE_DIRS "${PROJECT_REAL_PATH}/../")
-include_directories("${PROJECT_INCLUDE_DIRS}")
+set(PROJECT_INCLUDE_DIRS "${PROJECT_REAL_PATH}/..")
+set(PROJECT_LIBRARIES uslscore)
 
 # Export libraries
-set(PROJECT_NAME "ZLCORE")
+set(PROJECT_NAME "USLSCORE")
 configure_file(${key}Config.cmake.in "${PROJECT_BINARY_DIR}/${key}Config.cmake")

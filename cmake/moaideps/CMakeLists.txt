@@ -34,26 +34,23 @@ set(PROJECT_EXTRA_LIBRARIES "")
 set(PROJECT_EXTRA_INCLUDES "")
 
 # Add dependencies
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/3rdparty")
 file(GLOB PROJECT_DEPS "${PROJECT_SOURCE_DIR}/3rdparty/*")
-list(SORT PROJECT_DEPS)
 foreach(PATH ${PROJECT_DEPS}) 
 
-  add_subdirectory(${PATH})
-
   # Force cmake to look locally for the library instance
-  get_filename_component_last(${PATH} ITEM_PATH)
+  get_filename_component_last(${PATH} DEP_LOWER)
+  if(NOT ${DEP_LOWER} STREQUAL "CMakeLists.txt")
 
-  # Allow _blah, __blah, etc. so the import order is correct
-  string(REGEX REPLACE "_+" "" DEP_LOWER ${ITEM_PATH})
+    # Convert to dep id
+    string(TOUPPER ${DEP_LOWER} DEP_ID)
+    set(${DEP_LOWER}_DIR "${PROJECT_BINARY_DIR}/3rdparty/${DEP_LOWER}")
 
-  # Convert to dep id
-  string(TOUPPER ${DEP_LOWER} DEP_ID)
-  set(${ITEM_PATH}_DIR "${PROJECT_BINARY_DIR}/3rdparty/${ITEM_PATH}")
-
-  # Now for cmake to load the local instance of the libraries
-  include("${${ITEM_PATH}_DIR}/${DEP_LOWER}Config.cmake")
-  list(APPEND PROJECT_EXTRA_INCLUDES "${${DEP_ID}_INCLUDE_DIRS}")
-  set(PROJECT_EXTRA_LIBRARIES "${${DEP_ID}_LIBRARIES};${PROJECT_EXTRA_LIBRARIES}")
+    # Now for cmake to load the local instance of the libraries
+    include("${${DEP_LOWER}_DIR}/${DEP_LOWER}Config.cmake")
+    list(APPEND PROJECT_EXTRA_INCLUDES "${${DEP_ID}_INCLUDE_DIRS}")
+    set(PROJECT_EXTRA_LIBRARIES "${${DEP_ID}_LIBRARIES};${PROJECT_EXTRA_LIBRARIES}")
+  endif()  
 endforeach()
 
 # Debug

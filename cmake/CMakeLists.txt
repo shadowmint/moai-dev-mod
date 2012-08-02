@@ -22,11 +22,7 @@ set(CMAKE_OSX_ARCHITECTURES "i386")
 add_subdirectory("${PROJECT_SOURCE_DIR}/moaideps")
 
 # Add projects
-file(GLOB PROJECT_DEPS "${PROJECT_SOURCE_DIR}/src/*")
-list(SORT PROJECT_DEPS)
-foreach(PATH ${PROJECT_DEPS}) 
-  add_subdirectory("${PATH}")
-endforeach()
+add_subdirectory("src")
 
 # Path
 set(PROJECT_PATH "${PROJECT_SOURCE_DIR}/../src/moai")

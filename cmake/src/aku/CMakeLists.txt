@@ -68,12 +68,12 @@ if(APPLE)
 endif()
 
 # Compatability
-include(${PROJECT_BINARY_DIR}/../___vscompat/vscompatConfig.cmake)
+include(${PROJECT_BINARY_DIR}/../vscompat/vscompatConfig.cmake)
 include_directories(${VSCOMPAT_INCLUDE_DIRS})
 target_link_libraries(aku ${VSCOMPAT_LIBRARIES})
 
 # Import moai core
-include(${PROJECT_BINARY_DIR}/../_moaicore/moaicoreConfig.cmake)
+include(${PROJECT_BINARY_DIR}/../moaicore/moaicoreConfig.cmake)
 include_directories(${MOAICORE_INCLUDE_DIRS})
 target_link_libraries(aku ${MOAICORE_LIBRARIES})
 

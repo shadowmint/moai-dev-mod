@@ -30,7 +30,7 @@ set(PROJECT_INCLUDE_DIRS "${PROJECT_REAL_PATH}/")
 set(PROJECT_LIBRARIES "")
 
 # Compatability
-include(${PROJECT_BINARY_DIR}/../___vscompat/vscompatConfig.cmake)
+include(${PROJECT_BINARY_DIR}/../vscompat/vscompatConfig.cmake)
 include_directories(${VSCOMPAT_INCLUDE_DIRS})
 set(PROJECT_LIBRARIES "${PROJECT_LIBRARIES};${VSCOMPAT_LIBRARIES}")
 
@@ -39,8 +39,12 @@ include(${PROJECT_BINARY_DIR}/../../moaideps/moaidepsConfig.cmake)
 set(PROJECT_INCLUDE_DIRS "${PROJECT_INCLUDE_DIRS};${MOAI_DEPS_INCLUDE_DIRS}")
 set(PROJECT_LIBRARIES "${PROJECT_LIBRARIES};${MOAI_DEPS_LIBRARIES}")
 
+# 3rdparty header config
+add_definitions(-DOPENSSL_NO_KRB5)
+add_definitions(-DOPENSSL_NO_DEPRECATED)
+
 # uslscore
-include(${PROJECT_BINARY_DIR}/../__uslscore/uslscoreConfig.cmake)
+include(${PROJECT_BINARY_DIR}/../uslscore/uslscoreConfig.cmake)
 set(PROJECT_INCLUDE_DIRS "${PROJECT_INCLUDE_DIRS};${USLSCORE_INCLUDE_DIRS}")
 set(PROJECT_LIBRARIES "${PROJECT_LIBRARIES};${USLSCORE_LIBRARIES}")
 

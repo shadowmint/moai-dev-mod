@@ -38,7 +38,7 @@ if (${DEBUG_MESSAGES})
 endif()
 
 # Ogg dep
-include(${PROJECT_BINARY_DIR}/../_zlib/zlibConfig.cmake)
+include(${PROJECT_BINARY_DIR}/../zlib/zlibConfig.cmake)
 
 # Build library (static)
 include_directories(${PROJECT_INCLUDE_DIRS})

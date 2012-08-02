@@ -35,7 +35,7 @@ if (${DEBUG_MESSAGES})
 endif()
 
 # SSL dep
-include(${PROJECT_REAL_PATH}/../../_openssl/opensslConfig.cmake)
+include(${PROJECT_REAL_PATH}/../../openssl/opensslConfig.cmake)
 
 # Dependency target; skip building if it exists already.
 set(PROJECT_LIB_TARGET "${PROJECT_REAL_PATH}/lib/.libs/libcurl.a")

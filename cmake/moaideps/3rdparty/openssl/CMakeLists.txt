@@ -62,18 +62,21 @@ set(PROJECT_INCLUDE_DIRS "${PROJECT_CUSTOM_INCLUDES}")
 configure_file(${PROJECT_REAL_PATH}/crypto/ec/ec_lcl.h ${CMAKE_CURRENT_BINARY_DIR}/crypto/ec/ec_lcl.h)
 
 # libcrypto
-#set(LIB_BUILD_DIR ${CMAKE_CURRENT_BINARY_DIR}/crypto)
-#file(GLOB_RECURSE PROJECT_SOURCES "${PROJECT_REAL_PATH}/crypto/*.c")
-#filter_list("${PROJECT_SOURCES}" "aes_x86core.c" PROJECT_SOURCES)
-#file(MAKE_DIRECTORY ${LIB_BUILD_DIR})
-#foreach(ITEM ${PROJECT_SOURCES}) 
-  #file(COPY ${ITEM} DESTINATION ${LIB_BUILD_DIR})
-#endforeach()
-#foreach(ITEM ${PROJECT_CUSTOM_INC_SET}) 
-  #file(COPY ${ITEM} DESTINATION ${LIB_BUILD_DIR})
-#endforeach()
-#file(GLOB PROJECT_SOURCES "${LIB_BUILD_DIR}/*.c")
-#add_library(${PROJECT_NAME}_libcrypto STATIC ${PROJECT_SOURCES})
+set(LIB_EX 
+  aes_x86core.c armcap.c
+)
+set(LIB_BUILD_DIR ${CMAKE_CURRENT_BINARY_DIR}/crypto)
+file(GLOB_RECURSE PROJECT_SOURCES "${PROJECT_REAL_PATH}/crypto/*.c")
+filter_list("${PROJECT_SOURCES}" "${LIB_EX}" PROJECT_SOURCES)
+file(MAKE_DIRECTORY ${LIB_BUILD_DIR})
+foreach(ITEM ${PROJECT_SOURCES}) 
+  file(COPY ${ITEM} DESTINATION ${LIB_BUILD_DIR})
+endforeach()
+foreach(ITEM ${PROJECT_CUSTOM_INC_SET}) 
+  file(COPY ${ITEM} DESTINATION ${LIB_BUILD_DIR})
+endforeach()
+file(GLOB PROJECT_SOURCES "${LIB_BUILD_DIR}/*.c")
+add_library(${PROJECT_NAME}_libcrypto STATIC ${PROJECT_SOURCES})
 
 # libssl
 set(LIB_BUILD_DIR ${CMAKE_CURRENT_BINARY_DIR}/ssl)
@@ -100,7 +103,6 @@ file(GLOB PROJECT_SOURCES "${LIB_BUILD_DIR}/*.c")
 add_library(${PROJECT_NAME}_libssl STATIC ${PROJECT_SOURCES})
 
 # Export libraries
-#set(PROJECT_LIBRARIES ${PROJECT_NAME}_libssl ${PROJECT_NAME}_libcrypto)
-set(PROJECT_LIBRARIES ${PROJECT_NAME}_libssl)
+set(PROJECT_LIBRARIES ${PROJECT_NAME}_libssl ${PROJECT_NAME}_libcrypto)
 
 CONFIGURE_FILE(${PROJECT_NAME}Config.cmake.in "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake")

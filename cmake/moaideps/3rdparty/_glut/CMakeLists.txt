@@ -39,6 +39,11 @@ endif()
 include_directories(${PROJECT_INCLUDE_DIRS})
 add_library(${PROJECT_NAME} STATIC ${PROJECT_SOURCES})
 
+# Build config
+if(WIN32)
+  add_definitions(-DFREEGLUT_STATIC=1)
+endif()
+
 # Opengl
 if(WIN32)
   find_package(OpenGL)

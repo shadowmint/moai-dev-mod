@@ -37,6 +37,10 @@
 #    include <sys/param.h>
 #endif
 
+#if defined(__linux__)
+#include <fcntl.h>
+#endif
+
 /*
  * Initial defines from "js.h" starting around line 33 with the existing "freeglut_joystick.c"
  * interspersed

@@ -65,7 +65,7 @@ configure_file(${PROJECT_REAL_PATH}/crypto/ec/ec_lcl.h ${CMAKE_CURRENT_BINARY_DI
 # libcrypto
 set(LIB_EX 
   aes_x86core.c armcap.c bf_opts.c bftest.c bio_ber.c
-  bss_rtcp.c
+  bss_rtcp.c cast_spd.c casttest.c castopts.c
 )
 set(LIB_BUILD_DIR ${CMAKE_CURRENT_BINARY_DIR}/crypto)
 file(GLOB_RECURSE PROJECT_SOURCES "${PROJECT_REAL_PATH}/crypto/*.c")

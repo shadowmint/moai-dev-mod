@@ -15,95 +15,45 @@
 cmake_minimum_required (VERSION 2.8)
 project(glut)
 
-# On OSX use the inbuilt glut
-if(APPLE)
+# Import macros & setup
+string(TOUPPER ${PROJECT_NAME} _PROJECT_NAME)
+file(GLOB PROJECT_MACROS "${PROJECT_SOURCE_DIR}/../../cmake/*.cmake")
+foreach(ITEM ${PROJECT_MACROS})
+  include(${ITEM})
+endforeach()
 
-  include_directories(/System/Library/Frameworks)
-  find_package(GLUT)
-  find_package(OPENGL)
-  find_library(COCOA_LIBRARY Cocoa)
-  mark_as_advanced(COCOA_LIBRARY OPENGL_LIBRARIES GLUT_LIBRARIES)
-  set(EXTRA_LIBS "${EXTRA_LIBS};${COCOA_LIBRARY};${OPENGL_LIBRARIES};${GLUT_LIBRARIES}")
+# Config
+set(PROJECT_KEY "freeglut-2.8.0")
 
-  # Lib and includes
-  set(PROJECT_INCLUDE_DIRS "${GLUT_INCLUDE_DIRS};${OPENGL_INCLUDE_DIRS}")
-  set(PROJECT_LIBRARIES "${EXTRA_LIBS}")
-  set(PROJECT_NAME "GLUT")
-
-# Otherwise build and use freeglut
-else() 
-
-  # Import macros
-  file(GLOB PROJECT_MACROS "${PROJECT_SOURCE_DIR}/../../cmake/*.cmake")
-  foreach(ITEM ${PROJECT_MACROS})
-    include(${ITEM})
-  endforeach()
-
-  # Config
-  set(PROJECT_KEY "freeglut-2.8.0")
-
-  # Copy to build directory
-  set(PROJECT_SRC_PATH "${PROJECT_SOURCE_DIR}/../../../../3rdparty/${PROJECT_KEY}")
-  set(PROJECT_REAL_PATH "${PROJECT_BINARY_DIR}/${PROJECT_KEY}")
-
-  # Source and includes
-  get_filename_component(PROJECT_REAL_PATH ${PROJECT_REAL_PATH} ABSOLUTE)
-  if (${DEBUG_MESSAGES})
-    message("Importing ${PROJECT_KEY} from ${PROJECT_REAL_PATH}")
-  endif()
-
-  # Dependency target; skip build if it already magically exists
-  set(PROJECT_LIB_TARGET "${PROJECT_REAL_PATH}/src/.libs/libglut.a;")
-  if (NOT EXISTS ${PROJECT_LIB_TARGET})
-
-    # Take a copy to build with
-    file(COPY ${PROJECT_SRC_PATH} DESTINATION ${PROJECT_BINARY_DIR})
-
-    # Platform config
-    if(APPLE)
-      import_common_build_flags(BUILD_EXTRA_FLAGS EXTRA_C_FLAGS "-I/usr/X11R6/include")
-    else()
-      import_common_build_flags(BUILD_EXTRA_FLAGS)
-    endif()
-    set(BUILD_EXTRA_FLAGS "${BUILD_EXTRA_FLAGS} --enable-shared=no CFLAGS=-DFREEGLUT_STATIC")
-
-    # <CR> breaks configure
-    apply_cr_fix("${PROJECT_REAL_PATH}")
-
-    # Reconf for mingw
-    if(WIN32)
-      set(RECONF_CMD "autoreconf --force --install -i")
-      file(WRITE ${PROJECT_REAL_PATH}/cmake.reconf ${RECONF_CMD})
-      execute_process(COMMAND sh cmake.reconf WORKING_DIRECTORY ${PROJECT_REAL_PATH})
-    endif()
-
-    # Build
-    invoke_autotools("${PROJECT_REAL_PATH}" "${BUILD_EXTRA_FLAGS}")
-
-  endif()
-
-  # Error if the build using autotools failed
-  if (NOT EXISTS ${PROJECT_LIB_TARGET})
-   message(FATAL_ERROR "Autotools fail! Unable to find target: ${PROJECT_LIB_TARGET}")
-  endif()
-
-  # Opengl
-  if(WIN32)
-    find_package(OpenGL)
-    set(EXTRA_LIBS "${EXTRA_LIBS};gdi32;opengl32;glu32;winmm")
-  elseif(APPLE)
-    find_package(OpenGL)
-    set(EXTRA_LIBS "${EXTRA_LIBS};${OPENGL_LIBRARIES}")
-  else()
-    find_package(OpenGL)
-    set(EXTRA_LIBS "${EXTRA_LIBS};${OPENGL_LIBRARIES};Xi")
-  endif()
-
-  # Lib and includes
-  set(PROJECT_INCLUDE_DIRS "${PROJECT_REAL_PATH}/include/GL")
-  set(PROJECT_LIBRARIES "${PROJECT_LIB_TARGET};${EXTRA_LIBS}")
-  set(PROJECT_NAME "GLUT")
+# Source and includes
+set(PROJECT_REAL_PATH "${PROJECT_SOURCE_DIR}/../../../../3rdparty/${PROJECT_KEY}")
+get_filename_component(PROJECT_REAL_PATH ${PROJECT_REAL_PATH} ABSOLUTE)
+file(GLOB PROJECT_SOURCES "${PROJECT_REAL_PATH}/src/*.c")
+set(PROJECT_INCLUDE_DIRS "${PROJECT_REAL_PATH}/include")
+#filter_list("${PROJECT_SOURCES}" "lua.c;luac.c" PROJECT_SOURCES)
+if (${DEBUG_MESSAGES})
+  message("Importing ${PROJECT_KEY} from ${PROJECT_REAL_PATH}")
 endif()
 
-# Export libraries
-CONFIGURE_FILE(glutConfig.cmake.in "${PROJECT_BINARY_DIR}/glutConfig.cmake")
+# Build library (static)
+include_directories(${PROJECT_INCLUDE_DIRS})
+add_library(${PROJECT_NAME} STATIC ${PROJECT_SOURCES})
+
+# Opengl
+if(WIN32)
+  find_package(OpenGL)
+  set(EXTRA_LIBS "gdi32;opengl32;glu32;winmm")
+elseif(APPLE)
+  find_package(OpenGL)
+  set(EXTRA_LIBS "${OPENGL_LIBRARIES}")
+else()
+  find_package(OpenGL)
+  set(EXTRA_LIBS "${OPENGL_LIBRARIES};Xi")
+endif()
+
+# Lib and includes
+set(PROJECT_INCLUDE_DIRS "${PROJECT_REAL_PATH}/include/GL")
+set(PROJECT_LIBRARIES "${PROJECT_NAME};${EXTRA_LIBS}")
+
+CONFIGURE_FILE(${PROJECT_NAME}Config.cmake.in "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake")
+

@@ -1,0 +1,5 @@
+#ifndef MK1MF_BUILD 
+#define CFLAGS ""
+#define PLATFORM "" 
+#define DATE 0
+#endif

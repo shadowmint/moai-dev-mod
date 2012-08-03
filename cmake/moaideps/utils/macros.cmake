@@ -62,6 +62,22 @@ function(get_filename_component_last ITEM RETURN)
   set(${RETURN} ${ITEM_CP} PARENT_SCOPE)
 endfunction()
 
+## Filter the given list of absolute paths to exclude files that end in ext
+# @param ITEMS A set of absolute pathes to files. eg. "${SOURCES}"
+# @param EXT An exntension to remove all of. eg. ".mm"
+# @param RETURN The return argument
+function(filter_list_ex ITEMS EXT RETURN)
+  foreach(ITEM ${ITEMS})
+    string(REGEX MATCH ".*${EXT}$" FOUND ${ITEM})
+    if ("${FOUND}" STREQUAL "")
+      list(APPEND ITEMS_RETURN ${ITEM})
+    else()
+      message("Excluded: ${ITEM}")
+    endif()
+  endforeach(ITEM ${ITEMS})
+  set(${RETURN} ${ITEMS_RETURN} PARENT_SCOPE)
+endfunction()
+
 ## Filter the given list of absolute paths to exclude files in the excludes list.
 # @param ITEMS A set of absolute pathes to files. eg. "${SOURCES}"
 # @param EXCLUDES A list of relative excludes, eg. "lua.c;luac.c"

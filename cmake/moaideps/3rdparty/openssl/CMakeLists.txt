@@ -95,7 +95,7 @@ if(WIN32)
 else()
   set(PROJECT_LIBRARIES "${OPENSSL_ENGINE_LIBS};dl")
 endif()
-set(PROJECT_NAME "OPENSSL")
+set(_PROJECT_NAME "OPENSSL")
 
 # Export libraries
 CONFIGURE_FILE(opensslConfig.cmake.in "${PROJECT_BINARY_DIR}/opensslConfig.cmake")

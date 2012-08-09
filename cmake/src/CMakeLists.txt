@@ -13,7 +13,7 @@
 # limitations under the License.
 
 # Include subfolders in dependency order.
-set(LIBS 
+set(SRC_LIBS 
   vscompat
   zlcore
   uslscore
@@ -21,6 +21,6 @@ set(LIBS
   aku
 )  
 
-foreach(ITEM ${LIBS})
+foreach(ITEM ${SRC_LIBS})
   add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/${ITEM})
 endforeach()  

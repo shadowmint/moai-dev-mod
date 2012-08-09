@@ -34,9 +34,11 @@ set(PROJECT_EXTRA_LIBRARIES "")
 set(PROJECT_EXTRA_INCLUDES "")
 
 # Add dependencies
-add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/3rdparty")
-file(GLOB PROJECT_DEPS "${PROJECT_SOURCE_DIR}/3rdparty/*")
-foreach(PATH ${PROJECT_DEPS}) 
+include("${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/CMakeLists.txt")
+foreach(PATH ${3RD_PARTY_LIBS}) 
+
+  # Import
+  add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/${PATH})
 
   # Force cmake to look locally for the library instance
   get_filename_component_last(${PATH} DEP_LOWER)
@@ -55,10 +57,10 @@ endforeach()
 
 # Debug
 if(DEBUG_MESSAGES)
-  message("Build debug:")
-  foreach(INC ${PROJECT_EXTRA_INCLUDES})
-    message("- Include: ${INC}")
-  endforeach()
+  #message("Build debug:")
+  #foreach(INC ${PROJECT_EXTRA_INCLUDES})
+    #message("- Include: ${INC}")
+  #endforeach()
   #foreach(LIB ${PROJECT_EXTRA_LIBRARIES})
   #  message("- Library: ${LIB}")
   #endforeach()

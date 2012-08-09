@@ -22,7 +22,7 @@ set(CMAKE_OSX_ARCHITECTURES "i386")
 add_subdirectory("${PROJECT_SOURCE_DIR}/moaideps")
 
 # Add projects
-add_subdirectory("src")
+add_subdirectory("${PROJECT_SOURCE_DIR}/src")
 
 # Path
 set(PROJECT_PATH "${PROJECT_SOURCE_DIR}/../src/moai")
@@ -31,7 +31,7 @@ set(PROJECT_PATH "${PROJECT_SOURCE_DIR}/../src/moai")
 configure_file("${PROJECT_PATH}/../hosts/GlutHostMain.cpp" "${PROJECT_BINARY_DIR}/main.cpp")
 
 # Moai binary
-file(GLOB PROJECT_SOURCES "${PROJECT_BINARY_DIR}/main.cpp")
+set(PROJECT_SOURCES "${PROJECT_BINARY_DIR}/main.cpp")
 add_executable(moai ${PROJECT_SOURCES})
 
 # Host
@@ -40,7 +40,7 @@ include_directories(${AKU_INCLUDE_DIRS})
 set(EXTRA_LIBS "${EXTRA_LIBS};${AKU_LIBRARIES}")
 
 # Deps
-include("${PROJECT_BINARY_DIR}/src/_moaicore/moaicoreConfig.cmake")
+include("${PROJECT_BINARY_DIR}/src/moaicore/moaicoreConfig.cmake")
 include_directories(${MOAICORE_INCLUDE_DIRS})
 set(EXTRA_LIBS "${EXTRA_LIBS};${MOAICORE_LIBRARIES}")
 

@@ -13,7 +13,7 @@
 # limitations under the License.
 
 # Include subfolders in dependency order.
-set(LIBS 
+set(3RD_PARTY_LIBS 
   zlib
   openssl
   glut
@@ -37,7 +37,3 @@ set(LIBS
   tlsf
   vorbis
 )  
-
-foreach(ITEM ${LIBS})
-  add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/${ITEM})
-endforeach()  
